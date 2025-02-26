@@ -1,0 +1,810 @@
+Options:
+  # --------------------------------------------------------------------------------
+  # General options and plugins
+  # --------------------------------------------------------------------------------
+  bidscoin:
+    version: 4.2.1 # BIDScoin version (should correspond with the version in ../bidscoin/version.txt)
+    bidsignore: [] # Semicolon-separated list of entries that are added to the .bidsignore file (for more info, see BIDS specifications), e.g. extra_data/;pet/;myfile.txt;yourfile.csv
+    subprefix: sub- # The subject prefix of the source data
+    sesprefix: ses- # The session prefix of the source data
+    #Datatypes: [anat] # A list of datatypes that are converted to BIDS (useful for skipping data)
+    unknowntypes: [extra_data, ct, rts] # A list of datatypes that are converted to BIDS-like datatype folders
+    ignoretypes: [exclude] # A list of datatypes that are excluded / not converted to BIDS
+    unzip: ""
+  plugins: # List of plugins with plugin-specific key-value pairs (that can be used by the plugin)
+    dcm2niix2bids: # See dcm2niix -h and https://www.nitrc.org/plugins/mwiki/index.php/dcm2nii:MainPage#General_Usage for more info
+      command: dcm2niix # Command to run dcm2niix, e.g. "module add dcm2niix/1.0.20180622; dcm2niix" or "PATH=/opt/dcm2niix/bin:$PATH; dcm2niix" or /opt/dcm2niix/bin/dcm2niix or '"C:\Program Files\dcm2niix\dcm2niix.exe"' (use quotes to deal with whitespaces in the path)
+      args: -b y -z y -i n -l n # Argument string that is passed to dcm2niix. Tip: SPM users may want to use '-z n' (which produces unzipped nifti's, see dcm2niix -h for more information)
+      anon: y # Set this anonymization flag to 'y' to round off age and discard acquisition date from the meta data
+      fallback: y
+      meta: [.json, .tsv, .tsv.gz] # The file extensions of the equally named metadata sourcefiles that are copied over to the BIDS sidecar files
+    spec2nii2bids: # The settings for the spec2nii2bids plugin
+      command: spec2nii # Command to run spec2nii, e.g. "module add spec2nii; spec2nii" or "PATH=/opt/spec2nii/bin:$PATH; spec2nii" or /opt/spec2nii/bin/spec2nii or '"C:\Program Files\spec2nii\spec2nii.exe"' (note the quotes to deal with the whitespace)
+      args: # Argument string that is passed to spec2nii (see spec2nii -h for more information)
+      anon: y # Set this anonymization flag to 'y' to round off age and discard acquisition date from the meta data
+      meta: [.json, .tsv, .tsv.gz] # The file extensions of the equally named metadata sourcefiles that are copied over to the BIDS sidecar files
+      multiraid: 2 # The mapVBVD argument for selecting the multiraid Twix file to load (default = 2, i.e. 2nd file)
+#    phys2bidscoin:                  # The settings for the phys2bidscoin plugin
+
+DICOM:
+  # --------------------------------------------------------------------------------
+  # DICOM key-value heuristics (DICOM fields that are mapped to the BIDS labels)
+  # --------------------------------------------------------------------------------
+  subject: <<filepath:/sub-(.*?)/>> # This filesystem property extracts the subject label from the source directory. NB: Any property or attribute can be used as subject-label, e.g. <PatientID>
+  session: <<filepath:/sub-.*?/ses-(.*?)/>> # This filesystem property extracts the subject label from the source directory. NB: Any property or attribute can be used as session-label, e.g. <StudyID>
+
+  anat: # ----------------------- All anatomical runs ---------------------
+    - provenance: # The fullpath name of the DICOM file from which the attributes are read. Serves also as a look-up key to find a run in the bidsmap
+      properties:
+        &fileattr # This is an optional (stub) entry of filesystem matching (could be added to any run-item)
+        filepath: # File folder, e.g. ".*Parkinson.*" or ".*(phantom|bottle).*"
+        filename: # File name, e.g. ".*fmap.*" or ".*(fmap|field.?map|B0.?map).*"
+        filesize: # File size, e.g. "2[4-6]\d MB" for matching files between 240-269 MB
+        nrfiles: # Number of files in the folder that match the above criteria, e.g. "5/d/d" for matching a number between 500-599
+      attributes:
+        &anat_dicomattr # An empty / non-matching "reference" dictionary that can be derefenced in other run-items of this data type
+        Modality:
+        ProtocolName:
+        SeriesDescription:
+        ImageType:
+        SequenceName:
+        SequenceVariant:
+        ScanningSequence:
+        MRAcquisitionType:
+        SliceThickness:
+        FlipAngle:
+        EchoNumbers:
+        EchoTime:
+        RepetitionTime:
+        InPlanePhaseEncodingDirection:
+      bids: &anat_dicoment_nonparametric # See: schema/datatypes/anat.yaml
+        acq: <SequenceName> # This will be expanded by the bidsmapper (so the user can edit it in the bidseditor)
+        ce:
+        rec:
+        run: <<>> # This will be updated dynamically during bidscoiner runtime (as it depends on the already existing files)
+        part: ['', "mag", "phase", "real", "imag", 0] # This BIDS value list will be shown as a dropdown menu in the bidseditor with the first (empty) item selected (as indicated by the last item, i.e. 0)
+        suffix: T1w
+      meta: &anat_meta
+        AccessionNumber: <<AccessionNumber>>
+        AcquisitionDateTime: <<AcquisitionDateTime>>
+        AcquisitionMatrix: <<AcquisitionMatrix>>
+        ActualFrameDuration: <<ActualFrameDuration>>
+        AnatomicRegionSequence: <<AnatomicRegionSequence>>
+        AngularStep: <<AngularStep>>
+        AttenuationCorrectionMethod: <<AttenuationCorrectionMethod>>
+        BodyPartExamined: <<BodyPartExamined>>
+        CodeMeaning: <<CodeMeaning>>
+        CodeValue: <<CodeValue>>
+        CollimatorGridName: <<CollimatorGridName>>
+        CollimatorType: <<CollimatorType>>
+        Columns: <<Columns>>
+        ContrastBolusAgent: <<ContrastBolusAgent>>
+        ConvolutionKernel: <<ConvolutionKernel>>
+        CorrectedImage: <<CorrectedImage>>
+        DeadTimeFactor: <<DeadTimeFactor>>
+        DecayCorrection: <<DecayCorrection>>
+        DecayFactor: <<DecayFactor>>
+        DeviceSerialNumber: <<DeviceSerialNumber>>
+        DoseCalibrationFactor: <<DoseCalibrationFactor>>
+        EchoNumbers: <<EchoNumbers>>
+        EchoTime: <<EchoTime>>
+        EnergyWindowLowerLimit: <<EnergyWindowLowerLimit>>
+        EnergyWindowName: <<EnergyWindowName>>
+        EnergyWindowUpperLimit: <<EnergyWindowUpperLimit>>
+        FieldOfViewDimensions: <<FieldOfViewDimensions>>
+        FlipAngle: <<FlipAngle>>
+        ImageComments: <<ImageComments>>
+        ImageType: <<ImageType>>
+        InstitutionName: <<InstitutionName>>
+        InversionTime: <<InversionTime>>
+        MRAcquisitionType: <<MRAcquisitionType>>
+        Manufacturer: <<Manufacturer>>
+        ManufacturerModelName: <<ManufacturerModelName>>
+        Modality: <<Modality>>
+        NumberOfDetectors: <<NumberOfDetectors>>
+        NumberOfEnergyWindows: <<NumberOfEnergyWindows>>
+        NumberOfFramesInPhase: <<NumberOfFramesInPhase>>
+        NumberOfFramesInRotation: <<NumberOfFramesInRotation>>
+        NumberOfSlices: <<NumberOfSlices>>
+        PatientAge: <<PatientAge>>
+        PatientID: <<PatientID>>
+        PatientOrientationCodeSequence: <<PatientOrientationCodeSequence>>
+        PatientPosition: <<PatientPosition>>
+        PatientSex: <<PatientSex>>
+        PatientSize: <<PatientSize>>
+        PerformedProcedureStepDescription: <<PerformedProcedureStepDescription>>
+        PixelBandwidth: <<PixelBandwidth>>
+        PixelSpacing: <<PixelSpacing>>
+        ProcedureCodeSequence: <<ProcedureCodeSequence>>
+        ProtocolName: <<ProtocolName>>
+        RadionuclideCodeSequence: <<RadionuclideCodeSequence>>
+        RadionuclideHalfLife: <<RadionuclideHalfLife>>
+        RadionuclidePositronFraction: <<RadionuclidePositronFraction>>
+        RadionuclideTotalDose: <<RadionuclideTotalDose>>
+        Radiopharmaceutical: <<Radiopharmaceutical>>
+        RadiopharmaceuticalCodeSequence: <<RadiopharmaceuticalCodeSequence>>
+        RadiopharmaceuticalStartDateTime: <<RadiopharmaceuticalStartDateTime>>
+        RadiopharmaceuticalStartTime: <<RadiopharmaceuticalStartTime>>
+        RadiopharmaceuticalStopDateTime: <<RadiopharmaceuticalStopDateTime>>
+        RadiopharmaceuticalStopTime: <<RadiopharmaceuticalStopTime>>
+        RadiopharmaceuticalVolume: <<RadiopharmaceuticalVolume>>
+        ReconstructionMethod: <<ReconstructionMethod>>
+        ReferencedFrameOfReferenceSequence: <<ReferencedFrameOfReferenceSequence>>
+        RepetitionTime: <<RepetitionTime>>
+        RequestedProcedureDescription: <<RequestedProcedureDescription>>
+        Rows: <<Rows>>
+        SOPClassUID: <<SOPClassUID>>
+        ScanningSequence: <<ScanningSequence>>
+        ScatterFractionFactor: <<ScatterFractionFactor>>
+        SequenceName: <<SequenceName>>
+        SequenceVariant: <<SequenceVariant>>
+        SeriesDate: <<SeriesDate>>
+        SeriesDescription: <<SeriesDescription>>
+        SeriesInstanceUID: <<SeriesInstanceUID>>
+        SeriesNumber: <<SeriesNumber>>
+        SeriesTime: <<SeriesTime>>
+        SeriesType: <<SeriesType>>
+        SliceThickness: <<SliceThickness>>
+        StudyDate: <<StudyDate>>
+        StudyDescription: <<StudyDescription>>
+        StudyInstanceUID: <<StudyInstanceUID>>
+        StudyTime: <<StudyTime>>
+        TransmitCoilName: <<TransmitCoilName>>
+        TypeOfDetectorMotion: <<TypeOfDetectorMotion>>
+        Units: <<Units>>
+        ZoomFactor: <<ZoomFactor>>
+    # ##################### t2
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1_.*)
+    #     SeriesDescription: (?i).*Sag.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     acq: sag
+    #     rec: nd
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1).*
+    #     SeriesDescription: (?i).*Cor.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     acq: cor
+    #     rec: nd
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1).*
+    #     SeriesDescription: (?i).*Tra.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     acq: tra
+    #     rec: nd
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1).*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     acq:
+    #     rec: nd
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    #   meta: *anat_meta
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1).*
+    #     SeriesDescription: (?i).*Sag.*
+    #   bids:
+    #     acq: sag
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1).*
+    #     SeriesDescription: (?i).*Cor.*
+    #   bids:
+    #     acq: cor
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1).*
+    #     SeriesDescription: (?i).*Tra.*
+    #   bids:
+    #     acq: tra
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1r|tse2d1).*
+    #   bids:
+    #     acq:
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T2w
+    #   meta: *anat_meta
+    # ##################### t1 contrast
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes|g).*
+    #     SeriesDescription: (?i).*Sag.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     acq: sag
+    #     rec: nd
+    #     ce: gadolinium
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #     SeriesDescription: (?i).*Cor.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     acq: cor
+    #     rec: nd
+    #     ce: gadolinium
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #     SeriesDescription: (?i).*Tra.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     ce: gadolinium
+    #     rec: nd
+    #     acq: tra
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     ce: gadolinium
+    #     rec: nd
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #     SeriesDescription: (?i).*Sag.*
+    #   bids:
+    #     acq: sag
+    #     ce: gadolinium
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #     SeriesDescription: (?i).*Cor.*
+    #   bids:
+    #     acq: cor
+    #     ce: gadolinium
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #     SeriesDescription: (?i).*Ax.*
+    #   bids:
+    #     acq: axial
+    #     ce: gadolinium
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #     SeriesDescription: (?i).*Tra.*
+    #   bids:
+    #     ce: gadolinium
+    #     acq: tra
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     ContrastBolusAgent: (?i).*(GADOLINIUM|Dotarem|Yes).*
+    #   bids:
+    #     ce: gadolinium
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    #     ContrastBolusIngredient: GADOLINIUM
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns).*
+    #     SeriesDescription: (?i).*(GADO|Gado|GD).*
+    #   bids:
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta:
+    #     <<: *anat_meta
+    # ##################### t1 no contrast
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+    #     SeriesDescription: (?i).*Sag.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     run: <<1>>
+    #     acq: sag
+    #     rec: nd
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+    #     SeriesDescription: (?i).*Cor.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     run: <<1>>
+    #     acq: cor
+    #     rec: nd
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+    #     SeriesDescription: (?i).*Tra.*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     run: <<1>>
+    #     acq: tra
+    #     rec: nd
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+    #     ImageType: (?i).*('ND').*
+    #   bids:
+    #     rec: nd
+    #     run: <<1>>
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    #   meta: *anat_meta
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+    #     SeriesDescription: (?i).*Sag.*
+    #   bids:
+    #     run: <<1>>
+    #     acq: sag
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+    #     SeriesDescription: (?i).*Cor.*
+    #   bids:
+    #     run: <<1>>
+    #     acq: cor
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    # - provenance:
+    #   attributes:
+    #     SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+    #     SeriesDescription: (?i).*Tra.*
+    #   bids:
+    #     run: <<1>>
+    #     acq: tra
+    #     part: ['', mag, phase, real, imag, 0]
+    #     suffix: T1w
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(fl2d1|fl3d1|fl3d1_ns|tfl3d1_16ns|tfl3d1_ns|tfl3d1_16|tfl3d1|tfl3d1_ns|tfl3d1_16_ns|se2d1).*
+        #Modality: (?i).*MR.*
+      bids:
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: T1w
+      meta: *anat_meta
+    ##################### FLAIR
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+        SeriesDescription: (?i).*Sag.*
+        ImageType: (?i).*('ND').*
+      bids:
+        acq: sag
+        rec: nd
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+        SeriesDescription: (?i).*Cor.*
+        ImageType: (?i).*('ND').*
+      bids:
+        acq: cor
+        rec: nd
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+        SeriesDescription: (?i).*Tra.*
+        ImageType: (?i).*('ND').*
+      bids:
+        acq: tra
+        rec: nd
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+        ImageType: (?i).*('ND').*
+      bids:
+        rec: nd
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+        SeriesDescription: (?i).*Sag.*
+      bids:
+        acq: sag
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+        SeriesDescription: (?i).*Cor.*
+      bids:
+        acq: cor
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+        SeriesDescription: (?i).*Tra.*
+      bids:
+        acq: tra
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*(spcir_278ns|spcir3d1|tir2d1_).*
+      bids:
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: FLAIR
+      meta: *anat_meta
+
+  exclude: # ----------------------- Data that will be left out -------------
+    - provenance: # This is a catch-all for all angio related data
+      attributes:
+        SequenceName: (?i).*(fl3d1r.*|fl3d1io) #removed |fl3d1 cause it led to some mprage being missed
+      bids: &exclude_bids
+        suffix: "<SeriesDescription>"        
+    - provenance: # This is a catch-all for all SWI related data
+      attributes:
+        SequenceName: (?i).*swi3d1r
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all AAHScout related data
+      attributes:
+        ProtocolName: .*(AAHScout|AAHead_Scout).*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all MorphoBox related data
+      attributes:
+        ImageType: (?i).*('DEV'|'LABEL').*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all IVIM DFC related data
+      attributes:
+        ImageType: (?i).*'DFC'.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all IVIM related data
+      attributes:
+        ProtocolName: (?i).*IVIM.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all MP2RAGE flat data
+      attributes:
+        ProtocolName: (?i).*mp2rage.*
+        ImageComments: (?i).*mp2rage.*flat.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all MP2RAGE division data
+      attributes:
+        ProtocolName: (?i).*mp2rage.*
+        ImageComments: (?i).*division.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all MPR related data
+      attributes:
+        ImageType: (?i).*'MPR'.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all iXXXXX related data (X is digit)
+      attributes:
+        SequenceName: (?i).*'i\d{5}'.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all MFFE / MPCA related data
+      attributes:
+        ImageType: (?i).*('MAP').*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for gre field mapping data
+      attributes:
+        SequenceName: (?i).*fm2d2r.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for BOLD prov verbal / motor data
+      attributes:
+        SequenceName: (?i).*epfid2d1_64.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for T1 TIR data
+      attributes:
+        SequenceName: (?i).*tir2d1r.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for T1 Map data
+      attributes:
+        ImageType: (?i).*('T1 MAP').*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for ADC map data
+      attributes:
+        ImageType: (?i).*('ADC').*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for fl2d19 sequence related data
+      attributes:
+        SequenceName: (?i).*fl2d1_9.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for spcR45 sequence related data (t1spacecorspaircarotidesnatif)
+      attributes:
+        SequenceName: (?i).*spcR_45.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for pc3d1 sequence related data (vesselscoutneck)
+      attributes:
+        SequenceName: (?i).*pc3d1.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for perfusion related data
+      attributes: &perf_dicomattr
+        Modality:
+        ProtocolName:
+        SeriesDescription:
+        ImageType:
+        SequenceName:
+        SequenceVariant:
+        ScanningSequence:
+        MRAcquisitionType:
+        SliceThickness:
+        FlipAngle:
+        EchoNumbers:
+        EchoTime:
+        RepetitionTime:
+        PhaseEncodingDirection:
+      bids: &perf_dicoment_group1
+        acq: <SequenceName>
+        dir:
+        run: <<1>>
+        suffix: dsc
+      meta: &perf_meta
+        <<: *anat_meta
+        AcquisitionVoxelSize:
+        B0FieldSource:
+        B0FieldIdentifier:
+        ContrastBolusAgent: <<ContrastBolusAgent>>
+        ContrastBolusVolume: <<ContrastBolusVolume>>
+        ContrastBolusTotalDose: <<ContrastBolusTotalDose>>
+        ContrastBolusIngredient: <<ContrastBolusIngredient>>
+        ContrastBolusIngredientConcentration: <<ContrastBolusIngredientConcentration>>
+    - provenance:
+      attributes:
+        SequenceName: (?i).*epfid2d1_1.*
+      bids:
+        part: ['', mag, phase, real, imag, 0]
+        suffix: dsc
+      meta: *perf_meta
+    - provenance:
+      attributes:
+        SequenceName: (?i).*tseR2d1_13.*
+        ContrastBolusAgent: (?i).*(GADOLINIUM|DOTAREM|Gadolinium|Dotarem).*
+      bids:
+        part: ['', mag, phase, real, imag, 0]
+        suffix: dsc
+      meta: *perf_meta
+    - provenance:
+      attributes:
+        <<: *perf_dicomattr
+        SeriesDescription: (?i).*perf.*
+      bids:
+        part: ['', mag, phase, real, imag, 0]
+        suffix: dsc
+      meta: *perf_meta
+    - provenance:
+      attributes:
+        ImageType: (?i).*('PERFUSION').*
+      bids:
+        part: ['', mag, phase, real, imag, 0]
+        suffix: dsc
+      meta: *perf_meta
+    - provenance: # This is a catch-all for all DWI related data
+      attributes: &dwi_dicomattr
+        Modality:
+        ProtocolName:
+        SeriesDescription:
+        ImageType:
+        SequenceName:
+        SequenceVariant:
+        ScanningSequence:
+        MRAcquisitionType:
+        SliceThickness:
+        FlipAngle:
+        EchoNumbers:
+        EchoTime:
+        RepetitionTime:
+        PhaseEncodingDirection:
+      bids: &dwi_dicoment_DWI # See: schema/datatypes/dwi.yaml
+        acq: <SequenceName> # More consistent between SBREF and PHYSIO files
+        dir:
+        run: <<1>>
+        part: ['', mag, phase, real, imag, 0]
+        suffix: dwi
+      meta: &dwi_meta
+        <<: *anat_meta
+        B0FieldSource:
+        B0FieldIdentifier:
+    - provenance:
+      attributes:
+        SequenceName: .*(ep_b0|ep_b1000#.*)
+      bids:
+        rec: DTI
+        suffix: dwi
+      meta: *dwi_meta
+    - provenance:
+      attributes:
+        Modality: (?i).*CT.*
+        ImageType: (?i).*('LOCALIZER').*
+      bids: *exclude_bids
+    - provenance:
+      attributes:
+        Modality: (?i).*CT.*
+        ImageComments: (?i).*(FOV).*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for localizer data
+      attributes:
+        SeriesDescription: (?i).*(localizer).*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for trace data
+      attributes:
+        SeriesDescription: (?i).*(trace).*
+      bids: *exclude_bids
+  
+  extra_data: # ----------------------- All extra data -------------------------
+    - provenance:
+      attributes: &extra_data_attributes_dicom
+        Modality: (?i).*MR.*
+        ProtocolName:
+        SeriesDescription:
+        ImageType:
+        SequenceName:
+        SequenceVariant:
+        ScanningSequence:
+        MRAcquisitionType:
+        SliceThickness:
+        FlipAngle:
+        EchoNumbers:
+        EchoTime:
+        RepetitionTime:
+        PhaseEncodingDirection:
+      bids:
+        acq: 
+        inv:
+        rec: 
+        ce:
+        task:
+        echo: 
+        dir:
+        run: <<1>>
+        mod: 
+        part: ['', mag, phase, real, imag, 0]
+        suffix: <ScanningSequence> 
+      meta: &extra_data_meta
+        <<: *anat_meta
+        B0FieldSource:
+        B0FieldIdentifier:
+
+  ct: # ----------------------- All CT runs ---------------------
+    - provenance:
+      attributes: &ct_dicomattr
+        Modality: (?i).*CT.*
+        ProtocolName:
+        SeriesDescription:
+        PixelSpacing:
+        SliceThickness:
+        ImagePositionPatient:
+        ImageOrientationPatient:
+      bids: &ct_dicoment
+        run: <<1>>
+        suffix: ct
+        part: ['', mag, phase, real, imag, 0]
+      meta: &ct_meta
+        <<: *anat_meta
+
+  rts: # ----------------------- All RTS runs ---------------------
+    # rtstruct
+    - provenance:
+      attributes:
+        Modality: (?i).*RTSTRUCT.*
+        SeriesDescription: (?i).*(RTSS).*
+      bids:
+        run: <<1>>
+        suffix: rtss
+        part: ['', mag, phase, real, imag, 0]
+      meta: *anat_meta
+    # rtdose
+    - provenance:
+      attributes:
+        Modality: (?i).*RTSTRUCT.*
+        SeriesDescription: (?i).*(RTDOSE).*
+      bids:
+        run: <<1>>
+        suffix: rtd
+        part: ['', mag, phase, real, imag, 0]
+      meta: *anat_meta
+
