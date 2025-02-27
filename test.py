@@ -1,19 +1,10 @@
 ### Standard Imports ###
-import src.log as log
 from src.rts2bids import RTS2BIDS
 from src.filter_register import PatientPreprocessor
-
 import pathlib as pl
-import pandas as pd
-import pydicom
 import os
 import subprocess
-from PrettyPrint import *
-import platipy
-from platipy.dicom.io.rtstruct_to_nifti import convert_rtstruct
-from platipy.dicom.io.rtdose_to_nifti import convert_rtdose
-from platipy.imaging.tests.data import get_lung_dicom
-import SimpleITK as sitk
+
 
 if __name__ == '__main__':
     raw_set = pl.Path('/mnt/nas6/data/Target/batch_copy/1k_subset_rtss')
@@ -32,11 +23,10 @@ if __name__ == '__main__':
         # Run the command
         subprocess.run(command)
 
-    # converter = RTS2BIDS(
-    #     raw_set,
-    #     bids_set
-    # )
-    # converter.execute()
+    converter = RTS2BIDS(raw_set, bids_set)
+    converter.execute()
+
     os.makedirs(processed_set, exist_ok=True)
+
     register = PatientPreprocessor(bids_set, processed_set)
     register.execute()

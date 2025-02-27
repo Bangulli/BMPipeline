@@ -134,7 +134,7 @@ class RTS2BIDS():
 
         return ct
 
-    def _match_uids_exhaustive(self, rts, ct, use_fallback=True):
+    def _match_uids_exhaustive(self, rts, ct, use_fallback=False):
         rts_ref = list(rts.values())[0]
         rts_path = list(rts.keys())[0]
         for ct_series in ct:
