@@ -17,9 +17,11 @@ import warping as w
 ########################
 
 
-def affine_registration(
+def masked_affine_registration(
     source: tc.Tensor,
     target: tc.Tensor,
+    source_mask: tc.Tensor,
+    target_mask: tc.Tensor,
     num_levels: int,
     used_levels: int,
     num_iters: list,
@@ -39,6 +41,10 @@ def affine_registration(
         The source tensor (1x1 x size)
     target : tc.Tensor
         The target tensor (1x1 x size)
+    source_mask : tc.Tensor
+        The source tensor mask binary (1x1 x size)
+    target_mask : tc.Tensor
+        The target tensor mask binary (1x1 x size)
     num_levels : int
         The number of resolution levels
     used_levels : int
@@ -81,19 +87,30 @@ def affine_registration(
         transformation.requires_grad = True
 
     optimizer = optim.AdamW([transformation], learning_rate, weight_decay=0.05)
-    source_pyramid = u.create_pyramid(source, num_levels=num_levels, mode='nearest')
-    target_pyramid = u.create_pyramid(target, num_levels=num_levels, mode='nearest')
+    source_pyramid = u.create_pyramid(source, num_levels=num_levels)
+    if source_mask is not None:
+        source_mask_pyramid = u.create_pyramid(source_mask, num_levels=num_levels, mode='nearest')
+    target_pyramid = u.create_pyramid(target, num_levels=num_levels)
+    target_mask_pyramid = u.create_pyramid(target_mask, num_levels=num_levels, mode='nearest')
     if return_best:
         best_transformation = transformation.clone()
         best_cost = 1000.0
     for j in range(used_levels):
         current_source = source_pyramid[j]
+        if source_mask is not None:
+            current_source_mask = source_mask_pyramid[j]
         current_target = target_pyramid[j]
+        current_target_mask = target_mask_pyramid[j]
+
         for i in range(num_iters[j]):
             with tc.set_grad_enabled(True):
                 sampling_grid = F.affine_grid(transformation, size=current_source.size(), align_corners=False)
-                warped_source = w.transform_tensor(current_source, sampling_grid, device=device, mode='nearest')
-                cost = cost_function(warped_source, current_target, device=device, **cost_function_params)    
+                warped_source = w.transform_tensor(current_source, sampling_grid, device=device)
+                if source_mask is not None:
+                    warped_source_mask = w.transform_tensor(current_source_mask, sampling_grid, device=device, mode='nearest')
+                else:
+                    warped_source_mask = None
+                cost = cost_function(warped_source, current_target, warped_source_mask, current_target_mask, device=device, **cost_function_params)    
                 cost.backward()
                 optimizer.step()
                 current_cost = cost.item()

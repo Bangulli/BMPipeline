@@ -28,6 +28,19 @@ affine_config = {
     'return_best': True
 }
 
+masked_affine_config = {
+    'device': "cuda:0",
+    'echo': True,
+    'registration_shape': (1, 1, 150, 150, 150),
+    'num_levels_aff': 3,
+    'used_levels_aff' : 3,
+    'num_iters_aff': [100, 100, 100],
+    'learning_rate_aff' : 0.002,
+    'cost_function_aff' : cf.mi_masked_global,
+    'cost_function_params_aff' : {},
+    'return_best': True
+}
+
 affine_deformable_config = {
     'device': "cuda:0",
     'echo': True,

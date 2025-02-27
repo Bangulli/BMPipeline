@@ -14,6 +14,8 @@ import SimpleITK as sitk
 import numpy as np
 import subprocess
 import torch.nn.functional as F
+from totalsegmentator.python_api import totalsegmentator
+import nibabel as nib
 
 class PatientPreprocessor():
     def __init__(
@@ -49,16 +51,17 @@ class PatientPreprocessor():
                         fixed_image = sitk.ReadImage(self.bids_set/pat/study/'anat'/t1)
                         # save unprocessed fixed
                         sitk.WriteImage(fixed_image, self.clean_set/pat/study/'anat'/t1)
-                        if not (self.clean_set/pat/study/'anat'/('MASK_'+t1)).is_file():
-                            subprocess.run(
-                                ['hd-bet',
-                                '-i', self.bids_set/pat/study/'anat'/t1,
-                                '-o', self.clean_set/pat/study/'anat'/('MASK_'+t1)]
-                            )
                         # normalize fixed
+                        if not (self.clean_set/pat/study/'anat'/('MASK_'+t1)).is_file():
+                            fixed_mask = totalsegmentator(self._sitk2nib(fixed_image), fast=False, task='total_mr', quiet=True) # get segmentation brain = 50
+                            fixed_mask = self._nib2sitk(fixed_mask, fixed_image)
+                            fixed_mask = sitk.BinaryThreshold(fixed_mask, lowerThreshold=50, upperThreshold=50, insideValue=1, outsideValue=0) #  binarize segmentation
+                            sitk.WriteImage(fixed_mask, (self.clean_set/pat/study/'anat'/('MASK_'+t1)))
+                        else:
+                            fixed_mask = sitk.ReadImage((self.clean_set/pat/study/'anat'/('MASK_'+t1)))
                         fixed_image = sitk.Cast(fixed_image, sitk.sitkFloat32)
                         fixed_image = sitk.RescaleIntensity(fixed_image, outputMinimum=0, outputMaximum=1)
-                        fixed_mask = sitk.ReadImage(self.clean_set/pat/study/'anat'/('MASK_'+t1))
+                        
 
                 # register structure and dose
                 if (self.bids_set/pat/study/'rt').is_dir() and fixed_image is not None:
@@ -80,11 +83,18 @@ class PatientPreprocessor():
                             RTdict[s+'/'+file] = sitk.ReadImage(self.bids_set/pat/study/'rt'/s/file)
 
                     moving_image = sitk.ReadImage(self.bids_set/pat/study/'rt'/ct[0])
-
-                    transformed_image, transformed_structs = self._register_ct2mr(fixed_image, fixed_mask, moving_image, RTdict)
+                    if not (self.clean_set/pat/study/'rt'/('MASK_'+ct[0])).is_file():
+                        moving_mask = totalsegmentator(self._sitk2nib(moving_image), fast=False, task='total', quiet=True)
+                        moving_mask = self._nib2sitk(moving_mask, moving_image)
+                        moving_mask = sitk.BinaryThreshold(moving_mask, lowerThreshold=90, upperThreshold=90, insideValue=1, outsideValue=0) # get segmentation brain=90, skull=91
+                        sitk.WriteImage(moving_mask, (self.clean_set/pat/study/'rt'/('MASK_'+ct[0])))
+                    else:
+                        moving_mask = sitk.ReadImage((self.clean_set/pat/study/'rt'/('MASK_'+ct[0])))
+                    transformed_image, transformed_structs = self._register_ct2mr(fixed_image, fixed_mask, moving_image, moving_mask, RTdict)
                     sitk.WriteImage(transformed_image, self.clean_set/pat/study/'rt'/ct[0])
-                    for struct in list(transformed_structs.keys()):
-                        sitk.WriteImage(transformed_structs[struct], self.clean_set/pat/study/'rt'/struct)
+                    for key in list(transformed_structs.keys()):
+                        struct = transformed_structs[key]
+                        sitk.WriteImage(struct, (self.clean_set/pat/study/'rt'/key))
                 
 
     def _filter_anat(self, t1:list, t2:list):
@@ -98,22 +108,7 @@ class PatientPreprocessor():
         print(f"  Direction: {image.GetDirection()}")
         print(f"  Size: {image.GetSize()}")
 
-    def _prepro_ct(self, source, structs, target):
-        binary_mask = sitk.BinaryThreshold(source, lowerThreshold=700, upperThreshold=3000, insideValue=1, outsideValue=0)
-        cc_filter = sitk.ConnectedComponentImageFilter()
-        label_shape_filter = sitk.LabelShapeStatisticsImageFilter()
-
-        # Find connected components
-        cc = cc_filter.Execute(binary_mask)
-        label_shape_filter.Execute(cc)
-
-        # Get label of the largest component
-        largest_label = max(label_shape_filter.GetLabels(), key=lambda l: label_shape_filter.GetPhysicalSize(l))
-
-        # Keep only the largest component
-        binary_mask = sitk.BinaryThreshold(cc, lowerThreshold=largest_label, upperThreshold=largest_label, insideValue=1, outsideValue=0)
-        # Dilate the mask
-        binary_mask = sitk.BinaryDilate(binary_mask, (5,5,5), sitk.sitkBall)
+    def _prepro_ct(self, source, binary_mask, structs, target):
         # extract bounding box
         label_filter = sitk.LabelShapeStatisticsImageFilter()
         label_filter.Execute(binary_mask)
@@ -127,6 +122,16 @@ class PatientPreprocessor():
         source.SetDirection(target.GetDirection())
         # finally resample
         source = sitk.Resample(source, referenceImage=target, defaultPixelValue=-1000)
+        # crop and resample mask as well
+        sitk.WriteImage(binary_mask, 'before_ct_mask.nii.gz')
+        binary_mask = binary_mask[x:x + w, y:y + h, z:z + d]
+        # Reorient image
+        binary_mask = sitk.DICOMOrient(binary_mask, sitk.DICOMOrientImageFilter_GetOrientationFromDirectionCosines(target.GetDirection()))
+        binary_mask.SetOrigin(target.GetOrigin())
+        binary_mask.SetDirection(target.GetDirection())
+        # finally resample
+        binary_mask = sitk.Resample(binary_mask, referenceImage=target, defaultPixelValue=0, interpolator=sitk.sitkNearestNeighbor)
+        
         # apply the same to the rtstructs and doses
         if structs is not None:
             for key in structs.keys():
@@ -136,76 +141,50 @@ class PatientPreprocessor():
                 struct.SetOrigin(target.GetOrigin())
                 struct.SetDirection(target.GetDirection())
                 # finally resample
-                struct = sitk.Resample(struct, referenceImage=target, defaultPixelValue=-1000)
+                struct = sitk.Resample(struct, referenceImage=target, defaultPixelValue=0, interpolator=sitk.sitkNearestNeighbor)
                 structs[key] = struct
         
-        return source, structs
-    
-    def _invert_mr2ct(self, df, img, device):
-        df = df.squeeze().cpu()
-        H, W, D, _ = df.shape  # Get dimensions
+        return source, binary_mask, structs
 
-        # Generate a grid of voxel coordinates (homogeneous)
-        target_grid = torch.stack(torch.meshgrid(
-            torch.linspace(0, H-1, H, device=df.device),
-            torch.linspace(0, W-1, W, device=df.device),
-            torch.linspace(0, D-1, D, device=df.device),
-            indexing='ij'  # Ensure correct layout
-        ), dim=-1).reshape(-1, 3)  # Shape [N, 3], Flattened
-
-        # Convert relative displacement field to absolute source coordinates
-        df_absolute = df * torch.tensor([H, W, D], dtype=torch.float32, device=df.device)  # Scale back to voxel space
-        source_coords = target_grid + df_absolute.reshape(-1, 3)  # Add displacement to target grid
-
-        # Add ones for homogeneous coordinates
-        A_matrix = torch.cat([target_grid, torch.ones(target_grid.shape[0], 1, device=df.device)], dim=-1)  # [N, 4]
-        B_matrix = source_coords  # [N, 3]
-
-        # Solve for affine transformation using least squares
-        affine_params = torch.linalg.lstsq(A_matrix, B_matrix).solution  # Shape [4,3]
-
-
-        affine_matrix = affine_params.T  # [3, 4]
-
-        # Convert to 4x4 homogeneous transformation matrix
-        full_affine_matrix = torch.eye(4)
-        full_affine_matrix[:3, :] = affine_matrix
-
-        affine_inverse = torch.inverse(full_affine_matrix)[:3, :].unsqueeze(0)
-
-        print(affine_inverse)
-        
-        return utils.tc_transform_to_tc_df(affine_matrix.unsqueeze(0).to(device), img.size(), device=device)
-
-    def _register_ct2mr(self, fixed_image, fixed_mask, moving_image, structs=None):
+    def _register_ct2mr(self, fixed_image, fixed_mask, moving_image, moving_mask, structs=None):
         """
         This horrible mess takes sitk images, normalizes and resamples them, then converts them to tensors, registers them, converts them to sitk images and finally returns the results
         """
         #sitk.WriteImage(moving_image, 'rawCT.nii.gz')
 
         # crop ct to area of interest
-        moving_image, structs = self._prepro_ct(moving_image, structs, fixed_image)
+        moving_image, moving_mask, structs = self._prepro_ct(moving_image, moving_mask, structs, fixed_image)
+
         sitk.WriteImage(moving_image, 'processedCT.nii.gz')
 
         # normalize images
         moving_image_norm = sitk.Cast(moving_image, sitk.sitkFloat32)
         moving_image_norm = sitk.RescaleIntensity(moving_image_norm, outputMinimum=0, outputMaximum=1)
 
-        # prepare tensors
+        # prepare arrays
         fixed_arr = sitk.GetArrayFromImage(fixed_image).astype(np.float32)
         moving_arr = sitk.GetArrayFromImage(moving_image_norm).astype(np.float32)
         fixed_arr = torch.from_numpy(fixed_arr).unsqueeze(0).unsqueeze(0)
         moving_arr = torch.from_numpy(moving_arr).unsqueeze(0).unsqueeze(0)
+
+        # apply masking
+        fixed_msk = sitk.GetArrayFromImage(fixed_mask).astype(np.float32)
+        moving_msk = sitk.GetArrayFromImage(moving_mask).astype(np.float32)
+        fixed_msk = torch.from_numpy(fixed_msk).unsqueeze(0).unsqueeze(0)
+        moving_msk = torch.from_numpy(moving_msk).unsqueeze(0).unsqueeze(0)
 
         # prepare config
         params = configs.affine_config # Registration accuracy can be adjusted by changing the config
         device = params['device']
         # run registration on normalized images
         # we want to move CT to MR but registration from MR to CT is easier, so we do the inverse and then invert it
-        displacement_field = reg.run_affine_registration(fixed_arr, moving_arr, **params)
-        displacement_field_inverse = displacement_field*-1
-        # displacement_field_inverse = self._invert_mr2ct(displacement_field, moving_arr, device)
-        # displacement_field_inverse = displacement_field_inverse.to(device)
+        displacement_field = reg.run_affine_registration(fixed_msk, moving_msk, **params)
+        res = w.warp_tensor(fixed_arr.to(device), displacement_field).cpu().detach().squeeze().numpy()
+        res = sitk.GetImageFromArray(res)
+        res.CopyInformation(fixed_image)
+        sitk.WriteImage(res, 'reverse_reg_res.nii')
+        displacement_field_inverse = displacement_field*-1 # affine field inversion by flipping the vectors in the field. should be valid as in an affine transformation every vector is computed the same way
+
         # warp image and reconvert to sitk.Image
         # uses the non normalized image, to keep data intact
         res_moving = sitk.GetArrayFromImage(moving_image).astype(np.float32)
@@ -217,10 +196,13 @@ class PatientPreprocessor():
         # warp and reconvert structure sets
         if structs is not None:
             transformed_structs = {}
-            # for key in list(structs.keys()):
-            #     struct = sitk.Resample(structs[key], referenceImage=fixed_image)
-            #     struct = torch.from_numpy(sitk.GetArrayFromImage(struct)).unsqueeze(0).unsqueeze(0)
-            #     transformed_structs[key] = sitk.GetImageFromArray(w.warp_tensor(struct.to(device), displacement_field).cpu().detach().squeeze().numpy()).CopyInformation(fixed_image)
+            for key in list(structs.keys()):
+                struct = sitk.GetArrayFromImage(structs[key]).astype(np.float32)
+                struct = torch.from_numpy(struct).unsqueeze(0).unsqueeze(0)
+                struct = w.warp_tensor(struct.to(device), displacement_field_inverse).cpu().detach().squeeze().numpy()
+                struct = sitk.GetImageFromArray(struct)
+                struct.CopyInformation(fixed_image)
+                transformed_structs[key] = struct
             return transformed_image, transformed_structs
         else:
             return transformed_image
@@ -252,3 +234,38 @@ class PatientPreprocessor():
         
         # Return just the sorted directory names
         return [d for d, _ in matching_dirs]
+    
+    def _sitk2nib(self, image_sitk):
+        """
+        Convert a SimpleITK Image to a nibabel NIfTI1Image.
+        """
+        # Convert SimpleITK image to numpy array
+        image_np = sitk.GetArrayFromImage(image_sitk)  # Shape: (D, H, W)
+
+        # Get spacing, origin, and direction
+        spacing = image_sitk.GetSpacing()  # (sx, sy, sz)
+        origin = image_sitk.GetOrigin()  # (ox, oy, oz)
+        direction = image_sitk.GetDirection()  # Flattened 3x3 matrix
+
+        # Convert SimpleITK direction (1D tuple) to a 3x3 matrix
+        direction_matrix = np.array(direction).reshape(3, 3)
+
+        # Create affine matrix (vox2ras)
+        affine = np.eye(4)
+        affine[:3, :3] = np.diag(spacing) @ direction_matrix  # Scale and rotate
+        affine[:3, 3] = origin  # Set translation
+
+        # Nibabel expects (H, W, D) instead of (D, H, W), so transpose axes
+        image_np = np.transpose(image_np, (2, 1, 0))
+
+        # Create Nibabel NIfTI image
+        nifti_image = nib.Nifti1Image(image_np, affine)
+
+        return nifti_image
+    
+    def _nib2sitk(self, image_nib, sitk_ref):
+        image_np = image_nib.get_fdata()
+        image_np = np.transpose(image_np, (2, 1, 0))
+        image_sitk = sitk.GetImageFromArray(image_np)
+        image_sitk.CopyInformation(sitk_ref)
+        return image_sitk
