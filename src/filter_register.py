@@ -5,11 +5,10 @@ import os
 from datetime import datetime
 import re
 import SimpleITK as sitk
-import numpy as np
 from totalsegmentator.python_api import totalsegmentator
-import nibabel as nib
 import ants
 from src.utils import *
+
 
 
 class PatientPreprocessor():
@@ -25,100 +24,166 @@ class PatientPreprocessor():
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self):
-        patients = [elem for elem in os.listdir(self.bids_set) if (self.bids_set/elem).is_dir()]
+        self.log.tagged_print('TODO', 'Check rt/anat matchin function _find_corresponding_anat currently matches the rt just to the previous study in time', self.info_format)
+        self.log.tagged_print('TODO', 'Filter studies that contain anat data such that repeats with too little time in between are detected and the latest one is selected', self.info_format)
+
+        patients = [elem for elem in os.listdir(self.bids_set) if (self.bids_set/elem).is_dir() and elem.startswith('sub-')]
         # iterate patients
         for pat in patients:
             ordered_studies = self._sort_directories(self.bids_set/pat)
-            fixed_image = None
-            fixed_mask = None
-            t0 = False
+            t0_image = None
+            t0_mask = None
+            study_dict = self._find_corresponding_anat(pat, ordered_studies)
+            if not any(study_dict):
+                continue
+            keys = list(study_dict.keys())
+            if study_dict[keys[0]] is None:
+                print(study_dict)
+                raise ValueError('something went wrong, the first key should have a value attached')
             # iterate studies
-            for i, study in enumerate(ordered_studies):
-                # skip studies that were taken before the first rtstruct is generated
+            for key in keys:
+                anat_study = key
+                rt_study = study_dict[key]
+                if not (self.bids_set/pat/anat_study/'anat').is_dir():
+                    self.log.warning('unexpectedly received an empty directory as anatomical')
+                    continue
+                
+                # filter study files
+                images = os.listdir(self.bids_set/pat/anat_study/'anat')
+                t1 = [img for img in images if img.endswith('T1w.nii.gz') or img.endswith('T1wa.nii.gz')]
+                t2 = [img for img in images if img.endswith('T2w.nii.gz') or img.endswith('T2wa.nii.gz')]
 
-                # assumes that the first mri is immediately before the first rtstruct, might be unstable
-                if not t0:
-                    if (self.bids_set/pat/ordered_studies[i+1]/'rt').is_dir():
-                        t0=True
+                # filter results if multiple t1 and t2 sequences have been coined
+                t1, t2 = self._filter_anat(t1, t2)
+
+                if t1 is None or t2 is None:
+                    if rt_study is None:
+                        self.log.warning(f'Failed to find T1 and T2 image pair in study {anat_study}')
                     else:
-                        continue
-                # check if anat files exist in bids set
-                if (self.bids_set/pat/study/'anat').is_dir():
-                    # make output directory
-                    os.makedirs(self.clean_set/pat/study/'anat', exist_ok=True)
-                    # filter study files
-                    images = os.listdir(self.bids_set/pat/study/'anat')
-                    t1 = [img for img in images if img.endswith('T1w.nii.gz') or img.endswith('T1wa.nii.gz')]
-                    t2 = [img for img in images if img.endswith('T2w.nii.gz') or img.endswith('T2wa.nii.gz')]
+                        tp = 'T1' if t2 is None else 'T2'
+                        tp = 'both' if t2 is None and t1 is None else tp
+                        self.log.fail(f'Found RTSTRUCT but matched mr study is incomplete, missing {tp}')
+                    continue
 
-                    # filter results if multiple t1 and t2 sequences have been coined
-                    t1, t2 = self._filter_anat(t1, t2)
+                # make output directory
+                os.makedirs(self.clean_set/pat/anat_study/'anat', exist_ok=True)
 
-                    # load fixed image and mask, happens in the first timepoint only, once per patient
-                    if fixed_image == None:
-                        # read images
-                        fixed_image = sitk.ReadImage(self.bids_set/pat/study/'anat'/t1)
-                        # save unprocessed fixed
-                        sitk.WriteImage(fixed_image, self.clean_set/pat/study/'anat'/t1)
-                        sitk.WriteImage(sitk.ReadImage(self.bids_set/pat/study/'anat'/t2), self.clean_set/pat/study/'anat'/t2)
-                        # obtain mask
-                        if not (self.clean_set/pat/study/'anat'/('MASK_'+t1)).is_file():
-                            fixed_mask = self._segment_image(fixed_image, 'mr')
-                            sitk.WriteImage(fixed_mask, (self.clean_set/pat/study/'anat'/('MASK_'+t1)))
-                        else:
-                            fixed_mask = sitk.ReadImage((self.clean_set/pat/study/'anat'/('MASK_'+t1)))
-                    # register mr images in study to first timepoint
+                ############## set and copy t0 T1
+                if (self.bids_set/pat/anat_study/'anat').is_dir() and t0_image is None:
+                    self.log.tagged_print('INFO', f'Identified t0 as study day {anat_study} for patient {pat}', self.info_format)
+
+                    # read images
+                    t0_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                    # save unprocessed fixed
+                    sitk.WriteImage(t0_image, self.clean_set/pat/anat_study/'anat'/t1)
+                    sitk.WriteImage(sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2), self.clean_set/pat/anat_study/'anat'/t2)
+                    # obtain mask
+                    if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
+                        t0_mask = self._segment_image(t0_image, 'mr')
+                        sitk.WriteImage(t0_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
                     else:
-                        t1_img = sitk.ReadImage(self.bids_set/pat/study/'anat'/t1)
-                        t2_img = sitk.ReadImage(self.bids_set/pat/study/'anat'/t2)
-                        t1_img, t2_img = self._register_mr2mr(fixed_image, fixed_mask, t1_img, t2_img)
-                        sitk.WriteImage(t1_img, self.clean_set/pat/study/'anat'/t1)
-                        sitk.WriteImage(t2_img, self.clean_set/pat/study/'anat'/t2)
+                        t0_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
                         
-                # register structure and dose
-                if (self.bids_set/pat/study/'rt').is_dir() and fixed_image is not None:
+                ############## if the anatomical image has a corresponding rt image do ct2mr2mr
+                if rt_study is not None:
+                    
+                    os.makedirs(self.clean_set/pat/rt_study/'rt', exist_ok =True)
                     # separate ct, rts and dose into lists with filenames
-                    rts = os.listdir(self.bids_set/pat/study/'rt')
+                    rts = os.listdir(self.bids_set/pat/rt_study/'rt')
                     ct = [elem for elem in rts if elem.endswith('CT_reference.nii.gz')]
                     rtd = [elem for elem in rts if elem.endswith('RTDOSE.nii.gz')]
-                    rts = [elem for elem in rts if (self.bids_set/pat/study/'rt'/elem).is_dir()]
+                    rts = [elem for elem in rts if (self.bids_set/pat/rt_study/'rt'/elem).is_dir()]
+
+                    if not any(ct):
+                        self.log.fail(f'Could not find any ct in study {rt_study}')
+                        continue
                 
                     RTdict = {} # dict that stores RT files, with filepath as key and sitk.Image as value
                     # read dose images
-                    for d in rtd:
-                        RTdict[d] = sitk.ReadImage(self.bids_set/pat/study/'rt'/d)
+                    if any(rtd):
+                        for d in rtd:
+                            RTdict[d] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/d)
                     # read structure images
-                    for s in rts:
-                        for file in os.listdir(self.bids_set/pat/study/'rt'/s):
-                            RTdict[s+'/'+file] = sitk.ReadImage(self.bids_set/pat/study/'rt'/s/file)
+                    if any(rts):
+                        for s in rts:
+                            os.makedirs(self.clean_set/pat/rt_study/'rt'/s, exist_ok =True)
+                            for file in os.listdir(self.bids_set/pat/rt_study/'rt'/s):
+                                RTdict[s+'/'+file] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/s/file)
 
                     # set ct as moving image
-                    moving_image = sitk.ReadImage(self.bids_set/pat/study/'rt'/ct[0])
+                    ct_image = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/ct[0])
 
                     # get segmentation
-                    if not (self.clean_set/pat/study/'rt'/('MASK_'+ct[0])).is_file():
-                        moving_mask = self._segment_image(moving_image, 'ct')
-                        sitk.WriteImage(moving_mask, (self.clean_set/pat/study/'rt'/('MASK_'+ct[0])))
+                    if (self.bids_set/pat/rt_study/'rt'/'Struct_Brain.nii.gz').is_file():
+                        ct_mask = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/'Struct_Brain.nii.gz')
+                    elif (self.clean_set/pat/rt_study/'rt'/('MASK_'+ct[0])).is_file():
+                        ct_mask = sitk.ReadImage((self.clean_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
                     else:
-                        moving_mask = sitk.ReadImage((self.clean_set/pat/study/'rt'/('MASK_'+ct[0])))
+                        ct_mask = self._segment_image(ct_image, 'ct')
+                        sitk.WriteImage(ct_mask, (self.clean_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
+                        
+                    t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                    # segment t1
+                    if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
+                        t1_mask = self._segment_image(t1_image, 'mr')
+                        sitk.WriteImage(t1_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                    else:
+                        t1_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
 
-                    # run registration and transform structures
-                    transformed_structs = self._register_ct2mr(fixed_image, fixed_mask, moving_image, moving_mask, RTdict)
-
+                    t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                    # run registration and transform structures, move ct to corresponding mrt1
+                    transformed_structs = self._register_ct2mr(t1_image, t1_mask, ct_image, ct_mask, RTdict)
+                    # run registration move all to t0
+                    t1_trans, t2_trans, transformed_structs = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image, transformed_structs)
                     # make output directory and save processed images
-                    os.makedirs(self.clean_set/pat/study/'rt'/s, exist_ok =True)
                     for key in list(transformed_structs.keys()):
                         struct = transformed_structs[key]
-                        sitk.WriteImage(struct, (self.clean_set/pat/study/'rt'/key))
+                        sitk.WriteImage(struct, (self.clean_set/pat/rt_study/'rt'/key))
+                    sitk.WriteImage(t1_image, self.clean_set/pat/anat_study/'anat'/t1)
+                    sitk.WriteImage(t2_image, self.clean_set/pat/anat_study/'anat'/t2)
+                    self.log.success(f'Moved structs, dose and anatomical images from study {anat_study} and struct study {rt_study} to t0')
+
+                ############### if there is no corresponding rt just do mr2mr
+                else:
+                    t1_img = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                    t2_img = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                    t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_img, t2_img)
+                    sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
+                    sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
+                    self.log.success(f'Moved anatomical images from study {anat_study} to t0')
                 
-                elif (self.bids_set/pat/study/'rt').is_dir() and fixed_image is None:
-                    self.log.warning('Found structure sets before a fixed T1 image was detected')
                 
 
     def _filter_anat(self, t1:list, t2:list):
-        # TODO write the actual function lol
-        self.log.warning('Standin function for file sorting if multiple t1/t2 are found, please write the actual function this is only for test purposes')
-        return t1[0], t2[0]
+        ## process t1 images
+        t1_filtered = self._filter_list(t1)
+        ## process t2 images
+        t2_filtered = self._filter_list(t2)
+        return t1_filtered, t2_filtered
+    
+    def _filter_list(self, mr): # courtesy of mister gpt
+        best_run = None
+        best_rec = None
+        
+        for image in mr:
+            run_number = self._extract_key_value(image, 'run')
+            rec_number = self._extract_key_value(image, 'rec')
+            
+            if run_number != -1:  # Prioritize images with 'run'
+                if best_run is None or run_number > self._extract_key_value(best_run, 'run'):
+                    best_run = image
+            elif rec_number != -1:  # Consider 'rec' images only if no 'run' images exist
+                if best_rec is None or rec_number > self._extract_key_value(best_rec, 'rec'):
+                    best_rec = image
+                elif rec_number == self._extract_key_value(best_rec, 'rec') and 'sag' in image:
+                    best_rec = image  # Prioritize 'sag' if rec number is the same
+        
+        return best_run if best_run else best_rec
+        
+    def _extract_key_value(self, filename:str, key:str):
+        match = re.search(rf"_{key}-(\d+)_", filename)
+        return int(match.group(1)) if match else -1  # Return -1 if key is missing
+
 
     def _segment_image(self, image, mode):
         if mode == 'ct':
@@ -202,9 +267,8 @@ class PatientPreprocessor():
         """
         # Regular expression pattern to match directory names like "ses-20250224235959"
         pattern = r"^ses-(\d{14})$"
-        
         # List all directories in the base directory
-        dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))]
+        dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d)) and ((base_dir/d/'anat').is_dir() or (base_dir/d/'rt').is_dir())]
         
         matching_dirs = []
         for d in dirs:
@@ -217,11 +281,10 @@ class PatientPreprocessor():
         
         # Sort the directories based on the datetime objects
         matching_dirs.sort(key=lambda x: x[1])
-        
         # Return just the sorted directory names
         return [d for d, _ in matching_dirs]
     
-    def _register_mr2mr(self, fixed, fixed_mask, moving_t1, moving_t2):
+    def _register_mr2mr(self, fixed, fixed_mask, moving_t1, moving_t2, structs=None):
         fixed = sitk2ants(fixed)
         fixed_mask = sitk2ants(fixed_mask)
         moving_t1 = sitk2ants(moving_t1)
@@ -229,4 +292,33 @@ class PatientPreprocessor():
         reg = ants.registration(fixed, moving_t1, mask=fixed_mask)
         transformed_t1 = ants.apply_transforms(fixed, moving_t1, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor')
         transformed_t2 = ants.apply_transforms(fixed, moving_t2, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor')
-        return ants2sitk(transformed_t1), ants2sitk(transformed_t2)
+        if structs is not None:
+            transformed_structs = {}
+            for key in list(structs.keys()):
+                struct = structs[key]
+                struct = ants2sitk(ants.apply_transforms(fixed = fixed_mask, moving = sitk2ants(struct), transformlist = reg['fwdtransforms'], interpolator  = 'nearestNeighbor'))
+                transformed_structs[key] = struct
+            return ants2sitk(transformed_t1), ants2sitk(transformed_t2), transformed_structs
+        else:
+            return ants2sitk(transformed_t1), ants2sitk(transformed_t2)
+    
+    def _find_corresponding_anat(self, pat, ordered_studies):
+        study_dict = {}
+        t0 = False
+        for i, study in enumerate(ordered_studies):
+            if i != (len(ordered_studies)-1):
+                if (self.bids_set/pat/ordered_studies[i+1]/'rt').is_dir():
+                    if not t0:
+                        t0 = True
+                    study_dict[study] = ordered_studies[i+1]
+                elif (self.bids_set/pat/study/'rt').is_dir():
+                    continue
+                elif t0:
+                    study_dict[study] = None
+            elif (self.bids_set/pat/study/'rt').is_dir():
+                continue
+            elif t0:
+                study_dict[study] = None
+        return study_dict
+
+

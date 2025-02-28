@@ -6,6 +6,7 @@ import os
 import subprocess
 
 
+
 if __name__ == '__main__':
     raw_set = pl.Path('/mnt/nas6/data/Target/batch_copy/1k_subset_rtss')
     bids_set = pl.Path('/mnt/nas6/data/Target/batch_copy/BIDS_1k_subset_rtss')
@@ -23,10 +24,14 @@ if __name__ == '__main__':
         # Run the command
         subprocess.run(command)
 
-    converter = RTS2BIDS(raw_set, bids_set)
-    converter.execute()
+    print('TODO: At this point in the main script is where the conversion of non chuv is supposed to be')
+
+    # converter = RTS2BIDS(raw_set, bids_set)
+    # converter.execute()
 
     os.makedirs(processed_set, exist_ok=True)
 
     register = PatientPreprocessor(bids_set, processed_set)
     register.execute()
+
+    # /home/lorenz/.venv/bin/python /home/lorenz/BMPipeline/test.py

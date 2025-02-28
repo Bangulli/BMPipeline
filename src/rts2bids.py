@@ -8,6 +8,7 @@ from PrettyPrint import *
 import re
 import SimpleITK as sitk
 import sys
+import tempfile
 
 
 class RTS2BIDS():
@@ -58,10 +59,11 @@ class RTS2BIDS():
 
                                     if rts_path is not None: # do the actual conversion
                                         #continue
+                                        rts_path_temp = self._filter_structs(rts_path)
                                         try: 
                                             convert_rtstruct(
                                                 ct_path,
-                                                rts_path,
+                                                rts_path_temp,
                                                 output_dir=output/rts_path.parent.name
                                             )
                                             reader = sitk.ImageSeriesReader()
@@ -71,6 +73,7 @@ class RTS2BIDS():
                                             sitk.WriteImage(image, output/(rts_path.parent.name+' - CT_reference.nii.gz'))
                                         except:
                                             self.log.fail(f'RTSTRUCT conversion failed for RTSS at path {rts_path.parent}')
+                                        os.remove(rts_path_temp)
 
 
                         if any(rtd):
@@ -153,3 +156,35 @@ class RTS2BIDS():
                 
         self.log.fail(f'Could not find matching CT for RTSS {rts_path.parent}')
         return None, None
+
+    def _filter_structs(self, rtstruct_path, keep_keywords=("GTV", "PTV", r"^Brain$|^Brain_Reg$")):
+        # Load the RTSTRUCT DICOM file
+        ds = pydicom.read_file(rtstruct_path)
+
+        # Get the list of structures
+        roi_seq = ds.StructureSetROISequence
+        roi_names = {roi.ROINumber: roi.ROIName for roi in roi_seq}
+
+        # Identify ROIs to keep
+        keep_rois = {num for num, name in roi_names.items() if any(k in name for k in keep_keywords)}
+
+        # Filter StructureSetROISequence
+        ds.StructureSetROISequence = [roi for roi in roi_seq if roi.ROINumber in keep_rois]
+
+        # Filter ROIContourSequence
+        if hasattr(ds, "ROIContourSequence"):
+            ds.ROIContourSequence = [contour for contour in ds.ROIContourSequence if contour.ReferencedROINumber in keep_rois]
+
+        # Filter RTROIObservationsSequence
+        if hasattr(ds, "RTROIObservationsSequence"):
+            ds.RTROIObservationsSequence = [obs for obs in ds.RTROIObservationsSequence if obs.ReferencedROINumber in keep_rois]
+
+        # Create a temporary file
+        with tempfile.NamedTemporaryFile(suffix=".dcm", delete=False) as temp_file:
+            ds.save_as(temp_file.name)
+            temp_path = temp_file.name
+
+        # Save modified RTSTRUCT
+        ds.save_as(temp_path)
+
+        return temp_path  # Return the temporary file path
