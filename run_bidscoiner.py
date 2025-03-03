@@ -1,9 +1,6 @@
 ### Standard Imports ###
 import src.log as log
 import pathlib as pl
-import pandas as pd
-import pydicom
-import os
 import subprocess
 from PrettyPrint import *
 

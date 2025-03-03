@@ -26,7 +26,7 @@ class RTS2BIDS():
         self.raw_patient_pattern = raw_patient_pattern
         self.raw_study_pattern = raw_study_pattern
         # set up logger
-        self.log = Printer()
+        self.log = Printer(log_type=None)
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self):

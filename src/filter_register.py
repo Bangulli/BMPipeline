@@ -20,27 +20,45 @@ class PatientPreprocessor():
         self.bids_set = bids_set
         self.clean_set = clean_set
 
-        self.log = Printer()
+        self.log = Printer(log_type=None)
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self):
+        """
+        Run the Preprocessor on the set
+        
+        Tasks:
+        filter anatomical and RT studies
+        sort chronologically
+        remove redundancies from anatomical studies
+        identify target image in each anatomical study if multiple T1 or T2 are present
+        assign an anat study to each RT study by lowest timedifference
+        identify t0 as first anatomical with an rt
+        segment MRs to obtain brainmask
+        segment CTs to obtain brainmask if no Brainmask in RT
+        Register RTs to corresponding MRs
+        Register MRs to t0
+        Save all results to new and lighter set
+        """
         patients = [elem for elem in os.listdir(self.bids_set) if (self.bids_set/elem).is_dir() and elem.startswith('sub-')]
         # iterate patients
         for pat in patients:
             ordered_anat, ordered_rt = self._sort_directories(pat)
-            if  not any(ordered_rt):
+
+            if  not any(ordered_rt): # fallback if no RTstructs are found
                 self.log.warning(f'Could not find RTSTRUCTS for patient {pat}')
-                continue
+                study_dict = {}
+                for elem in ordered_anat:
+                    study_dict[elem[0]] = None
+            else:
+                study_dict = self._find_corresponding_anat(ordered_anat, ordered_rt)
+
             t0_image = None
             t0_mask = None
-            study_dict = self._find_corresponding_anat(ordered_anat, ordered_rt)
-            print(study_dict)
-            if not any(study_dict):
-                continue
+            
             keys = list(study_dict.keys())
-            if study_dict[keys[0]] is None:
-                print(study_dict)
-                raise ValueError('something went wrong, the first key should have a value attached')
+
+
             # iterate studies
             for key in keys:
                 anat_study = key
@@ -59,7 +77,7 @@ class PatientPreprocessor():
 
                 if t1 is None:
                     if rt_study is None:
-                        self.log.warning(f'Failed to find T1 and T2 image pair in study {anat_study}')
+                        self.log.fail(f'Could not find T1 in study {anat_study}')
                     else:
                         tp = 'T1' if t2 is None else 'T2'
                         tp = 'both' if t2 is None and t1 is None else tp
@@ -88,17 +106,29 @@ class PatientPreprocessor():
                         
                 ############## if the anatomical image has a corresponding rt image do ct2mr2mr
                 if rt_study is not None:
-                    
-                    os.makedirs(self.clean_set/pat/rt_study/'rt', exist_ok =True)
+                    os.makedirs(self.clean_set/pat/anat_study/'rt', exist_ok =True)
                     # separate ct, rts and dose into lists with filenames
                     rts = os.listdir(self.bids_set/pat/rt_study/'rt')
                     ct = [elem for elem in rts if elem.endswith('CT_reference.nii.gz')]
                     rtd = [elem for elem in rts if elem.endswith('RTDOSE.nii.gz')]
                     rts = [elem for elem in rts if (self.bids_set/pat/rt_study/'rt'/elem).is_dir()]
 
-                    if not any(ct):
-                        self.log.fail(f'Could not find any ct in study {rt_study}')
+                    if not any(ct): # fallback in case the CT is missing
+                        self.log.warning(f'Could not find any ct in study {rt_study}, processing anatomical images anyway')
+                        t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                        if t2 is not None:
+                            t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                        else:
+                            t2_image = None
+                        
+                        t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image)
+                        sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
+                        if t2 is not None:
+                            sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
+                        self.log.success(f'Anatomical images from study {anat_study} to t0, failed to convert RTs because the reference CT is missing')
                         continue
+
+                        
                 
                     RTdict = {} # dict that stores RT files, with filepath as key and sitk.Image as value
                     # read dose images
@@ -108,23 +138,24 @@ class PatientPreprocessor():
                     # read structure images
                     if any(rts):
                         for s in rts:
-                            os.makedirs(self.clean_set/pat/rt_study/'rt'/s, exist_ok =True)
+                            os.makedirs(self.clean_set/pat/anat_study/'rt'/s, exist_ok =True)
                             for file in os.listdir(self.bids_set/pat/rt_study/'rt'/s):
                                 RTdict[s+'/'+file] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/s/file)
 
                     # set ct as moving image
                     ct_image = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/ct[0])
 
-                    # get segmentation
-                    if (self.bids_set/pat/rt_study/'rt'/'Struct_Brain.nii.gz').is_file():
+                    # get ct segmentation
+                    if (self.bids_set/pat/rt_study/'rt'/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
                         ct_mask = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/'Struct_Brain.nii.gz')
-                    elif (self.clean_set/pat/rt_study/'rt'/('MASK_'+ct[0])).is_file():
-                        ct_mask = sitk.ReadImage((self.clean_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
-                    else:
+                    elif (self.clean_set/pat/anat_study/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
+                        ct_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'rt'/('MASK_'+ct[0])))
+                    else: # use total segmentator to do it
                         ct_mask = self._segment_image(ct_image, 'ct')
-                        sitk.WriteImage(ct_mask, (self.clean_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
+                        sitk.WriteImage(ct_mask, (self.clean_set/pat/anat_study/'rt'/('MASK_'+ct[0])))
                         
                     t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+
                     # segment t1
                     if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
                         t1_mask = self._segment_image(t1_image, 'mr')
@@ -144,10 +175,10 @@ class PatientPreprocessor():
                     # make output directory and save processed images
                     for key in list(transformed_structs.keys()):
                         struct = transformed_structs[key]
-                        sitk.WriteImage(struct, (self.clean_set/pat/rt_study/'rt'/key))
-                    sitk.WriteImage(t1_image, self.clean_set/pat/anat_study/'anat'/t1)
+                        sitk.WriteImage(struct, (self.clean_set/pat/anat_study/'rt'/key))
+                    sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
                     if t2 is not None:
-                        sitk.WriteImage(t2_image, self.clean_set/pat/anat_study/'anat'/t2)
+                        sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
                     self.log.success(f'Moved structs, dose and anatomical images from study {anat_study} and struct study {rt_study} to t0')
 
                 ############### if there is no corresponding rt just do mr2mr
@@ -172,7 +203,12 @@ class PatientPreprocessor():
         t2_filtered = self._filter_list(t2)
         return t1_filtered, t2_filtered
     
-    def _filter_list(self, mr): # courtesy of mister gpt
+    def _filter_list(self, mr: list) -> list: # courtesy of mister gpt
+        """
+        filters filenames in the study to identify a single T1 and T2 image in the direcotry
+        prioritizes runs over reconstructions
+        prirotizes sag recs over any other recs
+        """
         best_run = None
         best_rec = None
         
@@ -196,7 +232,11 @@ class PatientPreprocessor():
         return int(match.group(1)) if match else -1  # Return -1 if key is missing
 
 
-    def _segment_image(self, image, mode):
+    def _segment_image(self, image: sitk.Image, mode: str) -> sitk.Image:
+        """
+        Runs the total segmentator on an image, differentiating between mr and ct by the mode string
+        returns the brain mask for the given image
+        """
         if mode == 'ct':
             mask = totalsegmentator(sitk2nib(image), fast=False, task='total', quiet=True)
             mask = nib2sitk(mask, image)
@@ -211,7 +251,11 @@ class PatientPreprocessor():
             print(f'Invalid mode, expected ct or mr but got {mode}')
             return None
 
-    def _prepro_ct(self, source, binary_mask, structs, target):
+    def _prepro_ct(self, source: sitk.Image, binary_mask: sitk.Image, structs: dict, target: sitk.Image):
+        """
+        Preprocess the CT image and its RTs to fit into the target image space.
+        Reorients, Crops, Resamples and adjusts the image origin
+        """
         # extract bounding box
         label_filter = sitk.LabelShapeStatisticsImageFilter()
         label_filter.Execute(binary_mask)
@@ -248,7 +292,7 @@ class PatientPreprocessor():
         
         return source, binary_mask, structs
 
-    def _register_ct2mr(self, fixed_image, fixed_mask, moving_image, moving_mask, structs=None):
+    def _register_ct2mr(self, fixed_image: sitk.Image, fixed_mask: sitk.Image, moving_image: sitk.Image, moving_mask: sitk.Image, structs: dict=None):
         """
         This horrible mess takes sitk images, normalizes and resamples them, then converts them to tensors, registers them, converts them to sitk images and finally returns the results
         """
@@ -264,11 +308,12 @@ class PatientPreprocessor():
         transformed_structs = {}
         for key in list(structs.keys()):
             struct = structs[key]
-            struct = ants2sitk(ants.apply_transforms(fixed = fixed_mask, moving = sitk2ants(struct), transformlist = reg['fwdtransforms'], interpolator  = 'nearestNeighbor'))
+            # using the struct itself as fixed, because we moved it into the target image space manuslly before and this way we avoid interpolation issues with RTDose
+            struct = ants2sitk(ants.apply_transforms(fixed = sitk2ants(struct), moving = sitk2ants(struct), transformlist = reg['fwdtransforms'], interpolator  = 'nearestNeighbor'))
             transformed_structs[key] = struct
         return transformed_structs
 
-    def _sort_directories(self, pat): # courtesy of chatgpt
+    def _sort_directories(self, pat: list): # courtesy of chatgpt
         """
         Finds directories in the specified base_dir that match the pattern
         ses-yyyymmddhhmmss, parses the timestamp, and returns a list of directory
@@ -294,14 +339,33 @@ class PatientPreprocessor():
         # Return just the sorted directory names
         return self._clean_redundancies(matching_dirs, pat)
     
-    def _register_mr2mr(self, fixed, fixed_mask, moving_t1, moving_t2, structs=None):
+    def _prepro_structs(self, target, structs):
+        """
+        Resample structs to fit t0 target
+        has to be done because the rtdose cant be transformed to t0 as it has a type mismatch
+        """
+        for key in structs.keys():
+            struct = structs[key]
+            # finally resample
+            struct = sitk.Resample(struct, referenceImage=target, defaultPixelValue=0, interpolator=sitk.sitkNearestNeighbor)
+            structs[key] = struct
+        return structs
+
+    
+    def _register_mr2mr(self, fixed: sitk.Image, fixed_mask: sitk.Image, moving_t1: sitk.Image, moving_t2: sitk.Image, structs: dict=None):
+        """
+        Register the MR images to the t0 MR image
+        Transforms corresponding structs if they are present
+        """
+        if structs is not None:
+            structs = self._prepro_structs(fixed, structs)
         fixed = sitk2ants(fixed)
         fixed_mask = sitk2ants(fixed_mask)
         moving_t1 = sitk2ants(moving_t1)
-        moving_t2 = sitk2ants(moving_t2)
         reg = ants.registration(fixed, moving_t1, mask=fixed_mask)
         transformed_t1 = ants2sitk(ants.apply_transforms(fixed, moving_t1, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor'))
         if moving_t2 is not None:
+            moving_t2 = sitk2ants(moving_t2)
             transformed_t2 = ants2sitk(ants.apply_transforms(fixed, moving_t2, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor'))
         else:
             transformed_t2 = None
@@ -309,13 +373,17 @@ class PatientPreprocessor():
             transformed_structs = {}
             for key in list(structs.keys()):
                 struct = structs[key]
-                struct = ants2sitk(ants.apply_transforms(fixed = fixed_mask, moving = sitk2ants(struct), transformlist = reg['fwdtransforms'], interpolator  = 'nearestNeighbor'))
+                # using the struct itself as fixed, because we moved it into the target image space manuslly before and this way we avoid interpolation issues with RTDose
+                struct = ants2sitk(ants.apply_transforms(fixed = sitk2ants(struct), moving = sitk2ants(struct), transformlist = reg['fwdtransforms'], interpolator  = 'nearestNeighbor'))
                 transformed_structs[key] = struct
             return transformed_t1, transformed_t2, transformed_structs
         else:
             return transformed_t1, transformed_t2
     
-    def _find_corresponding_anat(self, ordered_anat, ordered_rt):
+    def _find_corresponding_anat(self, ordered_anat: list, ordered_rt: list):
+        """
+        Assigns an Anatomical study to each RT study according to the smallest time difference
+        """
         study_dict = {}
 
         # identify correspondences
@@ -336,7 +404,10 @@ class PatientPreprocessor():
         return study_dict
 
 
-    def _clean_redundancies(self, studies, pat, delta_days = 14):
+    def _clean_redundancies(self, studies: list, pat: str, delta_days: int = 14):
+        """
+        Filters the anatomical studies, removing any redundancies i.e. when the time between images is too low 
+        """
         anat = [elem for elem in studies if (self.bids_set/pat/elem[0]/'anat').is_dir()] # seperate liste by if they have anat or rt
         rt = [elem for elem in studies if (self.bids_set/pat/elem[0]/'rt').is_dir()]
 
