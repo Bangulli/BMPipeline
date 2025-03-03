@@ -2,7 +2,7 @@
 import pathlib as pl
 from PrettyPrint import *
 import os
-from datetime import datetime
+from datetime import datetime, timedelta
 import re
 import SimpleITK as sitk
 from totalsegmentator.python_api import totalsegmentator
@@ -24,16 +24,17 @@ class PatientPreprocessor():
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self):
-        self.log.tagged_print('TODO', 'Check rt/anat matchin function _find_corresponding_anat currently matches the rt just to the previous study in time', self.info_format)
-        self.log.tagged_print('TODO', 'Filter studies that contain anat data such that repeats with too little time in between are detected and the latest one is selected', self.info_format)
-
         patients = [elem for elem in os.listdir(self.bids_set) if (self.bids_set/elem).is_dir() and elem.startswith('sub-')]
         # iterate patients
         for pat in patients:
-            ordered_studies = self._sort_directories(self.bids_set/pat)
+            ordered_anat, ordered_rt = self._sort_directories(pat)
+            if  not any(ordered_rt):
+                self.log.warning(f'Could not find RTSTRUCTS for patient {pat}')
+                continue
             t0_image = None
             t0_mask = None
-            study_dict = self._find_corresponding_anat(pat, ordered_studies)
+            study_dict = self._find_corresponding_anat(ordered_anat, ordered_rt)
+            print(study_dict)
             if not any(study_dict):
                 continue
             keys = list(study_dict.keys())
@@ -56,7 +57,7 @@ class PatientPreprocessor():
                 # filter results if multiple t1 and t2 sequences have been coined
                 t1, t2 = self._filter_anat(t1, t2)
 
-                if t1 is None or t2 is None:
+                if t1 is None:
                     if rt_study is None:
                         self.log.warning(f'Failed to find T1 and T2 image pair in study {anat_study}')
                     else:
@@ -76,7 +77,8 @@ class PatientPreprocessor():
                     t0_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
                     # save unprocessed fixed
                     sitk.WriteImage(t0_image, self.clean_set/pat/anat_study/'anat'/t1)
-                    sitk.WriteImage(sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2), self.clean_set/pat/anat_study/'anat'/t2)
+                    if t2 is not None:
+                        sitk.WriteImage(sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2), self.clean_set/pat/anat_study/'anat'/t2)
                     # obtain mask
                     if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
                         t0_mask = self._segment_image(t0_image, 'mr')
@@ -130,7 +132,11 @@ class PatientPreprocessor():
                     else:
                         t1_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
 
-                    t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                    if t2 is not None:
+                        t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                    else:
+                        t2_image = None
+
                     # run registration and transform structures, move ct to corresponding mrt1
                     transformed_structs = self._register_ct2mr(t1_image, t1_mask, ct_image, ct_mask, RTdict)
                     # run registration move all to t0
@@ -140,16 +146,21 @@ class PatientPreprocessor():
                         struct = transformed_structs[key]
                         sitk.WriteImage(struct, (self.clean_set/pat/rt_study/'rt'/key))
                     sitk.WriteImage(t1_image, self.clean_set/pat/anat_study/'anat'/t1)
-                    sitk.WriteImage(t2_image, self.clean_set/pat/anat_study/'anat'/t2)
+                    if t2 is not None:
+                        sitk.WriteImage(t2_image, self.clean_set/pat/anat_study/'anat'/t2)
                     self.log.success(f'Moved structs, dose and anatomical images from study {anat_study} and struct study {rt_study} to t0')
 
                 ############### if there is no corresponding rt just do mr2mr
                 else:
-                    t1_img = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
-                    t2_img = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
-                    t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_img, t2_img)
+                    t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                    if t2 is not None:
+                        t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                    else:
+                        t2_image = None
+                    t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image)
                     sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
-                    sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
+                    if t2 is not None:
+                        sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
                     self.log.success(f'Moved anatomical images from study {anat_study} to t0')
                 
                 
@@ -257,14 +268,13 @@ class PatientPreprocessor():
             transformed_structs[key] = struct
         return transformed_structs
 
-        
-
-    def _sort_directories(self, base_dir): # courtesy of chatgpt
+    def _sort_directories(self, pat): # courtesy of chatgpt
         """
         Finds directories in the specified base_dir that match the pattern
         ses-yyyymmddhhmmss, parses the timestamp, and returns a list of directory
         names sorted in chronological order.
         """
+        base_dir = self.bids_set/pat
         # Regular expression pattern to match directory names like "ses-20250224235959"
         pattern = r"^ses-(\d{14})$"
         # List all directories in the base directory
@@ -282,7 +292,7 @@ class PatientPreprocessor():
         # Sort the directories based on the datetime objects
         matching_dirs.sort(key=lambda x: x[1])
         # Return just the sorted directory names
-        return [d for d, _ in matching_dirs]
+        return self._clean_redundancies(matching_dirs, pat)
     
     def _register_mr2mr(self, fixed, fixed_mask, moving_t1, moving_t2, structs=None):
         fixed = sitk2ants(fixed)
@@ -290,35 +300,52 @@ class PatientPreprocessor():
         moving_t1 = sitk2ants(moving_t1)
         moving_t2 = sitk2ants(moving_t2)
         reg = ants.registration(fixed, moving_t1, mask=fixed_mask)
-        transformed_t1 = ants.apply_transforms(fixed, moving_t1, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor')
-        transformed_t2 = ants.apply_transforms(fixed, moving_t2, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor')
+        transformed_t1 = ants2sitk(ants.apply_transforms(fixed, moving_t1, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor'))
+        if moving_t2 is not None:
+            transformed_t2 = ants2sitk(ants.apply_transforms(fixed, moving_t2, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor'))
+        else:
+            transformed_t2 = None
         if structs is not None:
             transformed_structs = {}
             for key in list(structs.keys()):
                 struct = structs[key]
                 struct = ants2sitk(ants.apply_transforms(fixed = fixed_mask, moving = sitk2ants(struct), transformlist = reg['fwdtransforms'], interpolator  = 'nearestNeighbor'))
                 transformed_structs[key] = struct
-            return ants2sitk(transformed_t1), ants2sitk(transformed_t2), transformed_structs
+            return transformed_t1, transformed_t2, transformed_structs
         else:
-            return ants2sitk(transformed_t1), ants2sitk(transformed_t2)
+            return transformed_t1, transformed_t2
     
-    def _find_corresponding_anat(self, pat, ordered_studies):
+    def _find_corresponding_anat(self, ordered_anat, ordered_rt):
         study_dict = {}
-        t0 = False
-        for i, study in enumerate(ordered_studies):
-            if i != (len(ordered_studies)-1):
-                if (self.bids_set/pat/ordered_studies[i+1]/'rt').is_dir():
-                    if not t0:
-                        t0 = True
-                    study_dict[study] = ordered_studies[i+1]
-                elif (self.bids_set/pat/study/'rt').is_dir():
-                    continue
-                elif t0:
-                    study_dict[study] = None
-            elif (self.bids_set/pat/study/'rt').is_dir():
-                continue
-            elif t0:
-                study_dict[study] = None
+
+        # identify correspondences
+        anat_dt = [dt for d, dt in ordered_anat]
+        rt_dt = [dt for d, dt in ordered_rt]
+        rt_refs = []
+        for rt in rt_dt:
+            rt_refs.append(min(enumerate(anat_dt), key=lambda x: abs(x[1] - rt))[0])
+        # parse result dictionary
+        rt_indexer = 0
+        for i in range(rt_refs[0], len(ordered_anat)):
+            if i in rt_refs:
+                study_dict[ordered_anat[i][0]] = ordered_rt[rt_indexer][0]
+                rt_indexer += 1
+            else:
+                study_dict[ordered_anat[i][0]] = None
+            
         return study_dict
 
 
+    def _clean_redundancies(self, studies, pat, delta_days = 14):
+        anat = [elem for elem in studies if (self.bids_set/pat/elem[0]/'anat').is_dir()] # seperate liste by if they have anat or rt
+        rt = [elem for elem in studies if (self.bids_set/pat/elem[0]/'rt').is_dir()]
+
+        # Filter out directories that are within 14 days of a more recent one
+        filtered_dirs = []
+        while anat:
+            latest = anat.pop()  # Take the latest directory
+            filtered_dirs.append(latest)
+            # Remove any directories within 14 days before the latest one
+            anat = [(d, dt) for d, dt in anat if dt <= latest[1] - timedelta(days=delta_days)]
+        
+        return [d for d in sorted(filtered_dirs, key=lambda x: x[1])], rt
