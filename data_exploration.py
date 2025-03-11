@@ -42,17 +42,22 @@ class RTS2BIDS():
         sometimes the rts are not in the same dir as the cts
         """
         patients_raw = [pat for pat in os.listdir(self.raw_source) if (self.raw_source/pat).is_dir()]
-        patients_bids = [self._convert_patient_ID(pat) for pat in patients_raw]
 
-        header = ['PatientID', 'Studies', 'CTs', 'RTStudies', 'RTFiles', 'RT_with_matching_CT', 'RTDoseStudies', 'RTDoseFiles']
+        patients_bids = pd.read_csv(self.csv_out)
+        patients_bids = list(patients_bids['PatientID'])
+        patients_raw = [pat for pat in patients_raw if pat not in patients_bids]
+
+        header = ['PatientID', 'Studies', 'CTs', 'RTStudies', 'RTFiles', 'RT_with_matching_CT', 'RTDoseStudies', 'RTDoseFiles', 'CompleteMatch', 'HasGTVPTV', 'AllGTVPTV']
 
         patients_with_no_ct = 0
         patients_with_no_rt = 0
         patients_with_no_dose = 0
         patient_count = log.count_folders(self.raw_source)
-        with open(self.csv_out, mode='w') as file:
+        exists = self.csv_out.is_file()
+        with open(self.csv_out, mode='a') as file:
             writer = csv.DictWriter(file, fieldnames=header)
-            writer.writeheader()
+            if not exists:
+                writer.writeheader()
             for raw, bids in zip(patients_raw, patients_bids):
                 csv_row = {}
                 studies = [elem for elem in os.listdir(self.raw_source/raw) if (self.raw_source/raw/elem).is_dir()]
@@ -67,6 +72,7 @@ class RTS2BIDS():
                 rtfiles = 0
                 rtdfiles = 0
                 doses = 0
+                has_gtvptv = 0
                 if not any(ct):
                     patients_with_no_ct += 1
 
@@ -80,6 +86,9 @@ class RTS2BIDS():
                             rts_path, ct_path = self._match_uids_exhaustive(rt, ct)
                             if rts_path is not None:
                                 matching += 1
+                                if self._filter_structs(rts_path):
+                                    has_gtvptv += 1
+
                     
 
                     if any(rtd):
@@ -96,6 +105,9 @@ class RTS2BIDS():
                 if (doses) == 0:
                     patients_with_no_dose += 1
                 csv_row['RTDoseFiles'] = rtdfiles
+                csv_row['CompleteMatch'] = (rtfiles == matching) and (matching != 0)
+                csv_row['HasGTVPTV'] = has_gtvptv
+                csv_row['AllGTVPTV'] = (has_gtvptv == matching) and (matching != 0)
                 
                 writer.writerow(csv_row)
                 print(csv_row)
@@ -106,6 +118,23 @@ class RTS2BIDS():
                     
                 
         return
+
+    def _filter_structs(self, rtstruct_path, keep_keywords=(r"GTV", r"PTV")):
+        try:
+            # Load the RTSTRUCT DICOM file
+            ds = pydicom.read_file(rtstruct_path)
+
+            # Get the list of structures
+            roi_seq = ds.StructureSetROISequence
+            roi_names = {roi.ROINumber: roi.ROIName for roi in roi_seq}
+
+            # Identify ROIs to keep
+            keep_rois = {num for num, name in roi_names.items() if any(k in name for k in keep_keywords)}
+
+            return any(keep_rois)
+        except:
+            return False
+
 
     def _convert_patient_ID(self, dir):
         return re.sub(self.raw_patient_pattern, r"sub-PAT\1", dir)

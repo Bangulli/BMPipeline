@@ -11,24 +11,9 @@ import subprocess
 
 
 if __name__ == '__main__':
-    raw_set = pl.Path('/mnt/nas6/data/Target/batch_copy/1k_subset_rtss')
-    bids_set = pl.Path('/mnt/nas6/data/Target/batch_copy/BIDS_1k_subset_rtss')
-    processed_set = pl.Path('/mnt/nas6/data/Target/batch_copy/BIDS_1k_subset_rtss_clean')
-    path_metadata = pl.Path('/mnt/nas6/data/Target/batch_copy/1k_subset_rtss')
-
-    extract_metadata(raw_set, path_metadata)
-
-    ##################################### STEP 1: Convert to BIDS -> Move data from original struct to a new dataset folder in the BIDS specification
-    # on strict bidsmap to make it so only chuv data is converted
-    if not bids_set.is_dir(): # run the tml_dicom2bids with a template bidsmap, maps data and converts to bids format
-        command = [
-            "tml_dicom2bids_convert",
-            "-i", raw_set,
-            "-o", bids_set,
-            "-t", "/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d.yaml"
-        ]
-        # Run the command
-        subprocess.run(command)
+    #raw_set = pl.Path("/mnt/nas6/data/Target/mrct1000_nobatch") # must be path to parent folder with patient subfolders/.
+    bids_set = pl.Path("/mnt/nas6/data/Target/BIDS_mrct1000") # must be path that doesnt exist, the script creates the target dir itself
+    processed_set = pl.Path('/home/lorenz/data/mrct1000_nobatch')
 
     # coiner = NonCHUVCoiner(raw_set, bids_set, pl.Path('/home/lorenz/data/Other/sequence_selection_nonchuv - Sheet1.csv'), path_metadata/'sliceID_seriesPath_mapping.csv')
     # coiner.execute()
@@ -36,7 +21,7 @@ if __name__ == '__main__':
     # converter = RTS2BIDS(raw_set, bids_set)
     # converter.execute()
 
-    os.makedirs(processed_set, exist_ok=True)
+    # os.makedirs(processed_set, exist_ok=True)
 
     register = PatientPreprocessor(bids_set, processed_set)
     register.execute()
