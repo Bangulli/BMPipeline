@@ -1,0 +1,1 @@
+hd-bet -i /mnt/nas6/data/Target/PROCESSED_mrct1000_nobatch/sub-PAT0085/ses-20221025132459/anat/sub-PAT0085_ses-20221025132459_run-1_T1w.nii.gz -device cpu --disable_tta -o /mnt/nas6/data/Target/PROCESSED_mrct1000_nobatch/sub-PAT0085/ses-20221025132459/anat/MASK_sub-PAT0085_ses-20221025132459_run-1_T1w.nii.gz --save_bet_mask --no_bet_image

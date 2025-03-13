@@ -8,8 +8,13 @@ import SimpleITK as sitk
 from totalsegmentator.python_api import totalsegmentator
 import ants
 from src.utils import *
+import numpy as np
 
-
+"""
+My deepest apology to anyone who ever has to work with this after me
+This is probably the most chaotic and unoptimized code ive ever written, but it kinda works
+I´m sorry
+"""
 
 class PatientPreprocessor():
     def __init__(
@@ -71,7 +76,7 @@ class PatientPreprocessor():
 
                 kept += 1
                 self.log.tagged_print('INFO', f'Processing {pat}, fulfills criterion: {self.inclusion_criterion}', self.info_format)                
- 
+
                 # iterate studies
                 for key in keys:
                     anat_study = key
@@ -159,13 +164,13 @@ class PatientPreprocessor():
                         ct_image = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/ct[0])
 
                         # get ct segmentation
-                        if (self.bids_set/pat/rt_study/'rt'/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
-                            ct_mask = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/'Struct_Brain.nii.gz')
-                        elif (self.clean_set/pat/anat_study/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
-                            ct_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'rt'/('MASK_'+ct[0])))
+                        if (self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
+                            ct_mask = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz')
+                        elif (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
+                            ct_mask = sitk.ReadImage((self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
                         else: # use total segmentator to do it
                             ct_mask = self._segment_image(ct_image, 'ct')
-                            sitk.WriteImage(ct_mask, (self.clean_set/pat/anat_study/'rt'/('MASK_'+ct[0])))
+                            sitk.WriteImage(ct_mask, (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
                             
                         t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
 
@@ -363,8 +368,51 @@ class PatientPreprocessor():
                     if os.listdir(self.bids_set/pat/item[0]/'rt'/d):
                         refiltered_rt.append(item)
 
-        rt = refiltered_rt
+        # And another nested for loop filter routine to remove unneccesary structures from the RT set
+        # sometimes it happens that there are structure sets with only lesions outside the brain or the entire brain as a lesion.
+        # these are to be excluded
+        # why are all the solutions i come up with slow af
+        cleaned_rt = []
+        for rtses in refiltered_rt:
+            dirl = os.listdir(self.bids_set/pat/rtses[0]/'rt')
+            for rtset in dirl:
+                if (self.bids_set/pat/rtses[0]/'rt'/rtset).is_dir():
+                    removed = []
 
+                    ct = [ct for ct in os.listdir(self.bids_set/pat/rtses[0]/'rt') if (self.bids_set/pat/rtses[0]/'rt'/ct).is_file() and ct.endswith('- CT_reference.nii.gz')]
+                    structs = [struct for struct in os.listdir(self.bids_set/pat/rtses[0]/'rt'/rtset) if 'PTV' in struct or 'GTV' in struct]
+                    
+                    if len(ct)>1:
+                        ct = [cti for cti in ct if cti.startswith(rtset)]
+
+                    if (self.bids_set/pat/rtses[0]/'rt'/rtset/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
+                        ref_brain = sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/rtset/'Struct_Brain.nii.gz')
+                    elif (self.bids_set/pat/rtses[0]/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
+                        ref_brain = sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/('MASK_'+ct[0]))
+                    else: # use total segmentator to do it
+                        ref_brain = self._segment_image(sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/ct[0]), 'ct')
+                        sitk.WriteImage(ref_brain, self.bids_set/pat/rtses[0]/'rt'/('MASK_'+ct[0]))
+
+                    ref_brain = sitk.GetArrayFromImage(ref_brain).astype(bool)
+                    brain_size = ref_brain.sum()
+                    # find stuff to remove
+                    for struct in structs:
+                        cur_struct = sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/rtset/struct)
+                        cur_struct = sitk.GetArrayFromImage(cur_struct).astype(bool)
+                        lesion_size = cur_struct.sum()
+                        lesion_overlap = np.bitwise_and(ref_brain, cur_struct).sum()
+                        if not (lesion_size == lesion_overlap) and (lesion_size <= (brain_size*0.1)): # remove condition
+                            os.makedirs(self.bids_set/pat/rtses[0]/'invalid_rt'/rtset, exist_ok=True)
+                            removed.append(struct) # store in to remove list
+                            # do the actual removing by just rerouting the path to a dir tagged as invalid
+
+                            os.rename(self.bids_set/pat/rtses[0]/'rt'/rtset/struct, self.bids_set/pat/rtses[0]/'invalid_rt'/rtset/struct)
+
+                    # now if not all target file names have been removed keep the rt session
+                    if not len(removed) == len(structs):
+                        cleaned_rt.append(rtses)
+
+        rt = cleaned_rt
 
         # Filter out directories that are within 14 days of a more recent one
         filtered_dirs = []

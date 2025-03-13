@@ -16,13 +16,14 @@ path_classification_results = path_metadata / "classification_results.csv" # pat
 
 ####### AT THIS POINT BIDSCOINER HAS BEEN RUN; THIS SCRIPT IS TO CONVERT NON-CHUV DATA, RTSTRUCTS AND MOVE EVERYTHING TO A NEW DIRECTORY THAT ONLY CONTAINS NECESSARY DATA
 if __name__ == '__main__':
+    ## convert data missed by bidscoiner because it is not from CHUV
     # coiner = NonCHUVCoiner(raw_set, bids_set, pl.Path('/home/lorenz/data/Other/sequence_selected_nonchuv.csv'), path_metadata/'sliceID_seriesPath_mapping.csv')
     # coiner.execute()
-
+    ## Convert RTstructs to Bids set
     # converter = RTS2BIDS(raw_set, bids_set)
     # converter.execute()
 
     os.makedirs(processed_set, exist_ok=True)
-
+    ## Find relevant patients in Bids set and extract relevant dates and structures and then register everything
     register = PatientPreprocessor(bids_set, processed_set)
     register.execute()

@@ -13,15 +13,6 @@ INFOformat = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]
 from SequenceClassification.dicom import *
 from SequenceClassification.path import *
 
-def get_new_name(name, name_dict):
-    new_name = name
-    for key in list(name_dict.keys()):
-        new_name = new_name.replace(key, name_dict[key])
-    return new_name
-
-
-
-
 raw_set = pl.Path("/mnt/nas6/data/Target/symlinked_batches_mrct_1000/unknown") # must be path to parent folder with patient subfolders/.
 bids_set = pl.Path("/mnt/nas6/data/Target/BIDS_mrct1000/unknown") # must be path that doesnt exist, the script creates the target dir itself
 path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
@@ -31,7 +22,6 @@ patient_count = log.count_folders(raw_set)
 LOGGER.tagged_print("INFO", f"There are {patient_count} patients.", INFOformat)
 
 
-#extract_metadata(raw_set, path_metadata)
 
 if not bids_set.is_dir(): # run the tml_dicom2bids with a template bidsmap, maps data and converts to bids format
     command = [

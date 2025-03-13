@@ -43,9 +43,6 @@ class RTS2BIDS():
         """
         patients_raw = [pat for pat in os.listdir(self.raw_source) if (self.raw_source/pat).is_dir()]
 
-        patients_bids = pd.read_csv(self.csv_out)
-        patients_bids = list(patients_bids['PatientID'])
-        patients_raw = [pat for pat in patients_raw if pat not in patients_bids]
 
         header = ['PatientID', 'Studies', 'CTs', 'RTStudies', 'RTFiles', 'RT_with_matching_CT', 'RTDoseStudies', 'RTDoseFiles', 'CompleteMatch', 'HasGTVPTV', 'AllGTVPTV']
 
@@ -54,11 +51,16 @@ class RTS2BIDS():
         patients_with_no_dose = 0
         patient_count = log.count_folders(self.raw_source)
         exists = self.csv_out.is_file()
+
+        rtss_files = []
+        approved_files = []
+        other_files = []
+
         with open(self.csv_out, mode='a') as file:
             writer = csv.DictWriter(file, fieldnames=header)
             if not exists:
                 writer.writeheader()
-            for raw, bids in zip(patients_raw, patients_bids):
+            for raw in patients_raw:
                 csv_row = {}
                 studies = [elem for elem in os.listdir(self.raw_source/raw) if (self.raw_source/raw/elem).is_dir()]
                 csv_row['PatientID'] = raw
@@ -85,6 +87,15 @@ class RTS2BIDS():
                             rtfiles += 1
                             rts_path, ct_path = self._match_uids_exhaustive(rt, ct)
                             if rts_path is not None:
+                                if 'RTSS' in str(rts_path):
+                                    rtss_files.append(rts_path)
+                                
+                                elif 'Approved Structure Set' in str(rts_path):
+                                    approved_files.append(rts_path)
+
+                                else:
+                                    other_files.append(rts_path)
+
                                 matching += 1
                                 if self._filter_structs(rts_path):
                                     has_gtvptv += 1
@@ -113,10 +124,19 @@ class RTS2BIDS():
                 print(csv_row)
             
             print(f"Found {patient_count} patients, {patients_with_no_ct} have no ct, {patients_with_no_rt} have no rtstruct, {patients_with_no_dose} have no rtdose. See csv at {self.csv_out} for more details.")
-            
 
-                    
-                
+            with open('RTSS.txt','w') as file:
+                file.writelines(f"{line}\n" for line in rtss_files)
+                print(f'Found {len(rtss_files)} RTSS files')
+
+            with open('approved.txt','w') as file:
+                file.writelines(f"{line}\n" for line in approved_files)
+                print(f'Found {len(approved_files)} approved files')
+
+            with open('other.txt','w') as file:
+                file.writelines(f"{line}\n" for line in other_files)
+                print(f'Found {len(other_files)} other files')
+        
         return
 
     def _filter_structs(self, rtstruct_path, keep_keywords=(r"GTV", r"PTV")):
