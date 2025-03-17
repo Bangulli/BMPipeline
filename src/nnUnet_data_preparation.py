@@ -2,11 +2,12 @@ import os
 import pathlib as pl
 import csv
 from datetime import datetime
-from typing import Union
+import numpy as np
 import SimpleITK as sitk
 import re
 from PrettyPrint import  *
 from PrettyPrint.figures import ProgressBar
+import pandas as pd
 
 class TimePoint():
     """
@@ -155,7 +156,7 @@ class DatasetConverter():
             patients = [pat for pat in patients if pat not in patients_processed] # finally filter out pats that are already done
 
             ## walk over set and for each patients order studies by time, to avoid mess ups by python directory parsing
-            for pat in ProgressBar(patients):
+            for pat in patients:
                 ordered_studies = self._sort_directories(pat) # ensure correct order
                 if not (self.source_set/pat/ordered_studies[0]/'rt').is_dir(): # sanity check to ensure t0 has RTSturcts
                     raise RuntimeError(f'Expected t0 to have RTs but could not find any for patient {pat} in study {ordered_studies[0]}')
@@ -210,9 +211,9 @@ class DatasetConverter():
         else:
             mets = None
 
-        t1 = [file for file in anat if file.endswith('T1w.nii.gz')][0]
+        t1 = [file for file in anat if file.endswith('T1w.nii.gz') and not file.startswith('MASK_')][0]
 
-        t2 = [file for file in anat if file.endswith('T2w.nii.gz')][0]
+        t2 = [file for file in anat if file.endswith('T2w.nii.gz') and not file.startswith('MASK_')][0]
 
         t1 = self.source_set/pat/ses/'anat'/t1
 
@@ -248,3 +249,42 @@ class DatasetConverter():
         matching_dirs.sort(key=lambda x: x[1])
         # Return just the sorted directory names
         return [d for d, dt in matching_dirs]
+    
+class DatasetReconverter():
+    def __init__(self, target_set: pl.Path, source_set_multimod: pl.Path, source_set: pl.Path):
+        self.target_set = target_set
+        self.source_set_multimod = source_set_multimod.parent/(source_set_multimod.name+'_predictions')
+        self.source_set = source_set.parent/(source_set.name+'_predictions')
+        self.log = Printer()
+
+    def execute(self):
+        mapping = pd.read_csv(self.target_set/'nnUNet_mapping.csv')
+        if self.source_set.is_dir():
+            self._execute_directory(self.source_set, mapping)
+        else:
+            self.log.fail(f'Could not find resegmentation results at path {self.source_set}')
+        if self.source_set_multimod.is_dir():
+            self._execute_directory(self.source_set_multimod, mapping)
+        else:
+            self.log.fail(f'Could not find resegmentation results at path {self.source_set_multimod}')
+
+    def _execute_directory(self, dir, mapping):
+        predictions = [file for file in os.listdir(dir) if file.endswith('.nii.gz')]
+        for prediction in predictions:
+            encoded = prediction.split('.')[0]+'_'
+            path = mapping.loc[mapping['nnUNet_UID'] == encoded, 'source_study_path']
+            path = pl.Path(path.iloc[0])
+            if path.parent.parent == self.target_set:
+                mask = sitk.ReadImage(dir/prediction)
+                os.makedirs(path/'mets', exist_ok=True)
+                sitk.WriteImage(mask, path/'mets'/'metastasis_labels_3_class.nii.gz')
+                binary = sitk.GetArrayFromImage(mask)
+                binary[binary == 2] = 0
+                binary[binary != 0] = 1
+                binary = sitk.GetImageFromArray(binary)
+                binary.CopyInformation(mask)
+                sitk.WriteImage(binary, path/'mets'/'metastasis_labels_1_class.nii.gz')
+                
+            else:
+                self.log.error(f'mapped path does not link to the target bids dataset')
+        

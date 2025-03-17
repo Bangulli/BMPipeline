@@ -9,6 +9,7 @@ from totalsegmentator.python_api import totalsegmentator
 import ants
 from src.utils import *
 import numpy as np
+import json
 
 """
 My deepest apology to anyone who ever has to work with this after me
@@ -30,7 +31,7 @@ class PatientPreprocessor():
         self.study_list = study_list
         self.inclusion_criterion = inclusion_criterion
 
-        self.log = Printer(log_type=None)
+        self.log = Printer(log_type='txt')
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self):
@@ -82,7 +83,7 @@ class PatientPreprocessor():
                     anat_study = key
                     rt_study = study_dict[key]
                     if not (self.bids_set/pat/anat_study/'anat').is_dir():
-                        self.log.warning('unexpectedly received an empty directory as anatomical')
+                        self.log.warning(f'unexpectedly received an empty directory as anatomical in study {anat_study}')
                         continue
                     
                     # filter study files
@@ -91,15 +92,15 @@ class PatientPreprocessor():
                     t2 = [img for img in images if img.endswith('T2w.nii.gz') or img.endswith('T2wa.nii.gz')]
 
                     # filter results if multiple t1 and t2 sequences have been coined
-                    t1, t2 = self._filter_anat(t1, t2)
+                    t1, t2 = self._filter_anat(t1, t2, pat, key)
 
                     if t1 is None:
                         if rt_study is None:
                             self.log.fail(f'Could not find T1 in study {anat_study}')
                         else:
-                            tp = 'T1' if t2 is None else 'T2'
+                            tp = 'T1' 
                             tp = 'both' if t2 is None and t1 is None else tp
-                            self.log.fail(f'Found RTSTRUCT but matched mr study is incomplete, missing {tp}')
+                            self.log.fail(f'Found RTSTRUCT but matched mr study is incomplete, missing {tp} in study {anat_study}')
                         continue
 
                     # make output directory
@@ -132,7 +133,7 @@ class PatientPreprocessor():
                         rts = [elem for elem in rts if (self.bids_set/pat/rt_study/'rt'/elem).is_dir()]
 
                         if not any(ct): # fallback in case the CT is missing
-                            self.log.warning(f'Could not find any ct in study {rt_study}, processing anatomical images anyway')
+                            self.log.warning(f'Could not find any ct in study {rt_study}, processing anatomical images in {anat_study} anyway')
                             t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
                                 t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
@@ -284,34 +285,53 @@ class PatientPreprocessor():
             # TODO: actually implement the filter and treatment days observation.
             return study_dict, dates
 
-    def _filter_anat(self, t1:list, t2:list):
+    def _filter_anat(self, t1:list, t2:list, pat, ses):
         ## process t1 images
-        t1_filtered = self._filter_list(t1)
+        t1_filtered = self._filter_list(t1, pat, ses)
         ## process t2 images
-        t2_filtered = self._filter_list(t2)
+        t2_filtered = self._filter_list(t2, pat, ses)
         return t1_filtered, t2_filtered
     
-    def _filter_list(self, mr: list) -> list: # courtesy of mister gpt
+    def _has_sub_in_json(self, image: str) -> bool:
+            """Check if the corresponding JSON file contains 'SUB' in ImageType."""
+            json_path = image.replace('.nii.gz', '.json').replace('.nii', '.json')
+            if os.path.exists(json_path):
+                try:
+                    with open(json_path, 'r') as f:
+                        metadata = json.load(f)
+                        image_type = metadata.get("ImageType", [])
+                        return "SUB" in image_type
+                except (json.JSONDecodeError, IOError):
+                    pass  # Ignore faulty JSON files
+            return False
+    
+    def _filter_list(self, mr: list, pat, ses) -> list:
         """
-        filters filenames in the study to identify a single T1 and T2 image in the direcotry
-        prioritizes runs over reconstructions
-        prirotizes sag recs over any other recs
+        Filters filenames in the study to identify a single T1 and T2 image in the directory.
+        - Prioritizes runs over reconstructions.
+        - Prioritizes sagittal reconstructions over any other reconstructions.
+        - Prioritizes images that do not have "SUB" in the ImageType field in the corresponding JSON file.
         """
+
         best_run = None
         best_rec = None
         
         for image in mr:
             run_number = self._extract_key_value(image, 'run')
             rec_number = self._extract_key_value(image, 'rec')
-            
+            has_sub = self._has_sub_in_json(str(self.bids_set/pat/ses/'anat'/image))
+
             if run_number != -1:  # Prioritize images with 'run'
-                if best_run is None or run_number > self._extract_key_value(best_run, 'run'):
+                if (best_run is None or run_number > self._extract_key_value(best_run, 'run')) and not has_sub:
                     best_run = image
             elif rec_number != -1:  # Consider 'rec' images only if no 'run' images exist
                 if best_rec is None or rec_number > self._extract_key_value(best_rec, 'rec'):
                     best_rec = image
                 elif rec_number == self._extract_key_value(best_rec, 'rec') and 'sag' in image:
                     best_rec = image  # Prioritize 'sag' if rec number is the same
+                
+                if has_sub:  # If the image has "SUB" in ImageType, deprioritize it
+                    continue
         
         return best_run if best_run else best_rec
         

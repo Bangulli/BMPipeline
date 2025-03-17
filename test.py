@@ -30,6 +30,7 @@ from src.filter_register import PatientPreprocessor
 from src.rts2bids import RTS2BIDS
 bids_set = pl.Path("/mnt/nas6/data/Target/batch_copy/struct filter exp/bids") # must be path that doesnt exist, the script creates the target dir itself
 processed_set = pl.Path('/mnt/nas6/data/Target/batch_copy/struct filter exp/clean')
+from PrettyPrint import *
 
 ####### AT THIS POINT BIDSCOINER HAS BEEN RUN; THIS SCRIPT IS TO CONVERT NON-CHUV DATA, RTSTRUCTS AND MOVE EVERYTHING TO A NEW DIRECTORY THAT ONLY CONTAINS NECESSARY DATA
 if __name__ == '__main__':
@@ -42,5 +43,7 @@ if __name__ == '__main__':
 
     os.makedirs(processed_set, exist_ok=True)
     ## Find relevant patients in Bids set and extract relevant dates and structures and then register everything
-    register = PatientPreprocessor(bids_set, processed_set)
-    register.execute()
+    # register = PatientPreprocessor(bids_set, processed_set)
+    # register.execute()
+    p = Printer(log_type='txt')
+    p.fail('test')
