@@ -419,9 +419,10 @@ class PatientPreprocessor():
                     for struct in structs:
                         cur_struct = sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/rtset/struct)
                         cur_struct = sitk.GetArrayFromImage(cur_struct).astype(bool)
-                        lesion_size = cur_struct.sum()
+                        lesion_size = cur_struct
                         lesion_overlap = np.bitwise_and(ref_brain, cur_struct).sum()
-                        if not (lesion_size == lesion_overlap) and (lesion_size <= (brain_size*0.1)): # remove condition
+                        lesion_size = cur_struct.sum()
+                        if not ((lesion_size == lesion_overlap) and (lesion_size <= (brain_size*0.1))): # remove condition
                             os.makedirs(self.bids_set/pat/rtses[0]/'invalid_rt'/rtset, exist_ok=True)
                             removed.append(struct) # store in to remove list
                             # do the actual removing by just rerouting the path to a dir tagged as invalid

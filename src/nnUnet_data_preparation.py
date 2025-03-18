@@ -213,7 +213,11 @@ class DatasetConverter():
 
         t1 = [file for file in anat if file.endswith('T1w.nii.gz') and not file.startswith('MASK_')][0]
 
-        t2 = [file for file in anat if file.endswith('T2w.nii.gz') and not file.startswith('MASK_')][0]
+        t2 = [file for file in anat if file.endswith('T2w.nii.gz') and not file.startswith('MASK_')]
+        if t2:
+            t2 = t2[0]
+        else:
+            t2 = None
 
         t1 = self.source_set/pat/ses/'anat'/t1
 
@@ -279,8 +283,8 @@ class DatasetReconverter():
                 os.makedirs(path/'mets', exist_ok=True)
                 sitk.WriteImage(mask, path/'mets'/'metastasis_labels_3_class.nii.gz')
                 binary = sitk.GetArrayFromImage(mask)
-                binary[binary == 2] = 0
-                binary[binary != 0] = 1
+                binary[binary == 2] = 0 # ignore edema
+                binary[binary != 0] = 1 # binarize tumor & necrosis
                 binary = sitk.GetImageFromArray(binary)
                 binary.CopyInformation(mask)
                 sitk.WriteImage(binary, path/'mets'/'metastasis_labels_1_class.nii.gz')
