@@ -127,7 +127,7 @@ def process_dicom(file_path):
 
 if __name__ == '__main__':
 
-    target_series = pl.Path('/home/lorenz/data/series_to_fix/pat-214_ses-20220912/1200_Sagittal 3D FSPGR Gado reformats')
+    target_series = pl.Path('/home/lorenz/data/series_to_fix/pat-1077_ses20211003/900_Sagittal 3D FSPGR Gado reformats')
 
     for slice in os.listdir(target_series):
         process_dicom(target_series/slice)
@@ -139,7 +139,7 @@ if __name__ == '__main__':
 
     sitk.WriteImage(img, str(target_series)+'.nii.gz')
 
-    mask = totalsegmentator(sitk2nib(img), fast=False, task='total_mr', quiet=True) # get segmentation brain = 50
+    mask = totalsegmentator(sitk2nib(img), fast=False, task='total_mr', quiet=False) # get segmentation brain = 50
     mask = nib2sitk(mask, img)
     mask = sitk.BinaryThreshold(mask, lowerThreshold=50, upperThreshold=50, insideValue=1, outsideValue=0) #  binarize segmentation
 

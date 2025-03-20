@@ -10,6 +10,7 @@ import ants
 from src.utils import *
 import numpy as np
 import json
+import traceback
 
 """
 My deepest apology to anyone who ever has to work with this after me
@@ -52,7 +53,7 @@ class PatientPreprocessor():
         Save all results to new and lighter set
         """
         patients = [elem for elem in os.listdir(self.bids_set) if (self.bids_set/elem).is_dir() and elem.startswith('sub-')]
-
+        errors = []
         # create log file that tracks completed patients in case of error
         with open(self.clean_set/'filter_register_progress.txt', mode='a+') as progfile:
             progfile.seek(0)  # Move cursor to the beginning before reading
@@ -62,159 +63,168 @@ class PatientPreprocessor():
             kept = 0
             # iterate patients
             for pat in patients:
-                ordered_studies = self._sort_directories(pat)
-                ordered_anat, ordered_rt = self._clean_redundancies(ordered_studies, pat)
-                study_dict = self._find_corresponding_anat(ordered_anat, ordered_rt)
-                study_dict, dates = self._crop_patient_history(study_dict)
-                t0_image = None
-                t0_mask = None
-                
-                keys = list(study_dict.keys())
-
-                if self._discard_patient(study_dict, dates):
-                    progfile.write(pat+'\n')
-                    continue
-
-                kept += 1
-                self.log.tagged_print('INFO', f'Processing {pat}, fulfills criterion: {self.inclusion_criterion}', self.info_format)                
-
-                # iterate studies
-                for key in keys:
-                    anat_study = key
-                    rt_study = study_dict[key]
-                    if not (self.bids_set/pat/anat_study/'anat').is_dir():
-                        self.log.warning(f'unexpectedly received an empty directory as anatomical in study {anat_study}')
-                        continue
+                try:
+                    ordered_studies = self._sort_directories(pat)
+                    ordered_anat, ordered_rt = self._clean_redundancies(ordered_studies, pat)
+                    study_dict = self._find_corresponding_anat(ordered_anat, ordered_rt)
+                    study_dict, dates = self._crop_patient_history(study_dict)
+                    t0_image = None
+                    t0_mask = None
                     
-                    # filter study files
-                    images = os.listdir(self.bids_set/pat/anat_study/'anat')
-                    t1 = [img for img in images if img.endswith('T1w.nii.gz') or img.endswith('T1wa.nii.gz')]
-                    t2 = [img for img in images if img.endswith('T2w.nii.gz') or img.endswith('T2wa.nii.gz')]
+                    keys = list(study_dict.keys())
 
-                    # filter results if multiple t1 and t2 sequences have been coined
-                    t1, t2 = self._filter_anat(t1, t2, pat, key)
-
-                    if t1 is None:
-                        if rt_study is None:
-                            self.log.fail(f'Could not find T1 in study {anat_study}')
-                        else:
-                            tp = 'T1' 
-                            tp = 'both' if t2 is None and t1 is None else tp
-                            self.log.fail(f'Found RTSTRUCT but matched mr study is incomplete, missing {tp} in study {anat_study}')
+                    if self._discard_patient(study_dict, dates):
+                        progfile.write(pat+'\n')
                         continue
 
-                    # make output directory
-                    os.makedirs(self.clean_set/pat/anat_study/'anat', exist_ok=True)
+                    kept += 1
+                    self.log.tagged_print('INFO', f'Processing {pat}, fulfills criterion: {self.inclusion_criterion}', self.info_format)                
 
-                    ############## set and copy t0 T1
-                    if (self.bids_set/pat/anat_study/'anat').is_dir() and t0_image is None:
-                        self.log.tagged_print('INFO', f'Identified t0 as study day {anat_study} for patient {pat}', self.info_format)
+                    # iterate studies
+                    for key in keys:
+                        anat_study = key
+                        rt_study = study_dict[key]
+                        if not (self.bids_set/pat/anat_study/'anat').is_dir():
+                            self.log.warning(f'unexpectedly received an empty directory as anatomical in study {anat_study}')
+                            continue
+                        
+                        # filter study files
+                        images = os.listdir(self.bids_set/pat/anat_study/'anat')
+                        t1 = [img for img in images if img.endswith('T1w.nii.gz') or img.endswith('T1wa.nii.gz')]
+                        t2 = [img for img in images if img.endswith('T2w.nii.gz') or img.endswith('T2wa.nii.gz')]
 
-                        # read images
-                        t0_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
-                        # save unprocessed fixed
-                        sitk.WriteImage(t0_image, self.clean_set/pat/anat_study/'anat'/t1)
-                        if t2 is not None:
-                            sitk.WriteImage(sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2), self.clean_set/pat/anat_study/'anat'/t2)
-                        # obtain mask
-                        if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
-                            t0_mask = self._segment_image(t0_image, 'mr')
-                            sitk.WriteImage(t0_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                        # filter results if multiple t1 and t2 sequences have been coined
+                        t1, t2 = self._filter_anat(t1, t2, pat, key)
+
+                        if t1 is None:
+                            if rt_study is None:
+                                self.log.fail(f'Could not find T1 in study {anat_study}')
+                            else:
+                                tp = 'T1' 
+                                tp = 'both' if t2 is None and t1 is None else tp
+                                self.log.fail(f'Found RTSTRUCT but matched mr study is incomplete, missing {tp} in study {anat_study}')
+                            continue
+
+                        # make output directory
+                        os.makedirs(self.clean_set/pat/anat_study/'anat', exist_ok=True)
+
+                        ############## set and copy t0 T1
+                        if (self.bids_set/pat/anat_study/'anat').is_dir() and t0_image is None:
+                            self.log.tagged_print('INFO', f'Identified t0 as study day {anat_study} for patient {pat}', self.info_format)
+
+                            # read images
+                            t0_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                            # save unprocessed fixed
+                            sitk.WriteImage(t0_image, self.clean_set/pat/anat_study/'anat'/t1)
+                            if t2 is not None:
+                                sitk.WriteImage(sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2), self.clean_set/pat/anat_study/'anat'/t2)
+                            # obtain mask
+                            if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
+                                t0_mask = self._segment_image(t0_image, 'mr')
+                                sitk.WriteImage(t0_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                            else:
+                                t0_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                                
+                        ############## if the anatomical image has a corresponding rt image do ct2mr2mr
+                        if rt_study is not None:
+                            os.makedirs(self.clean_set/pat/anat_study/'rt', exist_ok =True)
+                            # separate ct, rts and dose into lists with filenames
+                            rts = os.listdir(self.bids_set/pat/rt_study/'rt')
+                            ct = [elem for elem in rts if elem.endswith('CT_reference.nii.gz')]
+                            rtd = [elem for elem in rts if elem.endswith('RTDOSE.nii.gz')]
+                            rts = [elem for elem in rts if (self.bids_set/pat/rt_study/'rt'/elem).is_dir()]
+
+                            if not any(ct): # fallback in case the CT is missing
+                                self.log.warning(f'Could not find any ct in study {rt_study}, processing anatomical images in {anat_study} anyway')
+                                t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                                if t2 is not None:
+                                    t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                                else:
+                                    t2_image = None
+                                
+                                t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image)
+                                sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
+                                if t2 is not None:
+                                    sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
+                                self.log.success(f'Anatomical images from study {anat_study} to t0, failed to convert RTs because the reference CT is missing')
+                                continue
+
+                                
+                        
+                            RTdict = {} # dict that stores RT files, with filepath as key and sitk.Image as value
+                            # read dose images
+                            if any(rtd):
+                                for d in rtd:
+                                    RTdict[d] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/d)
+                            # read structure images
+                            if any(rts):
+                                for s in rts:
+                                    os.makedirs(self.clean_set/pat/anat_study/'rt'/s, exist_ok =True)
+                                    for file in os.listdir(self.bids_set/pat/rt_study/'rt'/s):
+                                        RTdict[s+'/'+file] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/s/file)
+
+                            # set ct as moving image
+                            ct_image = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/ct[0])
+
+                            # get ct segmentation
+                            if (self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
+                                ct_mask = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz')
+                            elif (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
+                                ct_mask = sitk.ReadImage((self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
+                            else: # use total segmentator to do it
+                                ct_mask = self._segment_image(ct_image, 'ct')
+                                sitk.WriteImage(ct_mask, (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
+                                
+                            t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+
+                            # segment t1
+                            if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
+                                t1_mask = self._segment_image(t1_image, 'mr')
+                                sitk.WriteImage(t1_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                            else:
+                                t1_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+
+                            if t2 is not None:
+                                t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                            else:
+                                t2_image = None
+
+                            # run registration and transform structures, move ct to corresponding mrt1
+                            transformed_structs = self._register_ct2mr(t1_image, t1_mask, ct_image, ct_mask, RTdict)
+                            # run registration move all to t0
+                            t1_trans, t2_trans, transformed_structs = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image, transformed_structs)
+                            # make output directory and save processed images
+                            for key in list(transformed_structs.keys()):
+                                struct = transformed_structs[key]
+                                sitk.WriteImage(struct, (self.clean_set/pat/anat_study/'rt'/key))
+                            sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
+                            if t2 is not None:
+                                sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
+                            self.log.success(f'Moved structs, dose and anatomical images from study {anat_study} and struct study {rt_study} to t0')
+
+                        ############### if there is no corresponding rt just do mr2mr
                         else:
-                            t0_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
-                            
-                    ############## if the anatomical image has a corresponding rt image do ct2mr2mr
-                    if rt_study is not None:
-                        os.makedirs(self.clean_set/pat/anat_study/'rt', exist_ok =True)
-                        # separate ct, rts and dose into lists with filenames
-                        rts = os.listdir(self.bids_set/pat/rt_study/'rt')
-                        ct = [elem for elem in rts if elem.endswith('CT_reference.nii.gz')]
-                        rtd = [elem for elem in rts if elem.endswith('RTDOSE.nii.gz')]
-                        rts = [elem for elem in rts if (self.bids_set/pat/rt_study/'rt'/elem).is_dir()]
-
-                        if not any(ct): # fallback in case the CT is missing
-                            self.log.warning(f'Could not find any ct in study {rt_study}, processing anatomical images in {anat_study} anyway')
                             t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
                                 t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
                             else:
                                 t2_image = None
-                            
                             t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image)
                             sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
                                 sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
-                            self.log.success(f'Anatomical images from study {anat_study} to t0, failed to convert RTs because the reference CT is missing')
-                            continue
-
-                            
+                            self.log.success(f'Moved anatomical images from study {anat_study} to t0')
                     
-                        RTdict = {} # dict that stores RT files, with filepath as key and sitk.Image as value
-                        # read dose images
-                        if any(rtd):
-                            for d in rtd:
-                                RTdict[d] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/d)
-                        # read structure images
-                        if any(rts):
-                            for s in rts:
-                                os.makedirs(self.clean_set/pat/anat_study/'rt'/s, exist_ok =True)
-                                for file in os.listdir(self.bids_set/pat/rt_study/'rt'/s):
-                                    RTdict[s+'/'+file] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/s/file)
+                    progfile.write(pat+'\n')
+                except Exception as e:
+                    self.log(f'Caught Exception in patient {pat}')
+                    self.log(str(e))
+                    errors.append(pat)
+                    traceback.print_exc()
 
-                        # set ct as moving image
-                        ct_image = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/ct[0])
-
-                        # get ct segmentation
-                        if (self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
-                            ct_mask = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz')
-                        elif (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
-                            ct_mask = sitk.ReadImage((self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
-                        else: # use total segmentator to do it
-                            ct_mask = self._segment_image(ct_image, 'ct')
-                            sitk.WriteImage(ct_mask, (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
-                            
-                        t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
-
-                        # segment t1
-                        if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
-                            t1_mask = self._segment_image(t1_image, 'mr')
-                            sitk.WriteImage(t1_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
-                        else:
-                            t1_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
-
-                        if t2 is not None:
-                            t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
-                        else:
-                            t2_image = None
-
-                        # run registration and transform structures, move ct to corresponding mrt1
-                        transformed_structs = self._register_ct2mr(t1_image, t1_mask, ct_image, ct_mask, RTdict)
-                        # run registration move all to t0
-                        t1_trans, t2_trans, transformed_structs = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image, transformed_structs)
-                        # make output directory and save processed images
-                        for key in list(transformed_structs.keys()):
-                            struct = transformed_structs[key]
-                            sitk.WriteImage(struct, (self.clean_set/pat/anat_study/'rt'/key))
-                        sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
-                        if t2 is not None:
-                            sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
-                        self.log.success(f'Moved structs, dose and anatomical images from study {anat_study} and struct study {rt_study} to t0')
-
-                    ############### if there is no corresponding rt just do mr2mr
-                    else:
-                        t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
-                        if t2 is not None:
-                            t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
-                        else:
-                            t2_image = None
-                        t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image)
-                        sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
-                        if t2 is not None:
-                            sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
-                        self.log.success(f'Moved anatomical images from study {anat_study} to t0')
-                
-                progfile.write(pat+'\n')
-            print(kept, 'Patients fulfilled the inclusion criterion')
+            res_files = [f for f in os.listdir(self.clean_set) if f.startswith('sub')]
+            self.log(f'{len(res_files)} Patients fulfilled the inclusion criterion')
+            self.log(f'Caught exceptions in patients {errors}, fix and rerun they have not been logged in the progress file.')
                 
                 
     ################################################ Filtration Utilities
