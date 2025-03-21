@@ -19,6 +19,8 @@ class TimePoint():
             if t1.parent != t2.parent:
                 raise RuntimeError(f'T1 and T2 images must be from the same study to be considered at the same timepoint')
             self._t2 = t2.name
+        else:
+            self._t2 = None
             
         self._base = t1.parent.parent # gets rid of the anat dir
         self._t1 = t1.name

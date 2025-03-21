@@ -1,6 +1,7 @@
 import subprocess
 import os
 import pathlib as pl
+import time
 
 class Resegmentor():
     def __init__(self, multimodal_set, singlemodal_set):
@@ -8,6 +9,9 @@ class Resegmentor():
         self.singlemodal_set = singlemodal_set
 
     def execute(self):
+        env = os.environ.copy()
+        env["RESULTS_FOLDER"] = "/home/lorenz/BMPipeline/resegmentation"
+        time.sleep(1)
         if os.listdir(self.multimodal_set):
             command_multi = [
             "nnUNet_predict",
@@ -21,7 +25,7 @@ class Resegmentor():
             ]
             # Run the command
             print(f'== running multimodal prediction on source data {self.multimodal_set}')
-            subprocess.run(command_multi)
+            subprocess.run(command_multi, env=env)
             print(f'''== saved multimodal prediction on source data {self.multimodal_set.parent/(self.multimodal_set.name+'_predictions')}''')
         else:
             print('== skipping multimodal prediction, found no files in directory')
@@ -39,7 +43,7 @@ class Resegmentor():
             ]
             # Run the command
             print(f'== running singlemodal prediction on source data {self.singlemodal_set}')
-            subprocess.run(command_single)
+            subprocess.run(command_single, env=env)
             print(f'''== saved singlemodal prediction on source data {self.singlemodal_set.parent/(self.singlemodal_set.name+'_predictions')}''')
         else:
             print(F'''== skipping singlemodal prediction, found no files in directory''')
