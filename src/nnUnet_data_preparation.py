@@ -257,40 +257,42 @@ class DatasetConverter():
         return [d for d, dt in matching_dirs]
     
 class DatasetReconverter():
-    def __init__(self, target_set: pl.Path, source_set_multimod: pl.Path, source_set: pl.Path):
+    def __init__(self, target_set: pl.Path, source_set:pl.Path, met_dir_name:str='mets'):
         self.target_set = target_set
-        self.source_set_multimod = source_set_multimod.parent/(source_set_multimod.name+'_predictions')
         self.source_set = source_set.parent/(source_set.name+'_predictions')
         self.log = Printer()
+        self.met_dir_name = met_dir_name
 
-    def execute(self):
+    def execute(self, mode='binary'):
         mapping = pd.read_csv(self.target_set/'nnUNet_mapping.csv')
         if self.source_set.is_dir():
-            self._execute_directory(self.source_set, mapping)
+            self._execute_directory(self.source_set, mapping, mode)
         else:
             self.log.fail(f'Could not find resegmentation results at path {self.source_set}')
-        if self.source_set_multimod.is_dir():
-            self._execute_directory(self.source_set_multimod, mapping)
-        else:
-            self.log.fail(f'Could not find resegmentation results at path {self.source_set_multimod}')
 
-    def _execute_directory(self, dir, mapping):
+    def _execute_directory(self, dir, mapping, mode):
         predictions = [file for file in os.listdir(dir) if file.endswith('.nii.gz')]
+        #print(predictions)
         for prediction in predictions:
             encoded = prediction.split('.')[0]+'_'
             path = mapping.loc[mapping['nnUNet_UID'] == encoded, 'source_study_path']
             path = pl.Path(path.iloc[0])
-            if path.parent.parent == self.target_set:
+            if mode == 'multiclass':
+                if path.parent.parent == self.target_set:
+                    mask = sitk.ReadImage(dir/prediction)
+                    os.makedirs(path/self.met_dir_name, exist_ok=True)
+                    sitk.WriteImage(mask, path/self.met_dir_name/'metastasis_labels_3_class.nii.gz')
+                    binary = sitk.GetArrayFromImage(mask)
+                    binary[binary == 2] = 0 # ignore edema
+                    binary[binary != 0] = 1 # binarize tumor & necrosis
+                    binary = sitk.GetImageFromArray(binary)
+                    binary.CopyInformation(mask)
+                    sitk.WriteImage(binary, path/self.met_dir_name/'metastasis_labels_1_class.nii.gz')
+                    
+                else:
+                    self.log.error(f'mapped path does not link to the target bids dataset')
+            elif mode == 'binary':
                 mask = sitk.ReadImage(dir/prediction)
-                os.makedirs(path/'mets', exist_ok=True)
-                sitk.WriteImage(mask, path/'mets'/'metastasis_labels_3_class.nii.gz')
-                binary = sitk.GetArrayFromImage(mask)
-                binary[binary == 2] = 0 # ignore edema
-                binary[binary != 0] = 1 # binarize tumor & necrosis
-                binary = sitk.GetImageFromArray(binary)
-                binary.CopyInformation(mask)
-                sitk.WriteImage(binary, path/'mets'/'metastasis_labels_1_class.nii.gz')
-                
-            else:
-                self.log.error(f'mapped path does not link to the target bids dataset')
+                os.makedirs(path/self.met_dir_name, exist_ok=True)
+                sitk.WriteImage(mask, path/self.met_dir_name/'metastasis_labels_1_class.nii.gz') 
         

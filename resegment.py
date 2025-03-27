@@ -7,17 +7,25 @@ import pathlib as pl
 clean_set = pl.Path('/mnt/nas6/data/Target/PROCESSED_mrct1000_nobatch')
 multimod_reseg = pl.Path('/mnt/nas6/data/Target/nnUNet_Datasets/multimod')
 reseg = pl.Path('/mnt/nas6/data/Target/nnUNet_Datasets/singlemod')
+all_reseg = pl.Path('/mnt/nas6/data/Target/nnUNet_Datasets/all_singlemod')
+
 # Assumes dataset is the result of running src.filter_register.PatientPreprocessor
 # Converts every timepoint to a resg-nnUNet prediction case for multimodal and single modal
-DC = DatasetConverter(clean_set, multimod_reseg, reseg)
-DC.execute()
+# DC = DatasetConverter(clean_set, multimod_reseg, reseg)
+# DC.execute()
 
 # Assumes dataset is the result of src.nnUnet_data_preparation.DatasetConverter
 # Runs the prediction 
-RS = Resegmentor(multimod_reseg, reseg)
-RS.execute()
+# RS = Resegmentor(None, None, all_reseg)
+# RS.execute(mode='binary')
 
 # Assumes the Resegmentor has been executed before
 # Pipes the result back into the clean set as a new subfolder 'mets'
-DRC = DatasetReconverter(clean_set, multimod_reseg, reseg)
-DRC.execute()
+# DRC = DatasetReconverter(clean_set, multimod_reseg, 'mets')
+# DRC.execute()
+
+# DRC = DatasetReconverter(clean_set, reseg, 'mets')
+# DRC.execute()
+
+DRC = DatasetReconverter(clean_set, all_reseg, 'mets_task502')
+DRC.execute(mode='binary')
