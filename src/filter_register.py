@@ -35,9 +35,11 @@ class PatientPreprocessor():
         self.log = Printer(log_type='txt')
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
-    def execute(self):
+    def execute(self, test_mode=False):
         """
         Run the Preprocessor on the set
+
+        :param test_mode -> if True will run filters and pre registration logs, but skip doing the actual registration work.
         
         Tasks:
         filter anatomical and RT studies
@@ -105,6 +107,8 @@ class PatientPreprocessor():
                                 tp = 'both' if t2 is None and t1 is None else tp
                                 self.log.fail(f'Found RTSTRUCT but matched mr study is incomplete, missing {tp} in study {anat_study}')
                             continue
+
+                        if test_mode: continue # skip actual work if the program runs in test mode
 
                         # make output directory
                         os.makedirs(self.clean_set/pat/anat_study/'anat', exist_ok=True)

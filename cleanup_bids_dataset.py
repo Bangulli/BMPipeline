@@ -10,7 +10,7 @@ from src.rts2bids import RTS2BIDS
 
 raw_set = pl.Path("/mnt/nas6/data/Target/mrct1000_nobatch") # must be path to parent folder with patient subfolders/.
 bids_set = pl.Path("/mnt/nas6/data/Target/BIDS_mrct1000") # must be path that doesnt exist, the script creates the target dir itself
-processed_set = pl.Path('/mnt/nas6/data/Target/PROCESSED_mrct1000_nobatch')
+processed_set = pl.Path('/mnt/nas6/data/Target/BUGFIXED_RERUN_PROCESSED_mrct1000_nobatch')
 path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
 path_classification_results = path_metadata / "classification_results.csv" # path to the result csv of the sequence classifier
 
