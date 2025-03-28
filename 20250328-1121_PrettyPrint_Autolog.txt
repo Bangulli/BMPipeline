@@ -1,0 +1,5 @@
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0064, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230316133609 for patient sub-PAT0064[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+0 Patients fulfilled the inclusion criterion
+Caught exceptions in patients [], fix and rerun they have not been logged in the progress file.

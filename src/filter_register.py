@@ -85,8 +85,9 @@ class PatientPreprocessor():
                         anat_study = key
                         rt_study = study_dict[key]
                         if not (self.bids_set/pat/anat_study/'anat').is_dir():
-                            self.log.warning(f'unexpectedly received an empty directory as anatomical in study {anat_study}')
-                            continue
+                            self.log.tagged_print('MISSING', f"unexpectedly received an empty directory as anatomical in study {anat_study} for patient {pat}", PPFormat([ColourText('red'), Effect('bold'), Effect('underlined')]) )
+                            self.log.warning(f'Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data')
+                            break
                         
                         # filter study files
                         images = os.listdir(self.bids_set/pat/anat_study/'anat')
@@ -385,7 +386,7 @@ class PatientPreprocessor():
         """
         Filters the anatomical studies, removing any redundancies i.e. when the time between images is too low 
         """
-        anat = [elem for elem in studies if (self.bids_set/pat/elem[0]/'anat').is_dir()] # seperate liste by if they have anat or rt
+        anat = [elem for elem in studies if not (self.bids_set/pat/elem[0]/'rt').is_dir()] # include empty studies
         rt = [elem for elem in studies if (self.bids_set/pat/elem[0]/'rt').is_dir()]
 
         # The previous RT conversion step will create empty rt folders in the Bids structure if the conversion fails inside the platipy method
@@ -463,7 +464,7 @@ class PatientPreprocessor():
         """
         base_dir = self.bids_set/pat
         # List all directories in the base directory
-        dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d)) and ((base_dir/d/'anat').is_dir() or (base_dir/d/'rt').is_dir())]
+        dirs = [d for d in os.listdir(base_dir) if os.path.isdir(os.path.join(base_dir, d))] # include empty studies
         pattern = r"^ses-(\d{14})$"
         matching_dirs = []
         for d in dirs:
