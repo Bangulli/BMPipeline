@@ -432,7 +432,7 @@ class PatientPreprocessor():
                         lesion_size = cur_struct
                         lesion_overlap = np.bitwise_and(ref_brain, cur_struct).sum()
                         lesion_size = cur_struct.sum()
-                        if not ((lesion_size == lesion_overlap) and (lesion_size <= (brain_size*0.1))): # remove condition
+                        if not ((lesion_size == lesion_overlap) and (lesion_size <= (brain_size*0.1)) and (lesion_size != 0)): # remove condition == inverted keep condition
                             os.makedirs(self.bids_set/pat/rtses[0]/'invalid_rt'/rtset, exist_ok=True)
                             removed.append(struct) # store in to remove list
                             # do the actual removing by just rerouting the path to a dir tagged as invalid

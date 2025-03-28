@@ -277,7 +277,7 @@ class DatasetReconverter():
             encoded = prediction.split('.')[0]+'_'
             path = mapping.loc[mapping['nnUNet_UID'] == encoded, 'source_study_path']
             path = pl.Path(path.iloc[0])
-            if mode == 'multiclass':
+            if '504' in mode or '524' in mode:
                 if path.parent.parent == self.target_set:
                     mask = sitk.ReadImage(dir/prediction)
                     os.makedirs(path/self.met_dir_name, exist_ok=True)
@@ -287,11 +287,12 @@ class DatasetReconverter():
                     binary[binary != 0] = 1 # binarize tumor & necrosis
                     binary = sitk.GetImageFromArray(binary)
                     binary.CopyInformation(mask)
-                    sitk.WriteImage(binary, path/self.met_dir_name/'metastasis_labels_1_class.nii.gz')
-                    
+                    sitk.WriteImage(binary, path/self.met_dir_name/'metastasis_labels_1_class.nii.gz')    
                 else:
                     self.log.error(f'mapped path does not link to the target bids dataset')
-            elif mode == 'binary':
+
+
+            elif '502' in mode:
                 mask = sitk.ReadImage(dir/prediction)
                 os.makedirs(path/self.met_dir_name, exist_ok=True)
                 sitk.WriteImage(mask, path/self.met_dir_name/'metastasis_labels_1_class.nii.gz') 

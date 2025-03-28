@@ -9,11 +9,11 @@ class Resegmentor():
         self.singlemodal_set = singlemodal_set
         self.combined_set = combined_set
 
-    def execute(self, mode='binary'):
+    def execute(self, task=['524', '504']):
         env = os.environ.copy()
         env["RESULTS_FOLDER"] = "/home/lorenz/BMPipeline/resegmentation"
         time.sleep(1)
-        if mode == 'multiclass':
+        if '524' in task:
             if os.listdir(self.multimodal_set):
                 command_multi = [
                 "nnUNet_predict",
@@ -32,6 +32,8 @@ class Resegmentor():
             else:
                 print('== skipping multimodal prediction, found no files in directory')
 
+
+        if '504' in task:
             if os.listdir(self.singlemodal_set):
                 command_single = [
                 "nnUNet_predict",
@@ -49,7 +51,8 @@ class Resegmentor():
                 print(f'''== saved singlemodal prediction on source data {self.singlemodal_set.parent/(self.singlemodal_set.name+'_predictions')}''')
             else:
                 print(F'''== skipping singlemodal prediction, found no files in directory''')
-        elif mode == 'binary':
+
+        if '502' in task:
             if os.listdir(self.combined_set):
                 command_single = [
                 "nnUNet_predict",
