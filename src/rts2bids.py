@@ -5,6 +5,7 @@ import pydicom
 from platipy.dicom.io.rtstruct_to_nifti import convert_rtstruct
 from platipy.dicom.io.rtdose_to_nifti import convert_rtdose
 from PrettyPrint import *
+import shutil
 import re
 import SimpleITK as sitk
 import sys
@@ -99,6 +100,10 @@ class RTS2BIDS():
                                                     dose_output_path=output/filename
                                                 )
                                                 self.log.success(f'Coined corresponding RTDose file {d} for RTStruct {rts_path}')
+                                    else: # remove study from bids set if it has no anat data.
+                                        if not (self.bids_target/bids/ses/'anat').is_dir():
+                                            shutil.rmtree(self.bids_target/bids/ses)
+
 
                     else:
                         self.log.warning(f'Didnt find any CT scans in patient file {self.raw_source/raw}')

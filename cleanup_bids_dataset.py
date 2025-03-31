@@ -26,4 +26,4 @@ if __name__ == '__main__':
     os.makedirs(processed_set, exist_ok=True)
     ## Find relevant patients in Bids set and extract relevant dates and structures and then register everything
     register = PatientPreprocessor(bids_set, processed_set)
-    register.execute()
+    register.execute(True)

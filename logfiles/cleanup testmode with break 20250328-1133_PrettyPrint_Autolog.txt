@@ -1,0 +1,523 @@
+[33m[4m[1mWARNING[0m:[0m PatientProcessor for filtration and Registration is running in test mode, no actual output will be produced.[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0015, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20211213135508 for patient sub-PAT0015[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0031, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0032, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0039, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0044, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0046, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220228121740 for patient sub-PAT0046[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0047, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210624141054 for patient sub-PAT0047[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0049, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0062, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0064, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230316133609 for patient sub-PAT0064[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0066, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220731092303 for patient sub-PAT0066[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0073, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200714122712 for patient sub-PAT0073[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0074, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200613133236 for patient sub-PAT0074[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0079, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220503142223 for patient sub-PAT0079[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0081, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0084, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[4m[1mFAIL[0m:[0m Could not find T1 in study ses-20220820105042[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0085, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0087, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[4m[1mFAIL[0m:[0m Could not find T1 in study ses-20210526140435[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0097, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210411091340 for patient sub-PAT0097[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0098, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221129114705 for patient sub-PAT0098[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0103, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230530104608 for patient sub-PAT0103[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0105, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0108, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220728110909 for patient sub-PAT0108[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0109, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180929103829 for patient sub-PAT0109[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0110, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210902145140 for patient sub-PAT0110[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0112, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220216131725 for patient sub-PAT0112[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0122, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0125, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221222084808 for patient sub-PAT0125[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0130, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200607105023 for patient sub-PAT0130[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0131, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220807141640 for patient sub-PAT0131[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0134, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20201125104232 for patient sub-PAT0134[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0137, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0145, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0156, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0167, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220503131039 for patient sub-PAT0167[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0168, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220108163857 for patient sub-PAT0168[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0173, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0178, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0179, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0182, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0184, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230622141756 for patient sub-PAT0184[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0202, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0205, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0212, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230901143244 for patient sub-PAT0212[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0214, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0218, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0225, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0231, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20190608151333 for patient sub-PAT0231[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0234, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230223110952 for patient sub-PAT0234[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0238, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0239, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0249, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0254, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0256, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180511103420 for patient sub-PAT0256[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0261, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0263, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20231123102102 for patient sub-PAT0263[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0266, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0267, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0271, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0274, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0276, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230211133242 for patient sub-PAT0276[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0279, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20201005131342 for patient sub-PAT0279[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0282, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0285, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230202133238 for patient sub-PAT0285[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0287, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0290, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210701090305 for patient sub-PAT0290[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0294, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210303141202 for patient sub-PAT0294[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0303, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230924123803 for patient sub-PAT0303[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0306, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0309, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0310, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220810093120 for patient sub-PAT0310[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0311, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221202124441 for patient sub-PAT0311[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0320, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20201118154850 for patient sub-PAT0320[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0325, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210206103236 for patient sub-PAT0325[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0332, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220116124119 for patient sub-PAT0332[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0337, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20171125075030 for patient sub-PAT0337[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0342, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[4m[1mFAIL[0m:[0m Could not find T1 in study ses-20230529112137[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0343, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20191204113206 for patient sub-PAT0343[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0351, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0353, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20181107122740 for patient sub-PAT0353[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0361, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200917111516 for patient sub-PAT0361[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0364, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230903085520 for patient sub-PAT0364[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0374, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0375, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0376, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0387, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0401, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220206154837 for patient sub-PAT0401[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0402, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200208113754 for patient sub-PAT0402[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0405, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230112110127 for patient sub-PAT0405[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0406, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220830142923 for patient sub-PAT0406[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0408, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200907110458 for patient sub-PAT0408[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0411, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20240404102858 for patient sub-PAT0411[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0418, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[4m[1mFAIL[0m:[0m Could not find T1 in study ses-20220727143122[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0422, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230317110958 for patient sub-PAT0422[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0434, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230418110058 for patient sub-PAT0434[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0462, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200207111648 for patient sub-PAT0462[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0468, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221112134324 for patient sub-PAT0468[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0471, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20190609095818 for patient sub-PAT0471[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0473, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0476, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221210104425 for patient sub-PAT0476[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0479, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210110092646 for patient sub-PAT0479[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0480, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0481, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20211020093856 for patient sub-PAT0481[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0484, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210116093231 for patient sub-PAT0484[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0489, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0490, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210118085206 for patient sub-PAT0490[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0496, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220421122643 for patient sub-PAT0496[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0507, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0529, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0540, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220610143624 for patient sub-PAT0540[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0542, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20190122133324 for patient sub-PAT0542[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0554, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0559, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0567, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200818101025 for patient sub-PAT0567[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0569, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20181224145703 for patient sub-PAT0569[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0572, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0573, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20231031121334 for patient sub-PAT0573[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0578, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20150529131617 for patient sub-PAT0578[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0581, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230107154819 for patient sub-PAT0581[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0586, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220510115837 for patient sub-PAT0586[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0591, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210406153654 for patient sub-PAT0591[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0594, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[4m[1mFAIL[0m:[0m Could not find T1 in study ses-20220517125212[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0597, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0612, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180220115350 for patient sub-PAT0612[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0620, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0624, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210805111956 for patient sub-PAT0624[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0627, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220130103559 for patient sub-PAT0627[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0635, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221227162203 for patient sub-PAT0635[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0636, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180509090048 for patient sub-PAT0636[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0637, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0643, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0655, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210413085845 for patient sub-PAT0655[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0659, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0660, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20201029032028 for patient sub-PAT0660[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0661, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0666, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20211222151417 for patient sub-PAT0666[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0667, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0678, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0680, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0683, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0686, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220114100114 for patient sub-PAT0686[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0687, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0691, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0694, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210411143342 for patient sub-PAT0694[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0706, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200414083142 for patient sub-PAT0706[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0708, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210806143436 for patient sub-PAT0708[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0709, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20201216140000 for patient sub-PAT0709[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0711, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230104104421 for patient sub-PAT0711[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0714, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20231001163206 for patient sub-PAT0714[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0715, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230403064635 for patient sub-PAT0715[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0726, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230129114036 for patient sub-PAT0726[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0739, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180202094347 for patient sub-PAT0739[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0741, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20181027134911 for patient sub-PAT0741[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0745, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230228111928 for patient sub-PAT0745[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0748, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180830085319 for patient sub-PAT0748[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0749, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0756, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0760, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180612100748 for patient sub-PAT0760[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0766, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20190324115618 for patient sub-PAT0766[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0769, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20191105114708 for patient sub-PAT0769[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0773, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0777, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230306143425 for patient sub-PAT0777[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0780, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0782, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0795, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210128101935 for patient sub-PAT0795[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0796, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0798, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0807, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20191214111629 for patient sub-PAT0807[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0808, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[4m[1mFAIL[0m:[0m Could not find T1 in study ses-20171229091852[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180814102133 for patient sub-PAT0808[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0817, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220715150549 for patient sub-PAT0817[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0818, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220909112452 for patient sub-PAT0818[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0824, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0831, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20171217123202 for patient sub-PAT0831[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0838, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210621102905 for patient sub-PAT0838[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0839, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230223115027 for patient sub-PAT0839[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0841, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0842, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220625154401 for patient sub-PAT0842[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0847, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0852, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200810143021 for patient sub-PAT0852[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+Caught Exception in patient sub-PAT0854
+list index out of range
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0856, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230422162014 for patient sub-PAT0856[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0873, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20191027090000 for patient sub-PAT0873[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0875, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0876, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0879, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210707114303 for patient sub-PAT0879[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0887, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0892, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0895, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20180423104253 for patient sub-PAT0895[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0897, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200829101946 for patient sub-PAT0897[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0908, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20211017132338 for patient sub-PAT0908[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0923, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210502164700 for patient sub-PAT0923[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0928, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0929, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200407115203 for patient sub-PAT0929[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0938, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200722084816 for patient sub-PAT0938[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0948, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20190704144040 for patient sub-PAT0948[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0955, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0956, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0958, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220403134913 for patient sub-PAT0958[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0962, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200328121151 for patient sub-PAT0962[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0977, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0978, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200630135819 for patient sub-PAT0978[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0979, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220211122733 for patient sub-PAT0979[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0984, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230218161414 for patient sub-PAT0984[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0985, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200805104410 for patient sub-PAT0985[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0988, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20190918101608 for patient sub-PAT0988[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0989, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220422120021 for patient sub-PAT0989[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0991, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230116131805 for patient sub-PAT0991[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0993, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT0998, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1026, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1028, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210412153956 for patient sub-PAT1028[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1030, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220116131132 for patient sub-PAT1030[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1031, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1036, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20230319132819 for patient sub-PAT1036[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1037, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200727120225 for patient sub-PAT1037[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1038, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221108123529 for patient sub-PAT1038[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1039, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20190204101256 for patient sub-PAT1039[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1043, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200705090529 for patient sub-PAT1043[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1046, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200920154537 for patient sub-PAT1046[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1071, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1077, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1078, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20211216140302 for patient sub-PAT1078[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1083, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20201024153132 for patient sub-PAT1083[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1097, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1098, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20221109115815 for patient sub-PAT1098[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1099, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220620145517 for patient sub-PAT1099[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1103, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1116, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20200706095311 for patient sub-PAT1116[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1120, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20210918120025 for patient sub-PAT1120[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1123, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1129, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1138, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20231015150029 for patient sub-PAT1138[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1139, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[34m[1m[4mINFO[0m:[0m Processing sub-PAT1141, fulfills criterion: {'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': 90, 'rtstructs present >=': 1}[0m
+[31m[4m[1mFAIL[0m:[0m Could not find T1 in study ses-20220327145830[0m
+[31m[1m[4mMISSING[0m:[0m unexpectedly received an empty directory as anatomical in study ses-20220426143526 for patient sub-PAT1141[0m
+[33m[4m[1mWARNING[0m:[0m Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data[0m
+0 Patients fulfilled the inclusion criterion
+Caught exceptions in patients ['sub-PAT0854'], fix and rerun they have not been logged in the progress file.

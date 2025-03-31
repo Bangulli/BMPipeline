@@ -56,6 +56,7 @@ class PatientPreprocessor():
         """
         patients = [elem for elem in os.listdir(self.bids_set) if (self.bids_set/elem).is_dir() and elem.startswith('sub-')]
         errors = []
+        if test_mode: self.log.warning("PatientProcessor for filtration and Registration is running in test mode, no actual output will be produced.")
         # create log file that tracks completed patients in case of error
         with open(self.clean_set/'filter_register_progress.txt', mode='a+') as progfile:
             progfile.seek(0)  # Move cursor to the beginning before reading
@@ -89,7 +90,8 @@ class PatientPreprocessor():
                         if not (self.bids_set/pat/anat_study/'anat').is_dir():
                             self.log.tagged_print('MISSING', f"unexpectedly received an empty directory as anatomical in study {anat_study} for patient {pat}", PPFormat([ColourText('red'), Effect('bold'), Effect('underlined')]) )
                             self.log.warning(f'Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data')
-                            break
+                            if test_mode: continue 
+                            else: break
                         
                         # filter study files
                         images = os.listdir(self.bids_set/pat/anat_study/'anat')
