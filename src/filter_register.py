@@ -32,7 +32,7 @@ class PatientPreprocessor():
         self.study_list = study_list
         self.inclusion_criterion = inclusion_criterion
 
-        self.log = Printer(log_type='txt')
+        self.log = Printer(log_type='txt', log_prefix='Filter-Register')
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self, test_mode=False):
@@ -82,16 +82,20 @@ class PatientPreprocessor():
 
                     kept += 1
                     self.log.tagged_print('INFO', f'Processing {pat}, fulfills criterion: {self.inclusion_criterion}', self.info_format)                
-
+                    self.log.tagged_print('MISC', f"Patient study matching: {study_dict}", self.info_format)
                     # iterate studies
                     for key in keys:
                         anat_study = key
                         rt_study = study_dict[key]
                         if not (self.bids_set/pat/anat_study/'anat').is_dir():
-                            self.log.tagged_print('MISSING', f"unexpectedly received an empty directory as anatomical in study {anat_study} for patient {pat}", PPFormat([ColourText('red'), Effect('bold'), Effect('underlined')]) )
-                            self.log.warning(f'Skipping this patient. This needs manual intervention, because it can lead to a lot of missing data')
-                            if test_mode: continue 
-                            else: break
+                            if t0_image is None:
+                                self.log.tagged_print('MISSING', f"unexpectedly received an empty directory as anatomical in study {anat_study} for patient {pat}", PPFormat([ColourText('red'), Effect('bold'), Effect('underlined')]) )
+                                raise RuntimeError(f"unexpectedly received an empty directory as anatomical in study {anat_study} for patient {pat}")
+                                break
+                            else:
+                                self.log.tagged_print('MISSING', f"unexpectedly received an empty directory as anatomical in study {anat_study} for patient {pat}", PPFormat([ColourText('red'), Effect('bold'), Effect('underlined')]) )
+                                self.log.warning(f'Skipping this Series. This needs manual intervention, because it can lead to a lot of missing data')
+                                continue
                         
                         # filter study files
                         images = os.listdir(self.bids_set/pat/anat_study/'anat')
@@ -110,7 +114,7 @@ class PatientPreprocessor():
                                 self.log.fail(f'Found RTSTRUCT but matched mr study is incomplete, missing {tp} in study {anat_study}')
                             continue
 
-                        if test_mode: continue # skip actual work if the program runs in test mode
+                        
 
                         # make output directory
                         os.makedirs(self.clean_set/pat/anat_study/'anat', exist_ok=True)
@@ -120,18 +124,23 @@ class PatientPreprocessor():
                             self.log.tagged_print('INFO', f'Identified t0 as study day {anat_study} for patient {pat}', self.info_format)
 
                             # read images
-                            t0_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                            t0_image = self._load_image(self.bids_set/pat/anat_study/'anat'/t1)
+
+                            if test_mode: continue # skip actual work if the program runs in test mode
+
                             # save unprocessed fixed
                             sitk.WriteImage(t0_image, self.clean_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
-                                sitk.WriteImage(sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2), self.clean_set/pat/anat_study/'anat'/t2)
+                                sitk.WriteImage(self._load_image(self.bids_set/pat/anat_study/'anat'/t2), self.clean_set/pat/anat_study/'anat'/t2)
                             # obtain mask
                             if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
                                 t0_mask = self._segment_image(t0_image, 'mr')
                                 sitk.WriteImage(t0_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
                             else:
-                                t0_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
-                                
+                                t0_mask = self._load_image((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                        
+                        if test_mode: continue # skip actual work if the program runs in test mode
+
                         ############## if the anatomical image has a corresponding rt image do ct2mr2mr
                         if rt_study is not None:
                             os.makedirs(self.clean_set/pat/anat_study/'rt', exist_ok =True)
@@ -143,9 +152,9 @@ class PatientPreprocessor():
 
                             if not any(ct): # fallback in case the CT is missing
                                 self.log.warning(f'Could not find any ct in study {rt_study}, processing anatomical images in {anat_study} anyway')
-                                t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                                t1_image = self._load_image(self.bids_set/pat/anat_study/'anat'/t1)
                                 if t2 is not None:
-                                    t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                                    t2_image = self._load_image(self.bids_set/pat/anat_study/'anat'/t2)
                                 else:
                                     t2_image = None
                                 
@@ -162,44 +171,44 @@ class PatientPreprocessor():
                             # read dose images
                             if any(rtd):
                                 for d in rtd:
-                                    RTdict[d] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/d)
+                                    RTdict[d] = self._load_image(self.bids_set/pat/rt_study/'rt'/d)
                             # read structure images
                             if any(rts):
                                 for s in rts:
                                     os.makedirs(self.clean_set/pat/anat_study/'rt'/s, exist_ok =True)
                                     for file in os.listdir(self.bids_set/pat/rt_study/'rt'/s):
-                                        RTdict[s+'/'+file] = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/s/file)
+                                        RTdict[s+'/'+file] = self._load_image(self.bids_set/pat/rt_study/'rt'/s/file)
 
                             # set ct as moving image
-                            ct_image = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/ct[0])
+                            ct_image = self._load_image(self.bids_set/pat/rt_study/'rt'/ct[0])
 
                             # get ct segmentation
                             if (self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
-                                ct_mask = sitk.ReadImage(self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz')
+                                ct_mask = self._load_image(self.bids_set/pat/rt_study/'rt'/rts[0]/'Struct_Brain.nii.gz')
                             elif (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
-                                ct_mask = sitk.ReadImage((self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
+                                ct_mask = self._load_image((self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
                             else: # use total segmentator to do it
                                 ct_mask = self._segment_image(ct_image, 'ct')
                                 sitk.WriteImage(ct_mask, (self.bids_set/pat/rt_study/'rt'/('MASK_'+ct[0])))
                                 
-                            t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                            t1_image = self._load_image(self.bids_set/pat/anat_study/'anat'/t1)
 
                             # segment t1
                             if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
                                 t1_mask = self._segment_image(t1_image, 'mr')
                                 sitk.WriteImage(t1_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
                             else:
-                                t1_mask = sitk.ReadImage((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                                t1_mask = self._load_image((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
 
                             if t2 is not None:
-                                t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                                t2_image = self._load_image(self.bids_set/pat/anat_study/'anat'/t2)
                             else:
                                 t2_image = None
 
                             # run registration and transform structures, move ct to corresponding mrt1
                             transformed_structs = self._register_ct2mr(t1_image, t1_mask, ct_image, ct_mask, RTdict)
                             # run registration move all to t0
-                            t1_trans, t2_trans, transformed_structs = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image, transformed_structs)
+                            t1_trans, t2_trans, transformed_structs = self._register_mr2mr(t0_image, t0_mask, t1_image, t1_mask, t2_image, transformed_structs)
                             # make output directory and save processed images
                             for key in list(transformed_structs.keys()):
                                 struct = transformed_structs[key]
@@ -211,12 +220,20 @@ class PatientPreprocessor():
 
                         ############### if there is no corresponding rt just do mr2mr
                         else:
-                            t1_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t1)
+                            t1_image = self._load_image(self.bids_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
-                                t2_image = sitk.ReadImage(self.bids_set/pat/anat_study/'anat'/t2)
+                                t2_image = self._load_image(self.bids_set/pat/anat_study/'anat'/t2)
                             else:
                                 t2_image = None
-                            t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t2_image)
+                            # segment t1
+                            if not (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)).is_file():
+                                t1_mask = self._segment_image(t1_image, 'mr', fast=False)
+                                sitk.WriteImage(t1_mask, (self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+                            else:
+                                t1_mask = self._load_image((self.clean_set/pat/anat_study/'anat'/('MASK_'+t1)))
+
+                            t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t1_mask, t2_image)
+                            
                             sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
                                 sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
@@ -224,7 +241,7 @@ class PatientPreprocessor():
                     
                     progfile.write(pat+'\n')
                 except Exception as e:
-                    self.log(f'Caught Exception in patient {pat}')
+                    self.log(f'Caught Exception in patient {pat} and study {anat_study}')
                     self.log(str(e))
                     errors.append(pat)
                     traceback.print_exc()
@@ -423,18 +440,18 @@ class PatientPreprocessor():
                         ct = [cti for cti in ct if cti.startswith(rtset)]
 
                     if (self.bids_set/pat/rtses[0]/'rt'/rtset/'Struct_Brain.nii.gz').is_file(): # try loading from RTS
-                        ref_brain = sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/rtset/'Struct_Brain.nii.gz')
+                        ref_brain = self._load_image(self.bids_set/pat/rtses[0]/'rt'/rtset/'Struct_Brain.nii.gz')
                     elif (self.bids_set/pat/rtses[0]/'rt'/('MASK_'+ct[0])).is_file(): # try loading from previous segmentation
-                        ref_brain = sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/('MASK_'+ct[0]))
+                            ref_brain = self._load_image(self.bids_set/pat/rtses[0]/'rt'/('MASK_'+ct[0]))
                     else: # use total segmentator to do it
-                        ref_brain = self._segment_image(sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/ct[0]), 'ct')
+                        ref_brain = self._segment_image(self._load_image(self.bids_set/pat/rtses[0]/'rt'/ct[0]), 'ct')
                         sitk.WriteImage(ref_brain, self.bids_set/pat/rtses[0]/'rt'/('MASK_'+ct[0]))
 
                     ref_brain = sitk.GetArrayFromImage(ref_brain).astype(bool)
                     brain_size = ref_brain.sum()
                     # find stuff to remove
                     for struct in structs:
-                        cur_struct = sitk.ReadImage(self.bids_set/pat/rtses[0]/'rt'/rtset/struct)
+                        cur_struct = self._load_image(self.bids_set/pat/rtses[0]/'rt'/rtset/struct)
                         cur_struct = sitk.GetArrayFromImage(cur_struct).astype(bool)
                         lesion_size = cur_struct
                         lesion_overlap = np.bitwise_and(ref_brain, cur_struct).sum()
@@ -487,18 +504,28 @@ class PatientPreprocessor():
         return matching_dirs
 
     ################################################ Registration Utilities
-    def _segment_image(self, image: sitk.Image, mode: str) -> sitk.Image:
+    def _load_image(self, path, resample=(1,1,1)):
+        img = sitk.ReadImage(path)
+        if resample is not None and not img.GetSpacing == resample:
+            new_size = [
+            int(round(osz * ospc / nspc))
+            for osz, ospc, nspc in zip(img.GetSize(), img.GetSpacing(), resample)
+            ]
+            img = sitk.Resample(img, new_size, outputSpacing=resample, outputDirection=img.GetDirection(), outputOrigin=img.GetOrigin(), outputPixelType=img.GetPixelID())
+        return img 
+               
+    def _segment_image(self, image: sitk.Image, mode: str, fast:bool=True) -> sitk.Image:
         """
         Runs the total segmentator on an image, differentiating between mr and ct by the mode string
         returns the brain mask for the given image
         """
         if mode == 'ct':
-            mask = totalsegmentator(sitk2nib(image), fast=False, task='total', quiet=True)
+            mask = totalsegmentator(sitk2nib(image), fast=fast, task='total', quiet=True)
             mask = nib2sitk(mask, image)
             mask = sitk.BinaryThreshold(mask, lowerThreshold=90, upperThreshold=90, insideValue=1, outsideValue=0) # get segmentation brain=90, skull=91
             return mask
         elif mode == 'mr':
-            mask = totalsegmentator(sitk2nib(image), fast=False, task='total_mr', quiet=True) # get segmentation brain = 50
+            mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
             mask = nib2sitk(mask, image)
             mask = sitk.BinaryThreshold(mask, lowerThreshold=50, upperThreshold=50, insideValue=1, outsideValue=0) #  binarize segmentation
             return mask
@@ -581,7 +608,7 @@ class PatientPreprocessor():
         return structs
 
     
-    def _register_mr2mr(self, fixed: sitk.Image, fixed_mask: sitk.Image, moving_t1: sitk.Image, moving_t2: sitk.Image, structs: dict=None):
+    def _register_mr2mr(self, fixed: sitk.Image, fixed_mask: sitk.Image, moving_t1: sitk.Image, moving_t1_mask:sitk.Image, moving_t2: sitk.Image, structs: dict=None):
         """
         Register the MR images to the t0 MR image
         Transforms corresponding structs if they are present
@@ -591,7 +618,8 @@ class PatientPreprocessor():
         fixed = sitk2ants(fixed)
         fixed_mask = sitk2ants(fixed_mask)
         moving_t1 = sitk2ants(moving_t1)
-        reg = ants.registration(fixed, moving_t1, mask=fixed_mask)
+        
+        reg = ants.registration(fixed, moving_t1, mask=fixed_mask, type_of_transform='Affine', moving_mask=sitk2ants(moving_t1_mask))
         transformed_t1 = ants2sitk(ants.apply_transforms(fixed, moving_t1, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor'))
         if moving_t2 is not None:
             moving_t2 = sitk2ants(moving_t2)

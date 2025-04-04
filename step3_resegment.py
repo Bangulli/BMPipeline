@@ -17,7 +17,7 @@ DC.execute()
 # Assumes dataset is the result of src.nnUnet_data_preparation.DatasetConverter
 # Runs the prediction 
 RS = Resegmentor(None, None, all_reseg)
-RS.execute(mode='502')
+RS.execute(task=['504', '524'])
 
 # Assumes the Resegmentor has been executed before
 # Pipes the result back into the clean set as a new subfolder 'mets'
@@ -26,6 +26,3 @@ DRC.execute('524')
 
 DRC = DatasetReconverter(clean_set, reseg, 'mets_task504-524')
 DRC.execute('504')
-
-DRC = DatasetReconverter(clean_set, all_reseg, 'mets_task502')
-DRC.execute(mode='502')

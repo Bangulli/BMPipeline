@@ -13,17 +13,18 @@ bids_set = pl.Path("/mnt/nas6/data/Target/BIDS_mrct1000") # must be path that do
 processed_set = pl.Path('/mnt/nas6/data/Target/BUGFIXED_RERUN_PROCESSED_mrct1000_nobatch')
 path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
 path_classification_results = path_metadata / "classification_results.csv" # path to the result csv of the sequence classifier
+sequence_selection = pl.Path('/home/lorenz/data/Other/sequence_selected_nonchuv.csv')
 
 ####### AT THIS POINT BIDSCOINER HAS BEEN RUN; THIS SCRIPT IS TO CONVERT NON-CHUV DATA, RTSTRUCTS AND MOVE EVERYTHING TO A NEW DIRECTORY THAT ONLY CONTAINS NECESSARY DATA
 if __name__ == '__main__':
     ## convert data missed by bidscoiner because it is not from CHUV
-    # coiner = NonCHUVCoiner(raw_set, bids_set, pl.Path('/home/lorenz/data/Other/sequence_selected_nonchuv.csv'), path_metadata/'sliceID_seriesPath_mapping.csv')
-    # coiner.execute()
+    coiner = NonCHUVCoiner(raw_set, bids_set, sequence_selection, path_metadata/'sliceID_seriesPath_mapping.csv')
+    coiner.execute()
     ## Convert RTstructs to Bids set
-    # converter = RTS2BIDS(raw_set, bids_set)
-    # converter.execute()
+    converter = RTS2BIDS(raw_set, bids_set)
+    converter.execute()
 
     os.makedirs(processed_set, exist_ok=True)
     ## Find relevant patients in Bids set and extract relevant dates and structures and then register everything
     register = PatientPreprocessor(bids_set, processed_set)
-    register.execute(True)
+    register.execute()

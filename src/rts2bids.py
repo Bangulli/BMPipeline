@@ -27,7 +27,7 @@ class RTS2BIDS():
         self.raw_patient_pattern = raw_patient_pattern
         self.raw_study_pattern = raw_study_pattern
         # set up logger
-        self.log = Printer(log_type=None)
+        self.log = Printer(log_type='txt', log_prefix='rts2bids')
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self):
@@ -49,7 +49,7 @@ class RTS2BIDS():
 
             for raw, bids in zip(patients_raw, patients_bids):
                 if (self.bids_target/bids).is_dir():
-                    studies = os.listdir(self.raw_source/raw)
+                    studies = [file for file in os.listdir(self.raw_source/raw) if file.startswith('ses-')]
                     ct = []
                     for ses in studies: # first extract all cts in case they are in different studies
                         ct += self._get_CT_files(self.raw_source/raw/ses)
@@ -63,6 +63,7 @@ class RTS2BIDS():
                                     rts_path, ct_path = self._match_uids_exhaustive(rt, ct)
                                     
                                     if rts_path is not None:
+                                        
                                         os.makedirs(output/rts_path.parent.name, exist_ok=True)
 
                                         if rts_path is not None: # do the actual conversion
@@ -102,7 +103,18 @@ class RTS2BIDS():
                                                 self.log.success(f'Coined corresponding RTDose file {d} for RTStruct {rts_path}')
                                     else: # remove study from bids set if it has no anat data.
                                         if not (self.bids_target/bids/ses/'anat').is_dir():
-                                            shutil.rmtree(self.bids_target/bids/ses)
+                                            if (self.bids_target/bids/ses).is_dir(): 
+                                                self.log.warning(f"Directory {self.bids_target/bids/ses} would be left empty as no RT can be converted, I`m removing it from the BIDS set.")
+                                                shutil.rmtree(self.bids_target/bids/ses)
+
+                        for ct_series in ct:
+                            ct_uid = list(ct_series.values())[0]
+                            ct_path = pl.Path(list(ct_series.keys())[0])
+                            if not ((self.bids_target/bids/ct_path.parent.name/'anat').is_dir() or (self.bids_target/bids/ct_path.parent.name/'rt').is_dir()):
+                                if (self.bids_target/bids/ct_path.parent.name).is_dir(): 
+                                    self.log.warning(f"Directory {self.bids_target/bids/ct_path.parent.name} would be left empty as no RT can be converted, I`m removing it from the BIDS set.")
+                                    shutil.rmtree(self.bids_target/bids/ct_path.parent.name)
+
 
 
                     else:

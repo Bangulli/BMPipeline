@@ -13,12 +13,14 @@ class NonCHUVCoiner():
                 ):
         self.dicom_set = dicom_set
         self.bids_set = bids_set
-        self.ref = pd.read_csv(ref_csv)
+        self.ref = pd.read_csv(ref_csv) if ref_csv.name.endswith('.csv') else pd.read_excel(ref_csv)
         self.map = pd.read_csv(map_csv, sep=';')
-        self.log = Printer()
+        self.log = Printer(log_type='txt', log_prefix='NonCHUVCoiner')
 
-    def execute(self):
+    def execute(self, only_relevant=False):
         self.ref = self.ref.dropna(subset=["SelectedSequence"])
+
+        bids_pats = [pat.split('-')[-1] for pat in os.listdir(self.bids_set) if pat.startswith('sub-PAT')]
         # create progress log in case of error during coining
         with open(self.bids_set/'nonchuv_coiner_progress.txt', 'a+') as progfile:
             progfile.seek(0)
@@ -29,7 +31,12 @@ class NonCHUVCoiner():
                 UID = row['SeriesInstanceUID']
                 if UID in processed:
                     continue
+                
+                    
                 pat = row['PatientID'].replace('-', '')
+                if only_relevant:
+                    if pat not in bids_pats:
+                        continue
                 date = row['AcquisitionDate']
                 pred = row['prediction_class_category']
                 # init result vars
@@ -48,6 +55,13 @@ class NonCHUVCoiner():
                 dcm_files = dcm_reader.GetGDCMSeriesFileNames(mapped_path)
                 dcm_reader.SetFileNames(dcm_files)
                 image = dcm_reader.Execute()
+                arr = sitk.GetArrayFromImage(image)
+                if (arr<0).any():
+                    print('found hypointense')
+                    arr[arr<0]=0
+                    image_new = sitk.GetImageFromArray(arr)
+                    image_new.CopyInformation(image)
+                    image = image_new
                 # write nifti
                 output = self._gen_bids_filename(pat, mapped_path, pred)
                 sitk.WriteImage(image, output)
