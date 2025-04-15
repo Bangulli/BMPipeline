@@ -14,7 +14,7 @@ class TimePoint():
     Data object representing a single timepoint
     Is essentially a dictionary with a T1 and optionally T2 and metastasis 
     """
-    def __init__(self, t1: pl.Path, t2: pl.Path | None = None, mets: pl.Path | None = None):
+    def __init__(self, t1: pl.Path, t2: pl.Path | None = None, mets: list[pl.Path] | None = None):
         if t2 is not None:
             if t1.parent != t2.parent:
                 raise RuntimeError(f'T1 and T2 images must be from the same study to be considered at the same timepoint')
@@ -25,15 +25,15 @@ class TimePoint():
         self._base = t1.parent.parent # gets rid of the anat dir
         self._t1 = t1.name
             
-        if mets is not None: # probably redundant but idk if it will error if i call is_dir on a NoneType
-            if not mets.is_dir():
-                raise RuntimeError(f'Expected mets to be a path to a directory, but got file: {mets} instead')
         self._mets = mets
 
     ##### Getters
     def get_mets(self) -> sitk.Image | tuple[sitk.Image | None, str]:
         if isinstance(self._mets, pl.Path):
             return self._generate_mets_image()
+        elif isinstance(self._mets, list):
+            if all([isinstance(elem, pl.Path) for elem in self._mets]):
+                return self._generate_multi_mets_image()
         else:
             return self._mets, '0001.nii.gz'
     
@@ -54,6 +54,18 @@ class TimePoint():
 
     ##### Private utils
     def _generate_mets_image(self) -> sitk.Image:
+        # filter files in RTS directory for GTV PTV and Struct prefix
+        files = []
+        for folder in self._mets:
+            files += [folder/file for file in os.listdir(folder) if ('GTV' in file or 'PTV' in file) and file.endswith('.nii.gz') and file.startswith('Struct_')]
+        
+        image = sitk.ReadImage(self._mets/files[0])
+        for i in range(1, len(files)):
+            image = sitk.Or(image, sitk.ReadImage(files[i]))
+        
+        return image
+    
+    def _generate_multi_mets_image(self) -> sitk.Image:
         # filter files in RTS directory for GTV PTV and Struct prefix
         files = [file for file in os.listdir(self._mets) if ('GTV' in file or 'PTV' in file) and file.endswith('.nii.gz') and file.startswith('Struct_')]
         
@@ -209,7 +221,7 @@ class DatasetConverter():
         anat = os.listdir(self.source_set/pat/ses/'anat')
         
         if (self.source_set/pat/ses/'rt').is_dir():
-            mets = [file for file in os.listdir(self.source_set/pat/ses/'rt') if (self.source_set/pat/ses/'rt'/file).is_dir()][0]
+            mets = [file for file in os.listdir(self.source_set/pat/ses/'rt') if (self.source_set/pat/ses/'rt'/file).is_dir()]
         else:
             mets = None
 

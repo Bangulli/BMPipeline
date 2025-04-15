@@ -101,8 +101,8 @@ class RTS2BIDS():
                                                     dose_output_path=output/filename
                                                 )
                                                 self.log.success(f'Coined corresponding RTDose file {d} for RTStruct {rts_path}')
-                                    else: # remove study from bids set if it has no anat data.
-                                        if not (self.bids_target/bids/ses/'anat').is_dir():
+                                    else: # remove study from bids set if it has no anat data. or previously converted RT
+                                        if not ((self.bids_target/bids/ses/'anat').is_dir() or (self.bids_target/bids/ses/'rt').is_dir()) :
                                             if (self.bids_target/bids/ses).is_dir(): 
                                                 self.log.warning(f"Directory {self.bids_target/bids/ses} would be left empty as no RT can be converted, I`m removing it from the BIDS set.")
                                                 shutil.rmtree(self.bids_target/bids/ses)
@@ -112,7 +112,7 @@ class RTS2BIDS():
                             ct_path = pl.Path(list(ct_series.keys())[0])
                             if not ((self.bids_target/bids/ct_path.parent.name/'anat').is_dir() or (self.bids_target/bids/ct_path.parent.name/'rt').is_dir()):
                                 if (self.bids_target/bids/ct_path.parent.name).is_dir(): 
-                                    self.log.warning(f"Directory {self.bids_target/bids/ct_path.parent.name} would be left empty as no RT can be converted, I`m removing it from the BIDS set.")
+                                    self.log.warning(f"Directory {self.bids_target/bids/ct_path.parent.name} would be left empty as no CT can be converted, I`m removing it from the BIDS set.")
                                     shutil.rmtree(self.bids_target/bids/ct_path.parent.name)
 
 

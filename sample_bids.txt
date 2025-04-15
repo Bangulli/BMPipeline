@@ -1,0 +1,45 @@
+QUALITYCHECK - BIDS /mnt/nas6/data/Target/BIDS_mrct1000
+TASKS:
+   - Check if images are valid and all converted
+   - Check if all RTs with a valid CT link have been converted
+SAMPLES: 40 for a population of 1135 with a confidence of 0.8
+   - sub-PAT1056
+   - sub-PAT0778
+   - sub-PAT1061
+   - sub-PAT1066
+   - sub-PAT0017
+   - sub-PAT0932
+   - sub-PAT0218
+   - sub-PAT0875
+   - sub-PAT0128
+   - sub-PAT1114
+   - sub-PAT1052
+   - sub-PAT0129
+   - sub-PAT0627
+   - sub-PAT1024
+   - sub-PAT0642
+   - sub-PAT1100
+   - sub-PAT1109
+   - sub-PAT0540
+   - sub-PAT1104
+   - sub-PAT0980
+   - sub-PAT1098
+   - sub-PAT0052
+   - sub-PAT0675
+   - sub-PAT0039
+   - sub-PAT1054
+   - sub-PAT0796
+   - sub-PAT0709
+   - sub-PAT0266
+   - sub-PAT0213
+   - sub-PAT0847
+   - sub-PAT0967
+   - sub-PAT0841
+   - sub-PAT0404
+   - sub-PAT0355
+   - sub-PAT0340
+   - sub-PAT0293
+   - sub-PAT0994
+   - sub-PAT0469
+   - sub-PAT0617
+   - sub-PAT0152

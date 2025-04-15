@@ -13,11 +13,9 @@ INFOformat = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]
 from SequenceClassification.dicom import *
 from SequenceClassification.path import *
 
-raw_set = pl.Path("/mnt/nas6/data/Target/symlinked_batches_mrct_1000/unknown") # must be path to parent folder with patient subfolders/.
-bids_set = pl.Path("/mnt/nas6/data/Target/BIDS_mrct1000/unknown") # must be path that doesnt exist, the script creates the target dir itself
-path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
-path_classification_results = path_metadata / "classification_results.csv" # path to the result csv of the sequence classifier
-bidsmap_template = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d.yaml")
+raw_set = pl.Path("/mnt/nas6/data/Target/symlinked_batches_mrct_1000/known_no_issues") # must be path to parent folder with patient subfolders/.
+bids_set = pl.Path("/mnt/nas6/data/Target/BMPipeline_full_rerun/BIDS_mrct1000") # must be path that doesnt exist, the script creates the target dir itself
+bidsmap_template = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
 
 patient_count = log.count_folders(raw_set) 
 LOGGER.tagged_print("INFO", f"There are {patient_count} patients.", INFOformat)

@@ -20,7 +20,7 @@ path_classification_results = path_metadata / "classification_results.csv" # pat
 multimod_reseg = pl.Path('/mnt/nas6/data/Target/batch_copy/rerun_test/multimod')
 reseg = pl.Path('/mnt/nas6/data/Target/batch_copy/rerun_test/singlemod')
 nonchuv_data = pl.Path('/home/lorenz/BMPipeline/sequence_selected_nonchuv.xlsx')
-bidsmap_path = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d.yaml")
+bidsmap_path = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
 
 import logging
 import sys

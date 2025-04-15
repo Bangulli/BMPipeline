@@ -1,0 +1,43 @@
+QUALITYCHECK - PROCESSED /mnt/nas6/data/Target/PROCESSED_mrct1000_nobatch
+TASKS:
+   - Check correct rt date to anat date matching
+   - Check correct t0   
+   - Check mrmr registrations: qualitatively - load to itk and see if they move a lot
+   - Check ctmr registrations: qualitatively - object matches structure in image
+   - Check Lesion resegmentation
+   - Check Lesion tracking
+SAMPLES: 34 for a population of 218 with a confidence of 0.8
+   - sub-PAT0480
+   - sub-PAT0214
+   - sub-PAT0573
+   - sub-PAT0569
+   - sub-PAT0998
+   - sub-PAT0659
+   - sub-PAT0081
+   - sub-PAT0739
+   - sub-PAT0748
+   - sub-PAT0130
+   - sub-PAT0714
+   - sub-PAT0039
+   - sub-PAT0756
+   - sub-PAT0612
+   - sub-PAT0691
+   - sub-PAT0624
+   - sub-PAT1103
+   - sub-PAT0263
+   - sub-PAT0473
+   - sub-PAT1097
+   - sub-PAT0637
+   - sub-PAT0769
+   - sub-PAT1031
+   - sub-PAT0683
+   - sub-PAT0661
+   - sub-PAT0125
+   - sub-PAT0015
+   - sub-PAT0049
+   - sub-PAT0876
+   - sub-PAT0977
+   - sub-PAT0726
+   - sub-PAT0782
+   - sub-PAT0766
+   - sub-PAT0374

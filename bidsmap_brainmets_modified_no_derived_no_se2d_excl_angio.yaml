@@ -630,6 +630,15 @@ DICOM:
       attributes:
         SequenceName: (?i).*pc3d1.*
       bids: *exclude_bids
+    - provenance: # This is a catch-all for all angiography related data
+      attributes:
+        SeriesDescription: (?i).*angio.*
+      bids: *exclude_bids
+    - provenance: # This is a catch-all for all t1 tse, because they would get tagged as t2
+      attributes:
+        SeriesDescription: (?i).*t1.*tse.*
+      bids: *exclude_bids
+    
     - provenance: # This is a catch-all for perfusion related data
       attributes: &perf_dicomattr
         Modality:
