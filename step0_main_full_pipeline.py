@@ -12,15 +12,15 @@ from src.nnUnet_predictor import Resegmentor
 import logging
 import sys
 
-raw_set = pl.Path("/mnt/nas6/data/Target/batch_copy/rerun_test/dicom") # must be path to parent folder with patient subfolders/.
-bids_set = pl.Path("/mnt/nas6/data/Target/batch_copy/rerun_test/bids") # must be path that doesnt exist, the script creates the target dir itself
-processed_set = pl.Path('/mnt/nas6/data/Target/batch_copy/rerun_test/processed')
-path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
+raw_set = pl.Path("") # must be path to parent folder with patient subfolders/.
+bids_set = pl.Path("") # must be path that doesnt exist, the script creates the target dir itself
+processed_set = pl.Path('')
+path_metadata = pl.Path('')
 path_classification_results = path_metadata / "classification_results.csv" # path to the result csv of the sequence classifier
-multimod_reseg = pl.Path('/mnt/nas6/data/Target/batch_copy/rerun_test/multimod')
-reseg = pl.Path('/mnt/nas6/data/Target/batch_copy/rerun_test/singlemod')
-nonchuv_data = pl.Path('/home/lorenz/BMPipeline/sequence_selected_nonchuv.xlsx')
-bidsmap_path = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
+multimod_reseg = pl.Path('')
+reseg = pl.Path('')
+nonchuv_data = pl.Path('')
+bidsmap_path = pl.Path("")
 
 import logging
 import sys
@@ -98,10 +98,10 @@ if __name__ == '__main__':
     # Assumes dataset is the result of src.nnUnet_data_preparation.DatasetConverter
     # Runs the prediction 
     RS = Resegmentor(multimod_reseg, reseg)
-    RS.execute(task=['504', '524'])
+    RS.execute(task=['502'])
     # Assumes the Resegmentor has been executed before
     # Pipes the result back into the clean set as a new subfolder 'mets'
-    DRC = DatasetReconverter(processed_set, multimod_reseg, 'mets_task504-524')
-    DRC.execute('524')
-    DRC = DatasetReconverter(processed_set, reseg, 'mets_task504-524')
-    DRC.execute('504')
+    # DRC = DatasetReconverter(processed_set, multimod_reseg, 'mets_task504-524')
+    # DRC.execute('524')
+    DRC = DatasetReconverter(processed_set, reseg, 'mets_task_502')
+    DRC.execute('502')
