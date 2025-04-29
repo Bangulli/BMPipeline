@@ -241,7 +241,7 @@ class PatientPreprocessor():
                     
                     progfile.write(pat+'\n')
                 except Exception as e:
-                    self.log(f'Caught Exception in patient {pat} and study {anat_study}')
+                    self.log(f'Caught Exception in patient {pat} and study {anat_study}') if 'anat_study' in locals() else self.log(f'Caught Exception in patient {pat} and study unknown')
                     self.log(str(e))
                     errors.append(pat)
                     traceback.print_exc()
@@ -467,8 +467,8 @@ class PatientPreprocessor():
                     if not len(removed) == len(structs):
                         cleaned_rt.append(rtses)
 
-        rt = cleaned_rt
-
+        rt = list(set(cleaned_rt)) # cast to set and back in order to remove duplicates
+        #if rt != cleaned_rt: self.log.warning("found duplicates in patient!")
         # Filter out directories that are within 14 days of a more recent one
         filtered_dirs = []
         while anat:
