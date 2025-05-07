@@ -150,7 +150,7 @@ class DatasetConverter():
         # init variables
         write_header = not (self.source_set/'nnUNet_mapping.csv').is_file()
         header = ['source_study_path', 'nnUNet_UID', 'nnUNet_set_dir']
-        with open(self.source_set/'nnUNet_mapping.csv', 'a+') as mapping:
+        with open(self.source_set/f'nnUNet_mapping_task={task}.csv', 'a+') as mapping:
             if self.target_set is not None: os.makedirs(self.target_set, exist_ok=True)
             if self.target_set_multimod is not None: os.makedirs(self.target_set_multimod, exist_ok=True)
             self.target_timepoint_identifier = len([file for file in os.listdir(self.target_set) if file.endswith('0000.nii.gz')]) ## used to uniquely identify timepoints in the output directory
@@ -160,8 +160,7 @@ class DatasetConverter():
 
             ## set up map file, if it doesnt exist yet
             map_writer = csv.DictWriter(mapping, fieldnames=header)
-            if write_header:
-                map_writer.writeheader()
+            map_writer.writeheader()
 
             ## get all studies in set, each study is a unique timepoint for prediction
             patients = [pat for pat in os.listdir(self.source_set) if (self.source_set/pat).is_dir() and pat.startswith('sub-')]
@@ -306,6 +305,20 @@ class DatasetReconverter():
             path = mapping.loc[mapping['nnUNet_UID'] == encoded, 'source_study_path']
             path = pl.Path(path.iloc[0])
             if '524' in mode:
+                if path.parent.parent == self.target_set:
+                    mask = sitk.ReadImage(dir/prediction)
+                    os.makedirs(path/self.met_dir_name, exist_ok=True)
+                    sitk.WriteImage(mask, path/self.met_dir_name/'metastasis_labels_3_class.nii.gz')
+                    binary = sitk.GetArrayFromImage(mask)
+                    binary[binary == 2] = 0 # ignore edema
+                    binary[binary != 0] = 1 # binarize tumor & necrosis
+                    binary = sitk.GetImageFromArray(binary)
+                    binary.CopyInformation(mask)
+                    sitk.WriteImage(binary, path/self.met_dir_name/'metastasis_labels_1_class.nii.gz')    
+                else:
+                    self.log.error(f'mapped path does not link to the target bids dataset')
+
+            elif '504' in mode: # same as above
                 if path.parent.parent == self.target_set:
                     mask = sitk.ReadImage(dir/prediction)
                     os.makedirs(path/self.met_dir_name, exist_ok=True)

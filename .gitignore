@@ -5706,3 +5706,9 @@ resegmentation/nnUNet/3d_fullres/Task502_BrainMetsReseg1to1nodnec/nnUNetTrainerV
 resegmentation/nnUNet/ensembles/Task502_BrainMetsReseg1to1nodnec/prediction_commands.txt
 resegmentation/nnUNet/ensembles/Task502_BrainMetsReseg1to1nodnec/summary.csv
 tml_dicom2bids-main
+20250507-1013_Filter-Register_PrettyPrint_Autolog.txt
+.gitignore
+20250507-1029_Filter-Register_PrettyPrint_Autolog.txt
+20250507-1104_Filter-Register_PrettyPrint_Autolog.txt
+20250507-1100_Filter-Register_PrettyPrint_Autolog.txt
+20250507-1018_Filter-Register_PrettyPrint_Autolog.txt

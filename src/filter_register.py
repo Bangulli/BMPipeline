@@ -77,6 +77,7 @@ class PatientPreprocessor():
                     keys = list(study_dict.keys())
 
                     if self._discard_patient(study_dict, dates):
+                        self.log.warning(f"Discarding patient {pat}")
                         progfile.write(pat+'\n')
                         continue
 
@@ -213,8 +214,10 @@ class PatientPreprocessor():
                             for key in list(transformed_structs.keys()):
                                 struct = transformed_structs[key]
                                 sitk.WriteImage(struct, (self.clean_set/pat/anat_study/'rt'/key))
+                            if (self.clean_set/pat/anat_study/'anat'/t1).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/pat/anat_study/'anat'/t1}''')
                             sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
+                                if (self.clean_set/pat/anat_study/'anat'/t2).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/pat/anat_study/'anat'/t2}''')
                                 sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
                             self.log.success(f'Moved structs, dose and anatomical images from study {anat_study} and struct study {rt_study} to t0')
 
@@ -234,8 +237,10 @@ class PatientPreprocessor():
 
                             t1_trans, t2_trans = self._register_mr2mr(t0_image, t0_mask, t1_image, t1_mask, t2_image)
                             
+                            if (self.clean_set/pat/anat_study/'anat'/t1).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/pat/anat_study/'anat'/t1}''')
                             sitk.WriteImage(t1_trans, self.clean_set/pat/anat_study/'anat'/t1)
                             if t2 is not None:
+                                if (self.clean_set/pat/anat_study/'anat'/t2).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/pat/anat_study/'anat'/t2}''')
                                 sitk.WriteImage(t2_trans, self.clean_set/pat/anat_study/'anat'/t2)
                             self.log.success(f'Moved anatomical images from study {anat_study} to t0')
                     
@@ -312,7 +317,7 @@ class PatientPreprocessor():
                 if cropped_dates[keys[k-1]] + timedelta(days=6*30) < cropped_dates[key] and cropped_dict[key] is None:
                     del cropped_dates[key]
                     del cropped_dict[key]
-                    
+            self.log.warning(f'Cropped patient history dict from {study_dict}\nto {cropped_dict}')
             return cropped_dict, cropped_dates
 
         else: # treatment day list fallback, could also be the 6 month filter fallback
@@ -378,6 +383,7 @@ class PatientPreprocessor():
         Assigns an Anatomical study to each RT study according to the smallest time difference
         If no rts are found in the patient just returns the dict with all values being None
         """
+        #print(f'Got anat list: {ordered_anat}\nGot rt list:{ordered_rt}')
         if any(ordered_rt) and any(ordered_anat):
             study_dict = {}
 
@@ -388,13 +394,17 @@ class PatientPreprocessor():
             for rt in rt_dt:
                 rt_refs.append(min(enumerate(anat_dt), key=lambda x: abs(x[1] - rt))[0])
             # parse result dictionary
-            rt_indexer = 0
-            for i in range(rt_refs[0], len(ordered_anat)):
-                if i in rt_refs:
-                    study_dict[ordered_anat[i][0]] = ordered_rt[rt_indexer][0]
-                    rt_indexer += 1
-                else:
-                    study_dict[ordered_anat[i][0]] = None
+            assigned = {idx: rt[0] for rt, idx in zip(ordered_rt, rt_refs)}
+            study_dict = {}
+            for i, (anat_id, _) in enumerate(ordered_anat):
+                study_dict[anat_id] = assigned.get(i, None)
+            # rt_indexer = 0
+            # for i in range(rt_refs[0], len(ordered_anat)):
+            #     if i in rt_refs:
+            #         study_dict[ordered_anat[i][0]] = ordered_rt[rt_indexer][0]
+            #         rt_indexer += 1
+            #     else:
+            #         study_dict[ordered_anat[i][0]] = None
                 
             return study_dict
             
@@ -467,7 +477,15 @@ class PatientPreprocessor():
                     if not len(removed) == len(structs):
                         cleaned_rt.append(rtses)
 
-        rt = list(set(cleaned_rt)) # cast to set and back in order to remove duplicates
+        #rt = list(set(cleaned_rt)) # cast to set and back in order to remove duplicates this bullshit randomizes the order fuck off
+
+        seen = set()
+        rt = []
+        for item in cleaned_rt:
+            if item not in seen:
+                seen.add(item)
+                rt.append(item)
+        rt.sort(key=lambda x: x[1])  # Ensure chronological order
         #if rt != cleaned_rt: self.log.warning("found duplicates in patient!")
         # Filter out directories that are within 14 days of a more recent one
         filtered_dirs = []
@@ -505,6 +523,7 @@ class PatientPreprocessor():
 
     ################################################ Registration Utilities
     def _load_image(self, path, resample=(1,1,1)):
+        #print('reading image from path', path)
         img = sitk.ReadImage(path)
         if resample is not None and not img.GetSpacing == resample:
             new_size = [
@@ -584,7 +603,7 @@ class PatientPreprocessor():
         fixed_mask = sitk2ants(fixed_mask)
         moving_mask = sitk2ants(moving_mask)
 
-        reg = ants.registration(fixed_mask, moving_mask, 'Affine')
+        reg = ants.registration(fixed_mask, moving_mask, 'Rigid', initial_transform=None)
 
         # warp and reconvert structure sets
         transformed_structs = {}
@@ -619,7 +638,7 @@ class PatientPreprocessor():
         fixed_mask = sitk2ants(fixed_mask)
         moving_t1 = sitk2ants(moving_t1)
         
-        reg = ants.registration(fixed, moving_t1, mask=fixed_mask, type_of_transform='Affine', moving_mask=sitk2ants(moving_t1_mask))
+        reg = ants.registration(fixed, moving_t1, mask=fixed_mask, type_of_transform='TRSAA', moving_mask=sitk2ants(moving_t1_mask), initial_transform=None)
         transformed_t1 = ants2sitk(ants.apply_transforms(fixed, moving_t1, transformlist=reg['fwdtransforms'], interpolator='nearestNeighbor'))
         if moving_t2 is not None:
             moving_t2 = sitk2ants(moving_t2)
