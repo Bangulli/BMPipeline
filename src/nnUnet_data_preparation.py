@@ -291,7 +291,7 @@ class DatasetReconverter():
         self.met_dir_name = met_dir_name
 
     def execute(self, mode='binary'):
-        mapping = pd.read_csv(self.target_set/'nnUNet_mapping.csv')
+        mapping = pd.read_csv(self.target_set/f'nnUNet_mapping_task={mode}.csv')
         if self.source_set.is_dir():
             self._execute_directory(self.source_set, mapping, mode)
         else:

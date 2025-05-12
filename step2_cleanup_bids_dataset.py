@@ -27,10 +27,10 @@ if __name__ == '__main__':
     # converter = RTS2BIDS(raw_set, bids_set)
     # converter.execute()
 
-    os.makedirs(processed_set, exist_ok=True)
-    # ## Find relevant patients in Bids set and extract relevant dates and structures and then register everything
-    register = PatientPreprocessor(bids_set, processed_set, inclusion_criterion={'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': np.inf, 'rtstructs present >=': 1})
-    register.execute()
+    # os.makedirs(processed_set, exist_ok=True)
+    # # ## Find relevant patients in Bids set and extract relevant dates and structures and then register everything
+    # register = PatientPreprocessor(bids_set, processed_set, inclusion_criterion={'studies >=': 4, 'obersvation period >=': 300, 'avg study interval <=': np.inf, 'rtstructs present >=': 1})
+    # register.execute()
 
     clean_set = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/PROCESSED')
     multimod_reseg = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/nnUNet_Datasets/task_524')
@@ -39,13 +39,13 @@ if __name__ == '__main__':
 
     # Assumes dataset is the result of running src.filter_register.PatientPreprocessor
     # Converts every timepoint to a resg-nnUNet prediction case for multimodal and single modal
-    DC = DatasetConverter(clean_set, None, all_reseg)
-    DC.execute(task='502')
+    # DC = DatasetConverter(clean_set, None, all_reseg)
+    # DC.execute(task='502')
 
-    # Assumes dataset is the result of src.nnUnet_data_preparation.DatasetConverter
-    # Runs the prediction 
-    RS = Resegmentor(multimod_reseg, reseg, all_reseg)
-    RS.execute(task=['502'])
+    # # Assumes dataset is the result of src.nnUnet_data_preparation.DatasetConverter
+    # # Runs the prediction 
+    # RS = Resegmentor(multimod_reseg, reseg, all_reseg)
+    # RS.execute(task=['502'])
 
     # # Assumes the Resegmentor has been executed before
     # # Pipes the result back into the clean set as a new subfolder 'mets'
