@@ -247,7 +247,7 @@ DICOM:
         ce: gadolinium
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -263,7 +263,7 @@ DICOM:
         ce: gadolinium
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -279,7 +279,7 @@ DICOM:
         acq: tra
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -294,7 +294,7 @@ DICOM:
         rec: nd
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -308,7 +308,7 @@ DICOM:
         ce: gadolinium
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -322,7 +322,7 @@ DICOM:
         ce: gadolinium
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -336,7 +336,7 @@ DICOM:
         ce: gadolinium
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -350,7 +350,7 @@ DICOM:
         acq: tra
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -362,7 +362,7 @@ DICOM:
         ce: gadolinium
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
         ContrastBolusIngredient: GADOLINIUM
@@ -373,7 +373,7 @@ DICOM:
       bids:
         run: <<1>>
         part: ['', mag, phase, real, imag, 0]
-        suffix: T1w
+        suffix: ContrastT1w
       meta:
         <<: *anat_meta
     ##################### t1 no contrast

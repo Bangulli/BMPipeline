@@ -136,13 +136,11 @@ class PatientTimeSeries():
 
     
 class DatasetConverter():
-    def __init__(self, source_set: pl.Path, target_set_multimod: pl.Path, target_set: pl.Path):
+    def __init__(self, source_set: pl.Path):
         self.source_set = source_set
-        self.target_set_multimod = target_set_multimod
-        self.target_set = target_set
         self.log = Printer()
 
-    def execute(self, task='502'):
+    def execute(self, output, task='502'):
         """
         Runs the Dataset conversion, looks for all image files or RTS folders in the source set
         source set is expected to be Processed by filter_register.PatientProcessor
@@ -151,9 +149,15 @@ class DatasetConverter():
         write_header = not (self.source_set/'nnUNet_mapping.csv').is_file()
         header = ['source_study_path', 'nnUNet_UID', 'nnUNet_set_dir']
         with open(self.source_set/f'nnUNet_mapping_task={task}.csv', 'a+') as mapping:
-            if self.target_set is not None: os.makedirs(self.target_set, exist_ok=True)
-            if self.target_set_multimod is not None: os.makedirs(self.target_set_multimod, exist_ok=True)
-            self.target_timepoint_identifier = len([file for file in os.listdir(self.target_set) if file.endswith('0000.nii.gz')]) ## used to uniquely identify timepoints in the output directory
+            if isinstance(output, list):
+                for op in output:
+                    os.makedirs(op, exist_ok=True)
+            else: os.makedirs(output, exist_ok=True)
+            if isinstance(output, list):
+                self.target_timepoint_identifier = 0
+                for op in output:
+                        self.target_timepoint_identifier += len([file for file in os.listdir(op) if file.endswith('0000.nii.gz')])
+            else: self.target_timepoint_identifier = len([file for file in os.listdir(output) if file.endswith('0000.nii.gz')]) ## used to uniquely identify timepoints in the output directory
             ## get processed files
             mapping.seek(0)
             processed_files = [pat.split(',')[0] for pat in mapping.readlines()] # gets the source paths from the mapping file
@@ -201,28 +205,28 @@ class DatasetConverter():
                         raise RuntimeError(f'Expected a tuple of sitk.Image and str as TimePoint.get_mets() result but got {type(mets)} instead')
 
                     if task == '524':
-                        if self.target_set_multimod is None or self.target_set is None: raise ValueError("Did not receive valid paths")
+                        if not isinstance(output, list): raise RuntimeError("Expected output to be a list of paths for task 524. [pl.Path(set524), pl.Path(set504)] to run pred when t2 is missing")
                         # symlink to destination based on modality presence
                         if t2 is not None:
-                            csv_row['nnUNet_set_dir'] = self.target_set_multimod
-                            (self.target_set_multimod/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                            (self.target_set_multimod/(nnUNet_UID+t2[1])).symlink_to(t2[0])
-                            sitk.WriteImage(mets[0], self.target_set_multimod/(nnUNet_UID+mets[1]))
+                            csv_row['nnUNet_set_dir'] = output[0]
+                            (self.output[0]/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                            (self.output[0]/(nnUNet_UID+t2[1])).symlink_to(t2[0])
+                            sitk.WriteImage(mets[0], self.output[0]/(nnUNet_UID+mets[1]))
                         else:
-                            csv_row['nnUNet_set_dir'] = self.target_set
-                            (self.target_set/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                            sitk.WriteImage(mets[0], self.target_set/(nnUNet_UID+mets[1]))
+                            csv_row['nnUNet_set_dir'] = self.output[1]
+                            (self.output[1]/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                            sitk.WriteImage(mets[0], self.output[1]/(nnUNet_UID+mets[1]))
                     elif task == '504':
-                        if self.target_set is None: raise ValueError("Did not receive valid path")
-                        csv_row['nnUNet_set_dir'] = self.target_set
-                        (self.target_set/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                        sitk.WriteImage(mets[0], self.target_set/(nnUNet_UID+mets[1]))
+                        if self.output is None: raise ValueError("Did not receive valid path")
+                        csv_row['nnUNet_set_dir'] = self.output
+                        (self.output/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                        sitk.WriteImage(mets[0], self.output/(nnUNet_UID+mets[1]))
 
                     elif task == '502':
-                        if self.target_set is None: raise ValueError("Did not receive valid path")
-                        csv_row['nnUNet_set_dir'] = self.target_set
-                        (self.target_set/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                        sitk.WriteImage(mets[0], self.target_set/(nnUNet_UID+mets[1]))
+                        if self.output is None: raise ValueError("Did not receive valid path")
+                        csv_row['nnUNet_set_dir'] = self.output
+                        (self.output/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                        sitk.WriteImage(mets[0], self.output/(nnUNet_UID+mets[1]))
 
                     map_writer.writerow(csv_row)
 

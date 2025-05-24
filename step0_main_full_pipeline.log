@@ -187,3 +187,563 @@ During handling of the above exception, another exception occurred:
 2025-04-15 11:26:01,932 - INFO - [0m1 Patients fulfilled the inclusion criterion[0m
 2025-04-15 11:26:01,932 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
 2025-04-15 11:33:10,095 - INFO - == running multimodal prediction on source data /mnt/nas6/data/Target/batch_copy/rerun_test/multimod== saved multimodal prediction on source data /mnt/nas6/data/Target/batch_copy/rerun_test/multimod_predictions== skipping singlemodal prediction, found no files in directory[0m[31m[4m[1mFAIL[0m:[0m Could not find resegmentation results at path /mnt/nas6/data/Target/batch_copy/rerun_test/singlemod_predictions[0m[0m
+2025-05-24 15:23:52,191 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180307091258/1_NoSeriesDescription[0m[0m
+2025-05-24 15:23:52,211 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20180307091258 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 15:23:52,997 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Found matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTSS[0m[0m
+2025-05-24 15:23:53,839 - ERROR - /home/lorenz/.venv/lib/python3.10/site-packages/pydicom/valuerep.py:290: UserWarning: Invalid value for VR UI: '1.2.826.0.1.3680043.2.146.2.20.PAT-0005.1800226159.0'. Please see <https://dicom.nema.org/medical/dicom/current/output/html/part05.html#table_6.2-1> for allowed values for each VR.
+  warnings.warn(msg)
+2025-05-24 15:23:57,872 - INFO - [0m[31m[4m[1mFAIL[0m:[0m RTSTRUCT conversion failed for RTSS at path /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTSS[0m[0m
+2025-05-24 15:24:07,382 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined corresponding RTDose file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTDOSE/RD.1.2.840.114358.14038002793810.20181010112643.9749596777232 for RTStruct /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTSS/RS.1.2.840.114358.14038002793810.20181010112641.9749591690261[0m[0m
+2025-05-24 15:24:08,230 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Found matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTSS[0m[0m
+2025-05-24 15:24:08,629 - ERROR - /home/lorenz/.venv/lib/python3.10/site-packages/pydicom/valuerep.py:290: UserWarning: Invalid value for VR UI: '1.2.826.0.1.3680043.2.146.2.20.PAT-0005.1800269211.0'. Please see <https://dicom.nema.org/medical/dicom/current/output/html/part05.html#table_6.2-1> for allowed values for each VR.
+  warnings.warn(msg)
+2025-05-24 15:24:11,246 - INFO - [0m[31m[4m[1mFAIL[0m:[0m RTSTRUCT conversion failed for RTSS at path /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTSS[0m[0m
+2025-05-24 15:24:17,433 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined corresponding RTDose file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTDOSE/RD.1.2.840.114358.14038002793774.20181218130710.4211221282190 for RTStruct /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTSS/RS.1.2.840.114358.14038002793774.20181218130709.4211218392177[0m[0m
+2025-05-24 15:24:18,023 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204113931/1_RS: Approved Structure Set[0m[0m
+2025-05-24 15:24:18,033 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20181204113931 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 15:24:19,334 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Found matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - RTSS[0m[0m
+2025-05-24 15:24:19,663 - ERROR - /home/lorenz/.venv/lib/python3.10/site-packages/pydicom/valuerep.py:290: UserWarning: Invalid value for VR UI: '1.2.826.0.1.3680043.2.146.2.20.PAT-0005.1900248802.0'. Please see <https://dicom.nema.org/medical/dicom/current/output/html/part05.html#table_6.2-1> for allowed values for each VR.
+  warnings.warn(msg)
+2025-05-24 15:25:14,559 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined RTStruct file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - RTSS/RS.1.2.840.114358.14038002793774.20191031120316.6275089393500[0m[0m
+2025-05-24 15:25:35,239 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined corresponding RTDose file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - SMOOTHED DOSE/RD.1.2.840.114358.14038002793774.20191031120319.6275098034636 for RTStruct /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - RTSS/RS.1.2.840.114358.14038002793774.20191031120316.6275089393500[0m[0m
+2025-05-24 15:25:36,276 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191224090431/1_RS: Approved Structure Set[0m[0m
+2025-05-24 15:25:36,308 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20191224090431 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 15:25:37,618 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20200327144251/1_RS: Approved Structure Set[0m[0m
+2025-05-24 15:25:37,626 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20200327144251 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 15:25:37,891 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20191018125909 would be left empty as no CT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 15:25:49,448 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:25:49,448 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Discarding patient sub-PAT0005[0m[0m
+2025-05-24 15:25:49,461 - INFO - [0m0 Patients fulfilled the inclusion criterion[0m
+2025-05-24 15:25:49,462 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 15:25:49,480 - ERROR - Traceback (most recent call last):
+2025-05-24 15:25:49,480 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 15:25:49,481 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 152, in execute
+2025-05-24 15:25:49,481 - ERROR -     if self.target_set is not None: os.makedirs(self.target_set, exist_ok=True)AttributeError: 'DatasetConverter' object has no attribute 'target_set'
+2025-05-24 15:30:44,340 - INFO - [0m0 Patients fulfilled the inclusion criterion[0m
+2025-05-24 15:30:44,341 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 15:30:44,352 - ERROR - Traceback (most recent call last):
+2025-05-24 15:30:44,352 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 15:30:44,352 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 152, in execute
+2025-05-24 15:30:44,352 - ERROR -     if self.target_set is not None: os.makedirs(self.target_set, exist_ok=True)AttributeError: 'DatasetConverter' object has no attribute 'target_set'
+2025-05-24 15:31:46,187 - INFO - [0m0 Patients fulfilled the inclusion criterion[0m
+2025-05-24 15:31:46,187 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 15:31:46,197 - ERROR - Traceback (most recent call last):
+2025-05-24 15:31:46,198 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 15:31:46,198 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 152, in execute
+2025-05-24 15:31:46,198 - ERROR -     if self.target_set is not None: os.makedirs(self.target_set, exist_ok=True)AttributeError: 'DatasetConverter' object has no attribute 'target_set'
+2025-05-24 15:32:26,216 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:32:26,217 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 15:32:26,217 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:32:26,240 - ERROR - Traceback (most recent call last):
+2025-05-24 15:32:26,240 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 15:32:26,241 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 423, in execute
+2025-05-24 15:32:26,241 - ERROR -     job.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 45, in execute
+2025-05-24 15:32:26,241 - ERROR -     t1, t2 = self._filter_anat(t1, t1c, t2, self.pat, key)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 185, in _filter_anat
+2025-05-24 15:32:26,241 - ERROR -     else: t1_filtered = self._filter_list(t1, pat, ses)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 202, in _filter_list
+2025-05-24 15:32:26,242 - ERROR -     run_number = self._extract_key_value(image, 'run')AttributeError: 'PatientRegistrationJob' object has no attribute '_extract_key_value'
+2025-05-24 15:33:34,224 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:33:34,224 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 15:33:34,224 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:33:34,240 - ERROR - Traceback (most recent call last):
+2025-05-24 15:33:34,240 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 15:33:34,241 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 427, in execute
+2025-05-24 15:33:34,241 - ERROR -     job.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 45, in execute
+2025-05-24 15:33:34,241 - ERROR -     t1, t2 = self._filter_anat(t1, t1c, t2, self.pat, key)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 189, in _filter_anat
+2025-05-24 15:33:34,241 - ERROR -     else: t1_filtered = self._filter_list(t1, pat, ses)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 208, in _filter_list
+2025-05-24 15:33:34,242 - ERROR -     has_sub = self._has_sub_in_json(str(self.bids_set/pat/ses/'anat'/image))AttributeError: 'PatientRegistrationJob' object has no attribute '_has_sub_in_json'
+2025-05-24 15:34:26,213 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:34:26,214 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 15:34:26,214 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:34:26,326 - ERROR - Traceback (most recent call last):
+2025-05-24 15:34:26,326 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 15:34:26,326 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 440, in execute
+2025-05-24 15:34:26,326 - ERROR -     job.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 62, in execute
+2025-05-24 15:34:26,327 - ERROR -     if (self.bids_set/self.pat/anat_study/'anat').is_dir() and t0_image is None:UnboundLocalError: local variable 't0_image' referenced before assignment
+2025-05-24 15:36:15,550 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:36:15,551 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 15:36:15,551 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:36:15,610 - ERROR - Traceback (most recent call last):
+2025-05-24 15:36:15,611 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 15:36:15,612 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 439, in execute
+2025-05-24 15:36:15,612 - ERROR -     job.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 65, in execute
+2025-05-24 15:36:15,612 - ERROR -     self.log.tagged_print('INFO', f'Identified t0 as study day {anat_study} for patient {self.pat}', self.info_format)AttributeError: 'PatientRegistrationJob' object has no attribute 'log'
+2025-05-24 15:44:41,648 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:44:41,648 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 15:44:41,649 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:44:41,649 - ERROR - Exception ignored in: <function Printer.__del__ at 0x7f11e4177130>Traceback (most recent call last):
+2025-05-24 15:44:41,649 - ERROR -   File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/PrettyPrint/output.py", line 61, in __del__
+2025-05-24 15:44:41,649 - ERROR -     if self.log is not None:AttributeError: 'Printer' object has no attribute 'log'
+2025-05-24 15:44:41,652 - ERROR - Traceback (most recent call last):
+2025-05-24 15:44:41,652 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 15:44:41,652 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 439, in execute
+2025-05-24 15:44:41,653 - ERROR -     job = PatientRegistrationJob(self.bids_set, self.clean_set, pat, study_dict, keys)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 22, in __init__
+2025-05-24 15:44:41,653 - ERROR -     self.log = Printer('txt', False, 'RegistrationJob', location=clean_set/pat)TypeError: Printer.__init__() got an unexpected keyword argument 'location'
+2025-05-24 15:46:38,742 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:46:38,743 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 15:46:38,743 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:46:38,744 - ERROR - Exception ignored in: <function Printer.__del__ at 0x7f139eb93130>Traceback (most recent call last):
+2025-05-24 15:46:38,744 - ERROR -   File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/PrettyPrint/output.py", line 61, in __del__
+2025-05-24 15:46:38,745 - ERROR -     if self.log is not None:AttributeError: 'Printer' object has no attribute 'log'
+2025-05-24 15:46:38,749 - ERROR - Traceback (most recent call last):
+2025-05-24 15:46:38,749 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 15:46:38,750 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 439, in execute
+2025-05-24 15:46:38,750 - ERROR -     job = PatientRegistrationJob(self.bids_set, self.clean_set, pat, study_dict, keys)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 22, in __init__
+2025-05-24 15:46:38,750 - ERROR -     self.log = Printer('txt', False, 'RegistrationJob', location=clean_set/pat)TypeError: Printer.__init__() got an unexpected keyword argument 'location'
+2025-05-24 15:49:24,282 - ERROR - Traceback (most recent call last):
+2025-05-24 15:49:24,283 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 93, in <module>
+2025-05-24 15:49:24,283 - ERROR -     register = FilterRegisterMain(bids_set, processed_set)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 388, in __init__
+2025-05-24 15:49:24,283 - ERROR -     self.log = Printer(log_type='txt', log_prefix='Filter-Register')  File "/home/lorenz/.venv/lib/python3.10/site-packages/PrettyPrint/output.py", line 26, in __init__
+2025-05-24 15:49:24,283 - ERROR -     self.log = open(filename, 'w')PermissionError: [Errno 13] Permission denied: '/20250524-1549_Filter-Register_PrettyPrint_Autolog.txt'
+2025-05-24 15:49:24,409 - ERROR - Exception ignored in: <function Printer.__del__ at 0x7fdbf128ef80>Traceback (most recent call last):
+2025-05-24 15:49:24,409 - ERROR -   File "/home/lorenz/.venv/lib/python3.10/site-packages/PrettyPrint/output.py", line 69, in __del__
+2025-05-24 15:49:24,409 - ERROR -     if self.log is not None:AttributeError: 'Printer' object has no attribute 'log'
+2025-05-24 15:50:25,888 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:50:25,889 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 15:50:25,889 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 15:50:25,889 - ERROR - Exception ignored in: <function Printer.__del__ at 0x7f4204023130>Traceback (most recent call last):
+2025-05-24 15:50:25,889 - ERROR -   File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/PrettyPrint/output.py", line 61, in __del__
+2025-05-24 15:50:25,889 - ERROR -     if self.log is not None:AttributeError: 'Printer' object has no attribute 'log'
+2025-05-24 15:50:25,890 - ERROR - Traceback (most recent call last):
+2025-05-24 15:50:25,890 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 15:50:25,890 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 439, in execute
+2025-05-24 15:50:25,890 - ERROR -     job = PatientRegistrationJob(self.bids_set, self.clean_set, pat, study_dict, keys)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 22, in __init__
+2025-05-24 15:50:25,890 - ERROR -     self.log = Printer('txt', False, 'RegistrationJob', location=clean_set/pat)TypeError: Printer.__init__() got an unexpected keyword argument 'location'
+2025-05-24 16:02:14,240 - ERROR - Traceback (most recent call last):
+2025-05-24 16:02:14,240 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 93, in <module>
+2025-05-24 16:02:14,240 - ERROR -     register = FilterRegisterMain(bids_set, processed_set)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 388, in __init__
+2025-05-24 16:02:14,240 - ERROR -     self.log = Printer(log_type='txt', log_prefix='Filter-Register')  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/PrettyPrint/output.py", line 26, in __init__
+2025-05-24 16:02:14,240 - ERROR -     self.log = open(filename, 'w')PermissionError: [Errno 13] Permission denied: '/20250524-1602_Filter-Register_PrettyPrint_Autolog.txt'
+2025-05-24 16:02:14,330 - ERROR - Exception ignored in: <function Printer.__del__ at 0x7f8e02d9f2e0>Traceback (most recent call last):
+2025-05-24 16:02:14,331 - ERROR -   File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/PrettyPrint/output.py", line 69, in __del__
+2025-05-24 16:02:14,331 - ERROR -     if self.log is not None:AttributeError: 'Printer' object has no attribute 'log'
+2025-05-24 16:06:21,995 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 16:06:21,995 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 16:06:21,995 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 16:06:22,068 - ERROR - Traceback (most recent call last):
+2025-05-24 16:06:22,068 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 16:06:22,068 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 440, in execute
+2025-05-24 16:06:22,068 - ERROR -     job.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 66, in execute
+2025-05-24 16:06:22,068 - ERROR -     self.log.tagged_print('INFO', f'Identified t0 as study day {anat_study} for patient {self.pat}', self.info_format)AttributeError: 'PatientRegistrationJob' object has no attribute 'info_format'
+2025-05-24 16:09:45,748 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 16:09:45,748 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 16:09:45,748 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 16:09:45,754 - INFO - [0m[34m[1m[4mINFO[0m:[0m Identified t0 as study day ses-20191012115327 for patient sub-PAT0005[0m[0m
+2025-05-24 16:11:22,500 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Overwriting T1 image at location /mnt/nas6/data/Target/batch_copy/Gado_stability_test/processed/sub-PAT0005/ses-20191012115327/anat/sub-PAT0005_ses-20191012115327_acq-sag_run-2_T1w.nii.gz[0m[0m
+2025-05-24 16:11:24,529 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Overwriting T1 image at location /mnt/nas6/data/Target/batch_copy/Gado_stability_test/processed/sub-PAT0005/ses-20191012115327/anat/sub-PAT0005_ses-20191012115327_acq-tra_rec-nd_run-1_T2w.nii.gz[0m[0m
+2025-05-24 16:11:25,427 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved structs, dose and anatomical images from study ses-20191012115327 and struct study ses-20191012105420 to t0[0m[0m
+2025-05-24 16:12:26,119 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved anatomical images from study ses-20191227083455 to t0[0m[0m
+2025-05-24 16:13:14,891 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved anatomical images from study ses-20200218135546 to t0[0m[0m
+2025-05-24 16:13:14,923 - INFO - [0m1 Patients fulfilled the inclusion criterion[0m
+2025-05-24 16:13:14,923 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 16:13:14,968 - ERROR - Traceback (most recent call last):
+2025-05-24 16:13:14,968 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 16:13:14,969 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 152, in execute
+2025-05-24 16:13:14,969 - ERROR -     if self.target_set is not None: os.makedirs(self.target_set, exist_ok=True)AttributeError: 'DatasetConverter' object has no attribute 'target_set'
+2025-05-24 16:24:09,814 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180307091258/1_NoSeriesDescription[0m[0m
+2025-05-24 16:24:09,823 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20180307091258 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 16:24:10,814 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Found matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTSS[0m[0m
+2025-05-24 16:24:11,760 - ERROR - /home/lorenz/.venv/lib/python3.10/site-packages/pydicom/valuerep.py:290: UserWarning: Invalid value for VR UI: '1.2.826.0.1.3680043.2.146.2.20.PAT-0005.1800226159.0'. Please see <https://dicom.nema.org/medical/dicom/current/output/html/part05.html#table_6.2-1> for allowed values for each VR.
+  warnings.warn(msg)
+2025-05-24 16:24:17,665 - INFO - [0m[31m[4m[1mFAIL[0m:[0m RTSTRUCT conversion failed for RTSS at path /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTSS[0m[0m
+2025-05-24 16:24:27,073 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined corresponding RTDose file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTDOSE/RD.1.2.840.114358.14038002793810.20181010112643.9749596777232 for RTStruct /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20180926102757/0_PTV1_Brain_Final_76min - RTSS/RS.1.2.840.114358.14038002793810.20181010112641.9749591690261[0m[0m
+2025-05-24 16:24:27,769 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Found matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTSS[0m[0m
+2025-05-24 16:24:28,394 - ERROR - /home/lorenz/.venv/lib/python3.10/site-packages/pydicom/valuerep.py:290: UserWarning: Invalid value for VR UI: '1.2.826.0.1.3680043.2.146.2.20.PAT-0005.1800269211.0'. Please see <https://dicom.nema.org/medical/dicom/current/output/html/part05.html#table_6.2-1> for allowed values for each VR.
+  warnings.warn(msg)
+2025-05-24 16:24:31,372 - INFO - [0m[31m[4m[1mFAIL[0m:[0m RTSTRUCT conversion failed for RTSS at path /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTSS[0m[0m
+2025-05-24 16:24:37,178 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined corresponding RTDose file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTDOSE/RD.1.2.840.114358.14038002793774.20181218130710.4211221282190 for RTStruct /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204111427/0_Brain_20Gy_30min_final - RTSS/RS.1.2.840.114358.14038002793774.20181218130709.4211218392177[0m[0m
+2025-05-24 16:24:38,155 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20181204113931/1_RS: Approved Structure Set[0m[0m
+2025-05-24 16:24:38,177 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20181204113931 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 16:24:39,437 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Found matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - RTSS[0m[0m
+2025-05-24 16:24:39,865 - ERROR - /home/lorenz/.venv/lib/python3.10/site-packages/pydicom/valuerep.py:290: UserWarning: Invalid value for VR UI: '1.2.826.0.1.3680043.2.146.2.20.PAT-0005.1900248802.0'. Please see <https://dicom.nema.org/medical/dicom/current/output/html/part05.html#table_6.2-1> for allowed values for each VR.
+  warnings.warn(msg)
+2025-05-24 16:25:34,004 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined RTStruct file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - RTSS/RS.1.2.840.114358.14038002793774.20191031120316.6275089393500[0m[0m
+2025-05-24 16:25:53,546 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Coined corresponding RTDose file /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - SMOOTHED DOSE/RD.1.2.840.114358.14038002793774.20191031120319.6275098034636 for RTStruct /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191012105420/0_Tronc_6Gy_38min_MCfinal - RTSS/RS.1.2.840.114358.14038002793774.20191031120316.6275089393500[0m[0m
+2025-05-24 16:25:54,240 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20191224090431/1_RS: Approved Structure Set[0m[0m
+2025-05-24 16:25:54,247 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20191224090431 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 16:25:55,668 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Could not find matching CT for RTSS /mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw/sub-PAT-0005/ses-20200327144251/1_RS: Approved Structure Set[0m[0m
+2025-05-24 16:25:55,669 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20200327144251 would be left empty as no RT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 16:25:55,737 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Directory /mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids/sub-PAT0005/ses-20191018125909 would be left empty as no CT can be converted, I`m removing it from the BIDS set.[0m[0m
+2025-05-24 16:26:06,021 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 16:26:06,022 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 16:26:06,022 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 16:26:06,107 - INFO - [0m[34m[1m[4mINFO[0m:[0m Identified t0 as study day ses-20191012115327 for patient sub-PAT0005[0m[0m
+2025-05-24 16:27:45,999 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Overwriting T1 image at location /mnt/nas6/data/Target/batch_copy/Gado_stability_test/processed/sub-PAT0005/ses-20191012115327/anat/sub-PAT0005_ses-20191012115327_run-2_ContrastT1w.nii.gz[0m[0m
+2025-05-24 16:27:47,736 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Overwriting T1 image at location /mnt/nas6/data/Target/batch_copy/Gado_stability_test/processed/sub-PAT0005/ses-20191012115327/anat/sub-PAT0005_ses-20191012115327_acq-tra_rec-nd_run-1_T2w.nii.gz[0m[0m
+2025-05-24 16:27:48,525 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved structs, dose and anatomical images from study ses-20191012115327 and struct study ses-20191012105420 to t0[0m[0m
+2025-05-24 16:28:52,412 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved anatomical images from study ses-20191227083455 to t0[0m[0m
+2025-05-24 16:29:43,708 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved anatomical images from study ses-20200218135546 to t0[0m[0m
+2025-05-24 16:29:43,755 - INFO - [0m1 Patients fulfilled the inclusion criterion[0m
+2025-05-24 16:29:43,756 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 16:29:43,777 - ERROR - Traceback (most recent call last):
+2025-05-24 16:29:43,778 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 16:29:43,778 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 156, in execute
+2025-05-24 16:29:43,778 - ERROR -     self.target_timepoint_identifier = len([file for file in os.listdir(self.target_set) if file.endswith('0000.nii.gz')]) ## used to uniquely identify timepoints in the output directoryAttributeError: 'DatasetConverter' object has no attribute 'target_set'
+2025-05-24 16:53:17,629 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-05-24 16:53:41,381 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}
+to {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 16:53:41,382 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0015, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 16:53:41,382 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 16:53:41,383 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0015[0m[0m
+2025-05-24 16:54:49,485 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20200903090321': None, 'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}
+to {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 16:54:49,485 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0016, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 16:54:49,485 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 16:54:49,494 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0016[0m[0m
+2025-05-24 16:54:49,495 - INFO - [0m[34m[1m[4mINFO[0m:[0m Running registrations[0m[0m
+2025-05-24 16:54:49,679 - ERROR - joblib.externals.loky.process_executor._RemoteTraceback: 
+"""
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/externals/loky/backend/queues.py", line 159, in _feed
+    obj_ = dumps(obj, reducers=reducers)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/externals/loky/backend/reduction.py", line 215, in dumps
+    dump(obj, buf, reducers=reducers, protocol=protocol)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/externals/loky/backend/reduction.py", line 208, in dump
+    _LokyPickler(file, reducers=reducers, protocol=protocol).dump(obj)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/externals/cloudpickle/cloudpickle.py", line 1245, in dump
+    return super().dump(obj)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/externals/cloudpickle/cloudpickle.py", line 931, in _file_reduce
+    raise pickle.PicklingError(
+_pickle.PicklingError: Cannot pickle files that are not opened for reading: w
+"""
+The above exception was the direct cause of the following exception:
+2025-05-24 16:54:49,679 - ERROR - Traceback (most recent call last):
+2025-05-24 16:54:49,679 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 16:54:49,680 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 464, in execute
+2025-05-24 16:54:49,680 - ERROR -     results = Parallel(n_jobs=self.n_jobs)(delayed(job.execute)() for job in jobs)  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/parallel.py", line 2007, in __call__
+2025-05-24 16:54:49,681 - ERROR -     return output if self.return_generator else list(output)  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/parallel.py", line 1650, in _get_outputs
+2025-05-24 16:54:49,681 - ERROR -     yield from self._retrieve()  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/parallel.py", line 1754, in _retrieve
+2025-05-24 16:54:49,682 - ERROR -     self._raise_error_fast()  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/parallel.py", line 1789, in _raise_error_fast
+2025-05-24 16:54:49,683 - ERROR -     error_job.get_result(self.timeout)  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/parallel.py", line 745, in get_result
+2025-05-24 16:54:49,687 - ERROR -     return self._return_or_raise()  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/joblib/parallel.py", line 763, in _return_or_raise
+2025-05-24 16:54:49,687 - ERROR -     raise self._result_pickle.PicklingError: Could not pickle the task to send it to the workers.
+2025-05-24 16:57:35,058 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-05-24 16:58:02,142 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}
+to {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 16:58:02,142 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0015, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 16:58:02,142 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 16:58:02,155 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0015[0m[0m
+2025-05-24 16:59:02,826 - ERROR - Traceback (most recent call last):
+2025-05-24 16:59:02,826 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 94, in <module>
+2025-05-24 16:59:02,826 - ERROR -     register.execute()  File "/home/lorenz/BMPipeline/src/filter_register.py", line 433, in execute
+2025-05-24 16:59:02,827 - ERROR -     ordered_anat, ordered_rt = self._clean_redundancies(ordered_studies, pat)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 639, in _clean_redundancies
+2025-05-24 16:59:02,827 - ERROR -     cur_struct = self._load_image(self.bids_set/pat/rtses[0]/'rt'/rtset/struct)  File "/home/lorenz/BMPipeline/src/filter_register.py", line 702, in _load_image
+2025-05-24 16:59:02,827 - ERROR -     img = sitk.ReadImage(path)  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/SimpleITK/extra.py", line 384, in ReadImage
+2025-05-24 16:59:02,828 - ERROR -     return reader.Execute()  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/SimpleITK/SimpleITK.py", line 8502, in Execute
+2025-05-24 16:59:02,829 - ERROR -     return _SimpleITK.ImageFileReader_Execute(self)KeyboardInterrupt
+2025-05-24 17:00:29,643 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-05-24 17:00:37,924 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:00:37,924 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:00:37,924 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:00:37,924 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0005[0m[0m
+2025-05-24 17:01:05,526 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}
+to {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 17:01:05,527 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0015, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:01:05,527 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 17:01:05,527 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0015[0m[0m
+2025-05-24 17:02:13,881 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20200903090321': None, 'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}
+to {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 17:02:13,881 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0016, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:02:13,881 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 17:02:13,881 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0016[0m[0m
+2025-05-24 17:02:13,881 - INFO - [0m[34m[1m[4mINFO[0m:[0m Running registrations[0m[0m
+2025-05-24 17:02:32,104 - INFO - [0m[34m[1m[4mINFO[0m:[0m Registration completed in 0.0h 0.0min 18.22242569923401s[0m[0m
+2025-05-24 17:02:32,104 - INFO - [0m[34m[1m[4mINFO[0m:[0m Checking for errors[0m[0m
+2025-05-24 17:02:32,105 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0005, message:
+sub-PAT0005--FAILED with exeption Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 270, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 363, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/data_iterators.py", line 111, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+[0m[0m
+2025-05-24 17:02:32,105 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0015, message:
+sub-PAT0015--FAILED with exeption Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 270, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 363, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/data_iterators.py", line 111, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+[0m[0m
+2025-05-24 17:02:32,105 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0016, message:
+sub-PAT0016--FAILED with exeption Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 270, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 363, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/data_iterators.py", line 111, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+[0m[0m
+2025-05-24 17:02:32,106 - INFO - [0m3 Patients fulfilled the inclusion criterion[0m
+2025-05-24 17:02:32,106 - INFO - [0mCaught exceptions in patients ['sub-PAT0005', 'sub-PAT0015', 'sub-PAT0016'], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 17:02:32,111 - ERROR - Traceback (most recent call last):
+2025-05-24 17:02:32,111 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 17:02:32,112 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 181, in execute
+2025-05-24 17:02:32,112 - ERROR -     raise RuntimeError(f'Expected t0 to have RTs but could not find any for patient {pat} in study {ordered_studies[0]}')RuntimeError: Expected t0 to have RTs but could not find any for patient sub-PAT0005 in study ses-20191012115327
+2025-05-24 17:09:40,613 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-05-24 17:09:47,615 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:09:47,615 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:09:47,615 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:09:47,615 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0005[0m[0m
+2025-05-24 17:10:16,518 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}
+to {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 17:10:16,518 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0015, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:10:16,519 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 17:10:16,519 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0015[0m[0m
+2025-05-24 17:11:25,373 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20200903090321': None, 'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}
+to {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 17:11:25,373 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0016, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:11:25,374 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 17:11:25,374 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0016[0m[0m
+2025-05-24 17:11:25,374 - INFO - [0m[34m[1m[4mINFO[0m:[0m Running registrations[0m[0m
+2025-05-24 17:11:46,413 - INFO - [0m[34m[1m[4mINFO[0m:[0m Registration completed in 0.0h 0.0min 21.03901171684265s[0m[0m
+2025-05-24 17:11:46,413 - INFO - [0m[34m[1m[4mINFO[0m:[0m Checking for errors[0m[0m
+2025-05-24 17:11:46,414 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0005, message:
+sub-PAT0005--FAILED with exeption Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 270, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 363, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/data_iterators.py", line 111, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+[0m[0m
+2025-05-24 17:11:46,415 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0015, message:
+sub-PAT0015--FAILED with exeption Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 270, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 363, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/data_iterators.py", line 111, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+[0m[0m
+2025-05-24 17:11:46,416 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0016, message:
+sub-PAT0016--FAILED with exeption Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 270, in predict_from_files
+    return self.predict_from_data_iterator(data_iterator, save_probabilities, num_processes_segmentation_export)
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 363, in predict_from_data_iterator
+    for preprocessed in data_iterator:
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/data_iterators.py", line 111, in preprocessing_iterator_fromfiles
+    raise RuntimeError('Background workers died. Look for the error message further up! If there is '
+RuntimeError: Background workers died. Look for the error message further up! If there is none then your RAM was full and the worker was killed by the OS. Use fewer workers or get more RAM in that case!
+[0m[0m
+2025-05-24 17:11:46,421 - INFO - [0m3 Patients fulfilled the inclusion criterion[0m
+2025-05-24 17:11:46,421 - INFO - [0mCaught exceptions in patients ['sub-PAT0005', 'sub-PAT0015', 'sub-PAT0016'], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 17:11:46,484 - ERROR - Traceback (most recent call last):
+2025-05-24 17:11:46,484 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 17:11:46,485 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 181, in execute
+2025-05-24 17:11:46,485 - ERROR -     raise RuntimeError(f'Expected t0 to have RTs but could not find any for patient {pat} in study {ordered_studies[0]}')RuntimeError: Expected t0 to have RTs but could not find any for patient sub-PAT0005 in study ses-20191012115327
+2025-05-24 17:14:28,102 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-05-24 17:14:37,415 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:14:37,416 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:14:37,416 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:14:37,416 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0005[0m[0m
+2025-05-24 17:15:04,371 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}
+to {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 17:15:04,371 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0015, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:15:04,372 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20180903132557': 'ses-20180526150344', 'ses-20181130125344': None, 'ses-20190308092733': None, 'ses-20190324124058': 'ses-20190324094005', 'ses-20190607151045': None, 'ses-20190830133938': None, 'ses-20191111143932': None, 'ses-20200118081600': 'ses-20200120155752', 'ses-20200411074720': None, 'ses-20200619140537': None, 'ses-20200831143825': None, 'ses-20201103115928': None, 'ses-20210124180828': None, 'ses-20210411132907': None, 'ses-20210620155638': None, 'ses-20210803084809': 'ses-20210803121758', 'ses-20211018174002': None}[0m[0m
+2025-05-24 17:15:04,372 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0015[0m[0m
+2025-05-24 17:16:08,949 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20200903090321': None, 'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}
+to {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 17:16:08,950 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0016, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:16:08,950 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20201006120816': 'ses-20201002105852', 'ses-20201215084315': None, 'ses-20210225114400': None, 'ses-20210805083622': 'ses-20210810150504'}[0m[0m
+2025-05-24 17:16:08,950 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Created registration job for sub-PAT0016[0m[0m
+2025-05-24 17:16:08,950 - INFO - [0m[34m[1m[4mINFO[0m:[0m Running registrations[0m[0m
+2025-05-24 17:16:09,320 - INFO - [0m[34m[1m[4mINFO[0m:[0m Identified t0 as study day ses-20191012115327 for patient sub-PAT0005[0m[0m
+2025-05-24 17:16:09,324 - INFO - [0m[34m[1m[4mINFO[0m:[0m Identified t0 as study day ses-20180903132557 for patient sub-PAT0015[0m[0m
+2025-05-24 17:16:20,172 - INFO - [0m[34m[1m[4mINFO[0m:[0m Registration completed in 0.0h 0.0min 11.222234725952148s[0m[0m
+2025-05-24 17:16:20,174 - INFO - [0m[34m[1m[4mINFO[0m:[0m Checking for errors[0m[0m
+2025-05-24 17:16:20,174 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0005, message:
+sub-PAT0005--FAILED with exeption daemonic processes are not allowed to have children
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 258, in predict_from_files
+    self._manage_input_and_output_lists(list_of_lists_or_source_folder,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 177, in _manage_input_and_output_lists
+    list_of_lists_or_source_folder = create_lists_from_splitted_dataset_folder(list_of_lists_or_source_folder,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/utilities/utils.py", line 53, in create_lists_from_splitted_dataset_folder
+    with Pool(processes=num_processes) as pool:
+  File "/usr/lib/python3.10/multiprocessing/context.py", line 119, in Pool
+    return Pool(processes, initializer, initargs, maxtasksperchild,
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 215, in __init__
+    self._repopulate_pool()
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 306, in _repopulate_pool
+    return self._repopulate_pool_static(self._ctx, self.Process,
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 329, in _repopulate_pool_static
+    w.start()
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 118, in start
+    assert not _current_process._config.get('daemon'), \
+AssertionError: daemonic processes are not allowed to have children
+[0m[0m
+2025-05-24 17:16:20,174 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0015, message:
+sub-PAT0015--FAILED with exeption daemonic processes are not allowed to have children
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 258, in predict_from_files
+    self._manage_input_and_output_lists(list_of_lists_or_source_folder,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 177, in _manage_input_and_output_lists
+    list_of_lists_or_source_folder = create_lists_from_splitted_dataset_folder(list_of_lists_or_source_folder,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/utilities/utils.py", line 53, in create_lists_from_splitted_dataset_folder
+    with Pool(processes=num_processes) as pool:
+  File "/usr/lib/python3.10/multiprocessing/context.py", line 119, in Pool
+    return Pool(processes, initializer, initargs, maxtasksperchild,
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 215, in __init__
+    self._repopulate_pool()
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 306, in _repopulate_pool
+    return self._repopulate_pool_static(self._ctx, self.Process,
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 329, in _repopulate_pool_static
+    w.start()
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 118, in start
+    assert not _current_process._config.get('daemon'), \
+AssertionError: daemonic processes are not allowed to have children
+[0m[0m
+2025-05-24 17:16:20,176 - INFO - [0m[31m[4m[1mERROR[0m:[0m Error occured in sub-PAT0016, message:
+sub-PAT0016--FAILED with exeption daemonic processes are not allowed to have children
+Traceback (most recent call last):
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 81, in execute
+    t0_mask = self._segment_image(t0_image, 'mr')
+  File "/home/lorenz/BMPipeline/src/filter_register.py", line 269, in _segment_image
+    mask = totalsegmentator(sitk2nib(image), fast=fast, task='total_mr', quiet=True) # get segmentation brain = 50
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/python_api.py", line 620, in totalsegmentator
+    seg_img, ct_img, stats = nnUNet_predict_image(input, output, task_id, model=model, folds=folds,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 534, in nnUNet_predict_image
+    nnUNetv2_predict(tmp_dir, tmp_dir, task_id, model, folds, trainer, tta,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/totalsegmentator/nnunet.py", line 276, in nnUNetv2_predict
+    predictor.predict_from_files(dir_in, dir_out,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 258, in predict_from_files
+    self._manage_input_and_output_lists(list_of_lists_or_source_folder,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/inference/predict_from_raw_data.py", line 177, in _manage_input_and_output_lists
+    list_of_lists_or_source_folder = create_lists_from_splitted_dataset_folder(list_of_lists_or_source_folder,
+  File "/home/lorenz/BMPipeline/.venv/lib/python3.10/site-packages/nnunetv2/utilities/utils.py", line 53, in create_lists_from_splitted_dataset_folder
+    with Pool(processes=num_processes) as pool:
+  File "/usr/lib/python3.10/multiprocessing/context.py", line 119, in Pool
+    return Pool(processes, initializer, initargs, maxtasksperchild,
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 215, in __init__
+    self._repopulate_pool()
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 306, in _repopulate_pool
+    return self._repopulate_pool_static(self._ctx, self.Process,
+  File "/usr/lib/python3.10/multiprocessing/pool.py", line 329, in _repopulate_pool_static
+    w.start()
+  File "/usr/lib/python3.10/multiprocessing/process.py", line 118, in start
+    assert not _current_process._config.get('daemon'), \
+AssertionError: daemonic processes are not allowed to have children
+[0m[0m
+2025-05-24 17:16:20,177 - INFO - [0m3 Patients fulfilled the inclusion criterion[0m
+2025-05-24 17:16:20,178 - INFO - [0mCaught exceptions in patients ['sub-PAT0005', 'sub-PAT0015', 'sub-PAT0016'], fix and rerun they have not been logged in the progress file.[0m
+2025-05-24 17:16:20,208 - ERROR - Traceback (most recent call last):
+2025-05-24 17:16:20,208 - ERROR -   File "/home/lorenz/BMPipeline/step0_main_full_pipeline.py", line 98, in <module>
+2025-05-24 17:16:20,209 - ERROR -     DC.execute(set502, '502')  File "/home/lorenz/BMPipeline/src/nnUnet_data_preparation.py", line 181, in execute
+2025-05-24 17:16:20,209 - ERROR -     raise RuntimeError(f'Expected t0 to have RTs but could not find any for patient {pat} in study {ordered_studies[0]}')RuntimeError: Expected t0 to have RTs but could not find any for patient sub-PAT0005 in study ses-20191012115327
+2025-05-24 17:18:15,535 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-05-24 17:18:22,510 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Cropped patient history dict from {'ses-20171228194522': None, 'ses-20180921071420': None, 'ses-20181127082846': None, 'ses-20190223074005': None, 'ses-20190503074035': None, 'ses-20190815171835': None, 'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}
+to {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:18:22,511 - INFO - [0m[34m[1m[4mINFO[0m:[0m Processing sub-PAT0005, fulfills criterion: {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': inf, 'rtstructs present >=': 1}[0m[0m
+2025-05-24 17:18:22,511 - INFO - [0m[34m[1m[4mMISC[0m:[0m Patient study matching: {'ses-20191012115327': 'ses-20191012105420', 'ses-20191227083455': None, 'ses-20200218135546': None}[0m[0m
+2025-05-24 17:18:22,537 - INFO - [0m[34m[1m[4mINFO[0m:[0m Identified t0 as study day ses-20191012115327 for patient sub-PAT0005[0m[0m
+2025-05-24 17:20:01,221 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Overwriting T1 image at location /mnt/nas6/data/Target/batch_copy/Gado_stability_test/processed/sub-PAT0005/ses-20191012115327/anat/sub-PAT0005_ses-20191012115327_run-2_ContrastT1w.nii.gz[0m[0m
+2025-05-24 17:20:03,308 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Overwriting T1 image at location /mnt/nas6/data/Target/batch_copy/Gado_stability_test/processed/sub-PAT0005/ses-20191012115327/anat/sub-PAT0005_ses-20191012115327_acq-tra_rec-nd_run-1_T2w.nii.gz[0m[0m
+2025-05-24 17:20:04,119 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved structs, dose and anatomical images from study ses-20191012115327 and struct study ses-20191012105420 to t0[0m[0m
+2025-05-24 17:21:00,319 - INFO - [0m[32m[4m[1mSUCCESS[0m:[0m Moved anatomical images from study ses-20191227083455 to t0[0m[0m

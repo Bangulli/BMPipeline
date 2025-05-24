@@ -4,7 +4,7 @@ import pathlib as pl
 import time
 
 class Resegmentor():
-    def __init__(self, multimodal_set, singlemodal_set, combined_set = None):
+    def __init__(self, multimodal_set=None, singlemodal_set=None, combined_set = None):
         self.multimodal_set = multimodal_set
         self.singlemodal_set = singlemodal_set
         self.combined_set = combined_set
