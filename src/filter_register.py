@@ -13,8 +13,17 @@ import json
 import traceback
 import time
 from joblib import Parallel, delayed
+from concurrent.futures import ProcessPoolExecutor, as_completed
+import multiprocessing
 
 class PatientRegistrationJob():
+    """
+    Registration Task class
+    Handles the registration of a patient.
+    Takes a source and target directory, patient id and the study dict generated int the FilterRegisterMain as constructor args.
+    Designed to be shipped off to a background worker for multiprocessing
+    Since the totalseg uses nnunet with multiprocessing in the backend it has to be shipped off to a ProcessPoolExecutor because joblib doesnt allow child processes in subprocesses
+    """
     def __init__(self, bids_set, clean_set, pat, study_dict, keys):
         self.clean_set = clean_set
         self.bids_set = bids_set
@@ -25,6 +34,7 @@ class PatientRegistrationJob():
     def execute(self):
         self.log = Printer('txt', False, 'RegistrationJob', location=self.clean_set/self.pat)
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
+        start = time.time()
         # iterate studies
         try: 
             t0_image = None
@@ -158,7 +168,7 @@ class PatientRegistrationJob():
                     if (self.clean_set/self.pat/anat_study/'anat'/t1).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/self.pat/anat_study/'anat'/t1}''')
                     sitk.WriteImage(t1_trans, self.clean_set/self.pat/anat_study/'anat'/t1)
                     if t2 is not None:
-                        if (self.clean_set/self.pat/anat_study/'anat'/t2).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/self.pat/anat_study/'anat'/t2}''')
+                        if (self.clean_set/self.pat/anat_study/'anat'/t2).is_file(): self.log.warning(f'''Overwriting T2 image at location {self.clean_set/self.pat/anat_study/'anat'/t2}''')
                         sitk.WriteImage(t2_trans, self.clean_set/self.pat/anat_study/'anat'/t2)
                     self.log.success(f'Moved structs, dose and anatomical images from study {anat_study} and struct study {rt_study} to t0')
 
@@ -181,12 +191,20 @@ class PatientRegistrationJob():
                     if (self.clean_set/self.pat/anat_study/'anat'/t1).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/self.pat/anat_study/'anat'/t1}''')
                     sitk.WriteImage(t1_trans, self.clean_set/self.pat/anat_study/'anat'/t1)
                     if t2 is not None:
-                        if (self.clean_set/self.pat/anat_study/'anat'/t2).is_file(): self.log.warning(f'''Overwriting T1 image at location {self.clean_set/self.pat/anat_study/'anat'/t2}''')
+                        if (self.clean_set/self.pat/anat_study/'anat'/t2).is_file(): self.log.warning(f'''Overwriting T2 image at location {self.clean_set/self.pat/anat_study/'anat'/t2}''')
                         sitk.WriteImage(t2_trans, self.clean_set/self.pat/anat_study/'anat'/t2)
                     self.log.success(f'Moved anatomical images from study {anat_study} to t0')
+            stop = time.time()
+            period = stop-start
+            mins, secs = divmod(period, 60)
+            hrs, mins = divmod(mins, 60)
+            self.log.tagged_print('INFO', f'Executing this job took {hrs}h {mins}min {secs}s', self.info_format)
+            self.log.success("Job executed with no errors to report")
             return f"{self.pat}--SUCCESS"
         except Exception as e:
+            self.log.error(f"{self.pat}--FAILED with exeption {e}\n{traceback.format_exc()}")
             return f"{self.pat}--FAILED with exeption {e}\n{traceback.format_exc()}"
+
 
     def _extract_key_value(self, filename:str, key:str):
         match = re.search(rf"_{key}-(\d+)_", filename)
@@ -391,7 +409,7 @@ class FilterRegisterMain():
         self.study_list = study_list
         self.inclusion_criterion = inclusion_criterion
         self.n_jobs = n_jobs
-        if self.n_jobs != 1: raise RuntimeError("Multiprocessing is not allowed because the internal segmentation engine will lead to errors. This is still a work in progress.")
+        #if self.n_jobs != 1: raise RuntimeError("Multiprocessing is not allowed because the internal segmentation engine will lead to errors. This is still a work in progress.")
         self.log = Printer(log_type='txt', log_prefix='Filter-Register')
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
@@ -428,6 +446,7 @@ class FilterRegisterMain():
             errors = []
             # iterate patients
             self.log.tagged_print('INFO', 'Setting up registration jobs...', self.info_format)
+            start = time.time()
             for pat in patients:
                 try:
                     ordered_studies = self._sort_directories(pat)
@@ -458,20 +477,28 @@ class FilterRegisterMain():
                     self.log(str(e))
                     errors.append(pat)
                     traceback.print_exc()
-            
+            stop = time.time()
+            period = stop-start
+            mins, secs = divmod(period, 60)
+            hrs, mins = divmod(mins, 60)
+            self.log.tagged_print('INFO', f'Setting up jobs took {hrs}h {mins}min {secs}s', self.info_format)
             if any(jobs):
                 self.log.tagged_print('INFO', 'Running registrations', self.info_format)
                 start = time.time()
-                results = Parallel(n_jobs=self.n_jobs, backend='multiprocessing')(delayed(job.execute)() for job in jobs)
-                end = time.time()
-                period = end-start
+                results = []
+                with ProcessPoolExecutor(max_workers=self.n_jobs, mp_context=multiprocessing.get_context("spawn")) as executor:
+                    futures = [executor.submit(job.execute) for job in jobs]
+                    for future in as_completed(futures):
+                        results.append(future.result())
+                stop = time.time()
+                period = stop-start
                 mins, secs = divmod(period, 60)
                 hrs, mins = divmod(mins, 60)
                 self.log.tagged_print('INFO', f'Registration completed in {hrs}h {mins}min {secs}s', self.info_format)
 
                 self.log.tagged_print('INFO', 'Checking for errors', self.info_format)
                 for res in results:
-                    if "SUCCESS" == res[-8:]:
+                    if "SUCCESS" == res.split('--')[-1]:
                         self.log.success(f"""No errors to report for {res.split('--')[0]}""")
                         progfile.write(res.split('--')[0]+'\n')
                     else:
@@ -480,7 +507,8 @@ class FilterRegisterMain():
 
             
             res_files = [f for f in os.listdir(self.clean_set) if f.startswith('sub')]
-            self.log(f'{len(res_files)} Patients fulfilled the inclusion criterion')
+            self.log(f'{len(res_files)} Patients are in the output directory')
+            self.log(f'This run handeled {len(jobs)} patients in multiprocessing')
             self.log(f'Caught exceptions in patients {errors}, fix and rerun they have not been logged in the progress file.')
                 
                 
@@ -551,9 +579,7 @@ class FilterRegisterMain():
         else: # treatment day list fallback, could also be the 6 month filter fallback
             # TODO: actually implement the filter and treatment days observation.
             return study_dict, dates
-    
-
-    
+      
     def _find_corresponding_anat(self, ordered_anat: list, ordered_rt: list):
         """
         Assigns an Anatomical study to each RT study according to the smallest time difference
@@ -589,7 +615,6 @@ class FilterRegisterMain():
             for elem in ordered_anat:
                 study_dict[elem[0]] = None
             return study_dict
-
 
     def _clean_redundancies(self, studies: list, pat: str, delta_days: int = 14):
         """

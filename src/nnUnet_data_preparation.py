@@ -209,24 +209,24 @@ class DatasetConverter():
                         # symlink to destination based on modality presence
                         if t2 is not None:
                             csv_row['nnUNet_set_dir'] = output[0]
-                            (self.output[0]/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                            (self.output[0]/(nnUNet_UID+t2[1])).symlink_to(t2[0])
-                            sitk.WriteImage(mets[0], self.output[0]/(nnUNet_UID+mets[1]))
+                            (output[0]/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                            (output[0]/(nnUNet_UID+t2[1])).symlink_to(t2[0])
+                            sitk.WriteImage(mets[0], output[0]/(nnUNet_UID+mets[1]))
                         else:
-                            csv_row['nnUNet_set_dir'] = self.output[1]
-                            (self.output[1]/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                            sitk.WriteImage(mets[0], self.output[1]/(nnUNet_UID+mets[1]))
+                            csv_row['nnUNet_set_dir'] = output[1]
+                            (output[1]/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                            sitk.WriteImage(mets[0], output[1]/(nnUNet_UID+mets[1]))
                     elif task == '504':
-                        if self.output is None: raise ValueError("Did not receive valid path")
-                        csv_row['nnUNet_set_dir'] = self.output
-                        (self.output/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                        sitk.WriteImage(mets[0], self.output/(nnUNet_UID+mets[1]))
+                        if output is None: raise ValueError("Did not receive valid path")
+                        csv_row['nnUNet_set_dir'] = output
+                        (output/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                        sitk.WriteImage(mets[0], output/(nnUNet_UID+mets[1]))
 
                     elif task == '502':
-                        if self.output is None: raise ValueError("Did not receive valid path")
-                        csv_row['nnUNet_set_dir'] = self.output
-                        (self.output/(nnUNet_UID+t1[1])).symlink_to(t1[0])
-                        sitk.WriteImage(mets[0], self.output/(nnUNet_UID+mets[1]))
+                        if output is None: raise ValueError("Did not receive valid path")
+                        csv_row['nnUNet_set_dir'] = output
+                        (output/(nnUNet_UID+t1[1])).symlink_to(t1[0])
+                        sitk.WriteImage(mets[0], output/(nnUNet_UID+mets[1]))
 
                     map_writer.writerow(csv_row)
 

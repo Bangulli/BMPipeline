@@ -9,11 +9,12 @@ from src.filter_register import FilterRegisterMain
 from src.rts2bids import RTS2BIDS
 from src.nnUnet_data_preparation import DatasetConverter, DatasetReconverter
 from src.nnUnet_predictor import Resegmentor
+from src.parallel_bidscoiner import run_bidscoiner_multiprocess
 import logging
 import sys
 
-raw_set = pl.Path("/mnt/nas6/data/Target/batch_copy/Gado_stability_test/raw") # must be path to parent folder with patient subfolders/.
-bids_set = pl.Path("/mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids") # must be path that doesnt exist, the script creates the target dir itself
+raw_set = pl.Path("/mnt/nas6/data/Target/symlinked_batches_mrct_1000/known_no_issues") # must be path to parent folder with patient subfolders/.
+bids_set = pl.Path("/mnt/nas6/data/Target/batch_copy/Gado_stability_test/bids_mp") # must be path that doesnt exist, the script creates the target dir itself
 processed_set = pl.Path('/mnt/nas6/data/Target/batch_copy/Gado_stability_test/processed')
 path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
 path_classification_results = path_metadata / "classification_results.csv" # path to the result csv of the sequence classifier
@@ -47,11 +48,6 @@ class StreamToLogger:
             self.logger.log(self.level, self.buffer.rstrip())
             self.buffer = ''
 
-
-
-
-
-####### AT THIS POINT BIDSCOINER HAS BEEN RUN; THIS SCRIPT IS TO CONVERT NON-CHUV DATA, RTSTRUCTS AND MOVE EVERYTHING TO A NEW DIRECTORY THAT ONLY CONTAINS NECESSARY DATA
 if __name__ == '__main__':
     # Set up logging
     logging.basicConfig(
@@ -70,27 +66,19 @@ if __name__ == '__main__':
     sys.stdout = StreamToLogger(stdout_logger, logging.INFO)
     sys.stderr = StreamToLogger(stderr_logger, logging.ERROR)
 
-    # if not bids_set.is_dir(): # run the tml_dicom2bids with a template bidsmap, maps data and converts to bids format
-    #     command = [
-    #         "tml_dicom2bids_convert",
-    #         "-i", raw_set,
-    #         "-o", bids_set,
-    #         "-t", bidsmap_path
-    #     ]
-    #     # Run the command
-    #     subprocess.run(command)
-    # else:
-    #     print("BIDS output directory exists, skipped conversion.")
+    ## convert data from raw to bids structure using bidscoiner in multiprocessing
+    run_bidscoiner_multiprocess(raw_set, bids_set, bidsmap_path, 5, 1)
 
-    # ## convert data missed by bidscoiner because it is not from CHUV
-    # coiner = NonCHUVCoiner(raw_set, bids_set, nonchuv_data, path_metadata/'sliceID_seriesPath_mapping.csv')
-    # coiner.execute(True)
-    # ## Convert RTstructs to Bids set
-    # converter = RTS2BIDS(raw_set, bids_set)
-    # converter.execute()
-    # os.makedirs(processed_set, exist_ok=True)
+    ## convert data missed by bidscoiner because it is not from CHUV
+    coiner = NonCHUVCoiner(raw_set, bids_set, nonchuv_data, path_metadata/'sliceID_seriesPath_mapping.csv')
+    coiner.execute(True)
+    ## Convert RTstructs to Bids set
+    converter = RTS2BIDS(raw_set, bids_set)
+    converter.execute()
+    
     ## Find relevant patients in Bids set and extract relevant dates and structures and then register everything
-    register = FilterRegisterMain(bids_set, processed_set, n_jobs = 1)
+    os.makedirs(processed_set, exist_ok=True)
+    register = FilterRegisterMain(bids_set, processed_set, n_jobs = 5)
     register.execute()
     # Assumes dataset is the result of running src.filter_register.PatientPreprocessor
     # Converts every timepoint to a resg-nnUNet prediction case for multimodal and single modal
@@ -100,6 +88,7 @@ if __name__ == '__main__':
     # Runs the prediction 
     RS = Resegmentor(set524, set504, set502)
     RS.execute(task=['502'])
+    
     # Assumes the Resegmentor has been executed before
     # Pipes the result back into the clean set as a new subfolder 'mets'
     # DRC = DatasetReconverter(processed_set, multimod_reseg, 'mets_task504-524')
