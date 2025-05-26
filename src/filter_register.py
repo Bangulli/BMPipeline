@@ -410,7 +410,8 @@ class FilterRegisterMain():
         self.inclusion_criterion = inclusion_criterion
         self.n_jobs = n_jobs
         #if self.n_jobs != 1: raise RuntimeError("Multiprocessing is not allowed because the internal segmentation engine will lead to errors. This is still a work in progress.")
-        self.log = Printer(log_type='txt', log_prefix='Filter-Register')
+        os.makedirs(clean_set, exist_ok=True)
+        self.log = Printer(log_type='txt', log_prefix='Filter-Register', location=clean_set)
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
 
     def execute(self, test_mode=False):

@@ -2,6 +2,7 @@ import os
 import subprocess
 import tempfile
 import pathlib
+import numpy as np
 import shutil 
 import traceback
 from joblib import Parallel, delayed
@@ -58,6 +59,8 @@ class BidscoinerJob():
 def run_bidscoiner_multiprocess(source, target, bidsmap, n_jobs=5, patients_per_job=None):
     os.makedirs(target, exist_ok=True)
     patients = [p for p in os.listdir(source) if p.startswith('sub-PAT')]
+
+    
     
     jobs = []
     
