@@ -15,13 +15,13 @@ import logging
 import sys
 
 raw_set = pl.Path("/mnt/nas6/data/Target/symlinked_batches_mrct_1000/known_no_issues") # must be path to parent folder with patient subfolders/.
-bids_set = pl.Path("/mnt/nas6/data/Target/batch_copy/Gado_stability_test/larger_run/bids") # must be path that doesnt exist, the script creates the target dir itself
-processed_set = pl.Path('/mnt/nas6/data/Target/batch_copy/Gado_stability_test/larger_run/processed')
+bids_set = pl.Path("/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/bids") # must be path that doesnt exist, the script creates the target dir itself
+processed_set = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/processed')
 path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
 path_classification_results = path_metadata / "classification_results.csv" # path to the result csv of the sequence classifier
 set504 = None
 set524 = None
-set502 = pl.Path('/mnt/nas6/data/Target/batch_copy/Gado_stability_test/larger_run/nnUNet_dataset')
+set502 = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/nnUNet_dataset')
 nonchuv_data = pl.Path('/home/lorenz/BMPipeline/sequence_selected_nonchuv.xlsx')
 bidsmap_path = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
 

@@ -59,26 +59,26 @@ class BidscoinerJob():
 def run_bidscoiner_multiprocess(source, target, bidsmap, n_jobs=5, patients_per_job=None):
     os.makedirs(target, exist_ok=True)
     patients = [p for p in os.listdir(source) if p.startswith('sub-PAT')]
-
     
     
     jobs = []
     
-    if patients_per_job is None:
-        print('Did not get a specification for patient count, infering patient count per job internally')
-        patients_per_job = round(len(patients)/n_jobs)
-        for j in range(n_jobs):
-            upper = (j+1)*patients_per_job if (j+1)*patients_per_job<len(patients) else -1
-            sub_list = patients[j*patients_per_job:upper]
-            jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
+    # if patients_per_job is None:
+    #     print('Did not get a specification for patient count, infering patient count per job internally')
+    #     patients_per_job = round(len(patients)/n_jobs)
+    #     for j in range(n_jobs):
+    #         upper = (j+1)*patients_per_job if (j+1)*patients_per_job<len(patients) else -1
+    #         sub_list = patients[j*patients_per_job:upper]
+    #         jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
 
-    else:
-        print(f"Setting up {round(len(patients)/patients_per_job)} jobs with {patients_per_job} patients per job")
-        for j in range(round(len(patients)/patients_per_job)):
-            upper = (j+1)*patients_per_job if (j+1)*patients_per_job<len(patients) else -1
-            sub_list = patients[j*patients_per_job:upper]
-            jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
+    # else:
+    #     print(f"Setting up {round(len(patients)/patients_per_job)} jobs with {patients_per_job} patients per job")
+    #     for j in range(round(len(patients)/patients_per_job)):
+    #         upper = (j+1)*patients_per_job if (j+1)*patients_per_job<len(patients) else -1
+    #         sub_list = patients[j*patients_per_job:upper]
+    #         jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
 
+    jobs.append(BidscoinerJob(source, target, ['sub-PAT-0031', 'sub-PAT-0074'], f"Bidscoiner_{0}", bidsmap))
 
     start = time.time()
     results = Parallel(n_jobs=n_jobs)(delayed(job.execute)(job) for job in jobs)
