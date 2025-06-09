@@ -5713,3 +5713,8 @@ tml_dicom2bids-main
 20250507-1100_Filter-Register_PrettyPrint_Autolog.txt
 20250507-1018_Filter-Register_PrettyPrint_Autolog.txt
 20250524-1606_Filter-Register_PrettyPrint_Autolog.txt
+
+registration
+logfiles
+.venv
+resegmentation
