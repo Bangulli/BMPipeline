@@ -13,6 +13,9 @@ import tempfile
 
 
 class RTS2BIDS():
+    """
+    RTStruct to bids structure converter object.
+    """
     def __init__(
             self,
             raw_source: pl.Path,
@@ -20,6 +23,11 @@ class RTS2BIDS():
             raw_patient_pattern: str = r"^sub-PAT-(\d{4})$",
             raw_study_pattern: str = r"ses-\d{14}$"
             ):
+        """
+        raw_source = pl.Path, the source directory
+        bids_target = pl.Path the output directory
+        patterns = pattern for regex matching, dont touch
+        """
         # set path attributes
         self.raw_source = raw_source
         self.bids_target = bids_target
@@ -34,9 +42,6 @@ class RTS2BIDS():
         """
         Run the extraction and conversion of rts files
         parse the source directory, look at every session in every patient, if the session has filenames with 'RTSS' in them process them
-
-        make it so this thing parses the entire patient for cts first and then matches the rtss when they are found. 
-        sometimes the rts are not in the same dir as the cts
         """
         patients_raw = [pat for pat in os.listdir(self.raw_source) if (self.raw_source/pat).is_dir()]
         # fallback to pick up the progress after failure

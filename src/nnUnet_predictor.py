@@ -4,21 +4,36 @@ import pathlib as pl
 import time
 
 class Resegmentor():
-    def __init__(self, multimodal_set=None, singlemodal_set=None, combined_set = None):
-        self.multimodal_set = multimodal_set
-        self.singlemodal_set = singlemodal_set
-        self.combined_set = combined_set
+    """
+    Resegmentation processor
+    """
+    def __init__(self, set524=None, set504=None, set502 = None):
+        """
+        pl.Path objcs for the dataset directories for the tasks by id
+        """
+        self.set524 = set524
+        self.set504 = set504
+        self.set502 = set502
 
-    def execute(self, task=['524', '504']):
+    def execute(self, task=['524', '504'], nnUNet_dir = "/home/lorenz/BMPipeline/resegmentation"):
+        """
+        Execute the processor
+        task = string or list of strings, the conversion mode. if string only does one mode, if list doess all the modes in the string
+        nnUNet_dir = string, the path to the direcotry that stores the nnUNet outputs
+
+        502 = singleclass output no t2
+        504 = multiclass output no t2
+        524 = multiclass outptu with t2
+        """
         env = os.environ.copy()
-        env["RESULTS_FOLDER"] = "/home/lorenz/BMPipeline/resegmentation"
+        env["RESULTS_FOLDER"] = nnUNet_dir ## important: this is the directory that needs to contain 
         time.sleep(1)
         if '524' in task:
-            if os.listdir(self.multimodal_set):
+            if os.listdir(self.set524):
                 command_multi = [
                 "nnUNet_predict",
-                "-i", self.multimodal_set,
-                "-o", self.multimodal_set.parent/(self.multimodal_set.name+'_predictions'),
+                "-i", self.set524,
+                "-o", self.set524.parent/(self.set524.name+'_predictions'),
                 '-tr', 'nnUNetTrainerV2_Loss_DiceCE_noSmooth',
                 '-ctr', 'nnUNetTrainerV2CascadeFullRes',
                 '-m', '3d_fullres',
@@ -26,19 +41,19 @@ class Resegmentor():
                 '-t', 'Task524_BrainMetsResegMultimod1to3'
                 ]
                 # Run the command
-                print(f'== running multimodal prediction on source data {self.multimodal_set}')
+                print(f'== running multimodal prediction on source data {self.set524}')
                 subprocess.run(command_multi, env=env)
-                print(f'''== saved multimodal prediction on source data {self.multimodal_set.parent/(self.multimodal_set.name+'_predictions')}''')
+                print(f'''== saved multimodal prediction on source data {self.set524.parent/(self.set524.name+'_predictions')}''')
             else:
                 print('== skipping multimodal prediction, found no files in directory')
 
 
         if '504' in task:
-            if os.listdir(self.singlemodal_set):
+            if os.listdir(self.set504):
                 command_single = [
                 "nnUNet_predict",
-                "-i", self.singlemodal_set,
-                "-o", self.singlemodal_set.parent/(self.singlemodal_set.name+'_predictions'),
+                "-i", self.set504,
+                "-o", self.set504.parent/(self.set504.name+'_predictions'),
                 '-tr', 'nnUNetTrainerV2_Loss_DiceCE_noSmooth',
                 '-ctr', 'nnUNetTrainerV2CascadeFullRes',
                 '-m', '3d_fullres',
@@ -46,18 +61,18 @@ class Resegmentor():
                 '-t', 'Task504_BrainMetsReseg1to3'
                 ]
                 # Run the command
-                print(f'== running singlemodal prediction on source data {self.singlemodal_set}')
+                print(f'== running singlemodal prediction on source data {self.set504}')
                 subprocess.run(command_single, env=env)
-                print(f'''== saved singlemodal prediction on source data {self.singlemodal_set.parent/(self.singlemodal_set.name+'_predictions')}''')
+                print(f'''== saved singlemodal prediction on source data {self.set504.parent/(self.set504.name+'_predictions')}''')
             else:
                 print(F'''== skipping singlemodal prediction, found no files in directory''')
 
         if '502' in task:
-            if os.listdir(self.combined_set):
+            if os.listdir(self.set502):
                 command_single = [
                 "nnUNet_predict",
-                "-i", self.combined_set,
-                "-o", self.combined_set.parent/(self.combined_set.name+'_predictions'),
+                "-i", self.set502,
+                "-o", self.set502.parent/(self.set502.name+'_predictions'),
                 '-tr', 'nnUNetTrainerV2',
                 '-ctr', 'nnUNetTrainerV2CascadeFullRes',
                 '-m', '3d_fullres',
@@ -65,9 +80,9 @@ class Resegmentor():
                 '-t', 'Task502_BrainMetsReseg1to1nodnec'
                 ]
                 # Run the command
-                print(f'== running singlemodal prediction on source data {self.combined_set}')
+                print(f'== running singlemodal prediction on source data {self.set502}')
                 subprocess.run(command_single, env=env)
-                print(f'''== saved singlemodal prediction on source data {self.combined_set.parent/(self.combined_set.name+'_predictions')}''')
+                print(f'''== saved singlemodal prediction on source data {self.set502.parent/(self.set502.name+'_predictions')}''')
             else:
                 print(F'''== skipping prediction, found no files in directory''')
 

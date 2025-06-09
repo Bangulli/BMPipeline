@@ -19,6 +19,7 @@ bids_set = pl.Path("/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/b
 processed_set = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/processed')
 path_metadata = pl.Path('/home/lorenz/data/mrct1000_nobatch')
 path_classification_results = path_metadata / "classification_results.csv" # path to the result csv of the sequence classifier
+metadata_map = path_metadata/'sliceID_seriesPath_mapping.csv' # path to the secondary result of running sequence classifier: ID to path mapping
 set504 = None
 set524 = None
 set502 = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/nnUNet_dataset')
@@ -63,7 +64,7 @@ if __name__ == '__main__':
     sys.stdout = StreamToLogger(stdout_logger, logging.INFO)
     sys.stderr = StreamToLogger(stderr_logger, logging.ERROR)
     ## convert data from raw to bids structure using bidscoiner in multiprocessing
-    run_bidscoiner_multiprocess(raw_set, bids_set, bidsmap_path, 5, 1)
+    run_bidscoiner_multiprocess(raw_set, bids_set, bidsmap_path, 5, 5)
     milestone=time.time()
     ## report milestone runtime
     min, sec = divmod(milestone-start, 60)
@@ -71,7 +72,7 @@ if __name__ == '__main__':
     d, hr = divmod(hr, 24)
     print(f"Milestone: Running bidscoiner took {d}days {hr}h {min}min {round(sec)}s")
     ## convert data missed by bidscoiner because it is not from CHUV
-    coiner = NonCHUVCoiner(raw_set, bids_set, nonchuv_data, path_metadata/'sliceID_seriesPath_mapping.csv')
+    coiner = NonCHUVCoiner(raw_set, bids_set, nonchuv_data, metadata_map)
     coiner.execute(True)
     ## report milestone runtime
     min, sec = divmod(time.time()-milestone, 60)

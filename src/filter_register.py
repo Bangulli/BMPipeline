@@ -25,6 +25,13 @@ class PatientRegistrationJob():
     Since the totalseg uses nnunet with multiprocessing in the backend it has to be shipped off to a ProcessPoolExecutor because joblib doesnt allow child processes in subprocesses
     """
     def __init__(self, bids_set, clean_set, pat, study_dict, keys):
+        """
+        bids_set = pl.Path, the bids style source directory
+        clean_set = pl.Path, the output directory
+        pat = string, patient file name
+        study_dict = dict, dictionary of matched study and rts file names
+        keys = list, the keys to the above dict
+        """
         self.clean_set = clean_set
         self.bids_set = bids_set
         self.pat = pat
@@ -32,6 +39,14 @@ class PatientRegistrationJob():
         self.study_dict = study_dict
         
     def execute(self):
+        """
+        exectue the job.
+        Register CT to MR if RT is present
+        Translate RT to MR
+        Register MR to MR t0
+        Translate RT to MR t0
+        Creates a logfile in each patient directory in the output for debugging
+        """
         self.log = Printer('txt', False, 'RegistrationJob', location=self.clean_set/self.pat)
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
         start = time.time()
@@ -396,17 +411,24 @@ class PatientRegistrationJob():
             return transformed_t1, transformed_t2
     
 class FilterRegisterMain():
+    """
+    Filter register main processor. Generates and runs individual registration jobs
+    """
     def __init__(
             self,
             bids_set: pl.Path,
             clean_set: pl.Path,
-            study_list: pl.Path = None,
             inclusion_criterion = {'studies >=': 0, 'obersvation period >=': 0, 'avg study interval <=': np.inf, 'rtstructs present >=': 1},
-            n_jobs=1
+            n_jobs=5
             ):
+        """
+        bids_set = source directory, the bids style output from bids coiner
+        clean_set = target directory
+        inclusion_criterion = dict that specifies what patients are processed. default config processes any patient with at least one RTStruct in the files
+        n_jobs = int, the number of parallel registration workers
+          """
         self.bids_set = bids_set
         self.clean_set = clean_set
-        self.study_list = study_list
         self.inclusion_criterion = inclusion_criterion
         self.n_jobs = n_jobs
         #if self.n_jobs != 1: raise RuntimeError("Multiprocessing is not allowed because the internal segmentation engine will lead to errors. This is still a work in progress.")
@@ -419,6 +441,8 @@ class FilterRegisterMain():
         Run the Preprocessor on the set
 
         :param test_mode -> if True will run filters and pre registration logs, but skip doing the actual registration work.
+
+        first builds all registration jobs and saves them in a list, then runs them in parallel.
         
         Tasks:
         filter anatomical and RT studies
@@ -426,12 +450,8 @@ class FilterRegisterMain():
         remove redundancies from anatomical studies
         identify target image in each anatomical study if multiple T1 or T2 are present
         assign an anat study to each RT study by lowest timedifference
-        identify t0 as first anatomical with an rt
-        segment MRs to obtain brainmask
-        segment CTs to obtain brainmask if no Brainmask in RT
-        Register RTs to corresponding MRs
-        Register MRs to t0
-        Save all results to new and lighter set
+        build registration job 
+        run in parallel
         """
         
         patients = [elem for elem in os.listdir(self.bids_set) if (self.bids_set/elem).is_dir() and elem.startswith('sub-')]

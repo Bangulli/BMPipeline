@@ -5,12 +5,21 @@ import pathlib as pl
 import SimpleITK as sitk
 
 class NonCHUVCoiner():
+    """
+    Manually selected non-chuv data converter object
+    """
     def __init__(self, 
                  dicom_set, 
                  bids_set, 
                  ref_csv, 
                  map_csv, 
                 ):
+        """
+        dicom_set = pl.Path object, the source directory
+        bids_set = pl.Path object, the output directory
+        ref_csv = string or path object to the selction file. can be a csv or xlsx 
+        map_csv = string or path object to the mapping csv, that relates UID and path
+        """
         self.dicom_set = dicom_set
         self.bids_set = bids_set
         self.ref = pd.read_csv(ref_csv) if ref_csv.name.endswith('.csv') else pd.read_excel(ref_csv)
@@ -18,6 +27,10 @@ class NonCHUVCoiner():
         self.log = Printer(log_type='txt', log_prefix='NonCHUVCoiner')
 
     def execute(self, only_relevant=False):
+        """
+        Execute the conversion
+        only_relevant = bool flag to skip patients that are not in the output directory. saves a lot of log messages
+        """
         self.ref = self.ref.dropna(subset=["SelectedSequence"])
 
         bids_pats = [pat.split('-')[-1] for pat in os.listdir(self.bids_set) if pat.startswith('sub-PAT')]

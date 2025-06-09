@@ -136,7 +136,13 @@ class PatientTimeSeries():
 
     
 class DatasetConverter():
+    """
+    Processed set to nnUNet style set converter
+    """
     def __init__(self, source_set: pl.Path):
+        """
+        source_set =  the source directory
+        """
         self.source_set = source_set
         self.log = Printer()
 
@@ -144,6 +150,8 @@ class DatasetConverter():
         """
         Runs the Dataset conversion, looks for all image files or RTS folders in the source set
         source set is expected to be Processed by filter_register.PatientProcessor
+        output = pl.Path the output directory
+        task =  string the task identifier 524 = multiclass seg with t2 (uses 504 with no t2 if t2 not found), 504 = multiclass seg without t2, 502 = single clas seg with t1
         """
         # init variables
         write_header = not (self.source_set/'nnUNet_mapping.csv').is_file()

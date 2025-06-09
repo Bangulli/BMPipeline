@@ -9,7 +9,19 @@ from joblib import Parallel, delayed
 import time
 
 class BidscoinerJob():
+    """
+    Multiprocessing job.
+    uses symlinks to link patient directories into temporary working directories, runs bidscoiner on them and moves the results into the target directory before removing the tempdir.
+    If errors occur, the tempdir will not be deleted to preserve logs for debugging.
+    """
     def __init__(self, source, target, patients, id, bidsmap):
+        """
+        source = pl.Path object, the source directory
+        target = pl.Path object, the destination directory for the output
+        patients = list of strings, the patient directories that this job handles
+        id = string, the job id, tempdir will have this name
+        bidsmap = string or pl.Path, path to bidsmap template
+        """
         self.source=source
         self.target=target
         self.patients = patients
@@ -17,6 +29,14 @@ class BidscoinerJob():
         self.bidsmap=bidsmap
     
     def execute(self, _):
+        """
+        Execute the job. Takes an argument because joblib passes an arg to jobs and idk why. 
+        
+        creates a tempdir with the job ID as name as a sub directory of the target dir
+        runs bidscoiner in the tempdir
+        moves results to target dir
+        deletes tempdir if no errors occured
+        """
         try: # nested trycatch, first is to report errors without killing all other processes
             try: # second to persist tempdirs in case an error occurs
                 work_dir = self.target/self.id
@@ -56,32 +76,39 @@ class BidscoinerJob():
         except Exception as e:
             return f"FAIL--{self.id}--{e}\n{traceback.format_exc()}"
         
-def run_bidscoiner_multiprocess(source, target, bidsmap, n_jobs=5, patients_per_job=None):
+def run_bidscoiner_multiprocess(source, target, bidsmap, n_jobs=5, patients_per_batch=5):
+    """
+    Bidscoiner execute function. Batches patients and organizes batches into jobs that are executed in parallel.
+    source = pl.Path object, the source directory
+    target = pl.Path object, the destination directory for the output
+    bidsmap = pl.Path object or string, the path to the template bidsmap
+    n_jobs = int, number of workers that run in parallel
+    patients_per_batch = int or None, controls how many patients get processed in one batch if none will be #allpatients/n_jobs
+
+    jobs are created as BidscoinerJob objects that take a list of patients and internally handle batch extraction and conversion.
+    """
     os.makedirs(target, exist_ok=True)
     patients = [p for p in os.listdir(source) if p.startswith('sub-PAT')]
     
-    
     jobs = []
     
-    # if patients_per_job is None:
-    #     print('Did not get a specification for patient count, infering patient count per job internally')
-    #     patients_per_job = round(len(patients)/n_jobs)
-    #     for j in range(n_jobs):
-    #         upper = (j+1)*patients_per_job if (j+1)*patients_per_job<len(patients) else -1
-    #         sub_list = patients[j*patients_per_job:upper]
-    #         jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
+    if patients_per_batch is None:
+        print('Did not get a specification for patient count, infering patient count per job internally')
+        patients_per_batch = round(len(patients)/n_jobs)
+        for j in range(n_jobs):
+            upper = (j+1)*patients_per_batch if (j+1)*patients_per_batch<len(patients) else -1
+            sub_list = patients[j*patients_per_batch:upper]
+            jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
 
-    # else:
-    #     print(f"Setting up {round(len(patients)/patients_per_job)} jobs with {patients_per_job} patients per job")
-    #     for j in range(round(len(patients)/patients_per_job)):
-    #         upper = (j+1)*patients_per_job if (j+1)*patients_per_job<len(patients) else -1
-    #         sub_list = patients[j*patients_per_job:upper]
-    #         jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
-
-    jobs.append(BidscoinerJob(source, target, ['sub-PAT-0031', 'sub-PAT-0074'], f"Bidscoiner_{0}", bidsmap))
+    else:
+        print(f"Setting up {round(len(patients)/patients_per_batch)} jobs with {patients_per_batch} patients per job")
+        for j in range(round(len(patients)/patients_per_batch)):
+            upper = (j+1)*patients_per_batch if (j+1)*patients_per_batch<len(patients) else -1
+            sub_list = patients[j*patients_per_batch:upper]
+            jobs.append(BidscoinerJob(source, target, sub_list, f"Bidscoiner_{j}", bidsmap))
 
     start = time.time()
-    results = Parallel(n_jobs=n_jobs)(delayed(job.execute)(job) for job in jobs)
+    results = Parallel(n_jobs=n_jobs)(delayed(job.execute)(job) for job in jobs) # run jobs in parallel
     stop = time.time()
     period = stop-start
     mins, secs = divmod(period, 60)
