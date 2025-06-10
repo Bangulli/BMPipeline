@@ -1,7 +1,10 @@
 # BMPipeline
 
 This repository contains the semi-Automated conversion of DICOM image series to a usable dataset for Brain-Metastasis tracking and prediction.
+Processes the raw dataset to a filtered and registered set of logitudinal data, with segmentations at every timepoint
 
+Filtration is based on [BIDSCoin](https://github.com/Donders-Institute/bidscoin) with a custom bidsmap in a fully automated workflow, no GUI interaction.
+Check their [repository](https://github.com/Donders-Institute/bidscoin) and [documentation](https://bidscoin.readthedocs.io/en/latest/) for details on how to create a bidsmap for your usecase.
 ## Usage intsructions
 Dependencies are found in the [Requirements](requirements.txt)
 
@@ -19,9 +22,6 @@ To add more tasks modify the switch case blocks in [Resegmentor](src/nnUnet_pred
                 '-t', 'Task524_BrainMetsResegMultimod1to3'
                 ]
 ```
-By either updating the current ones or adding new tasks to the switch case.
-
-Notes: TotalSegmentator can be a bit inconsistent and not immediately usable.
 
 Update the paths in the [main](full_pipeline.py) script:
 ```python
@@ -36,6 +36,7 @@ Update the paths in the [main](full_pipeline.py) script:
   nonchuv_data = pl.Path('/home/lorenz/BMPipeline/sequence_selected_nonchuv.xlsx') # path to the manually selected conversion file
   bidsmap_path = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml") # path to the bidsmap template used in conversion
 ```
+
 If you want to run different resegmentation networks, update this block:
 ```python
   # Assumes dataset is the result of running src.filter_register.PatientPreprocessor
@@ -51,10 +52,11 @@ If you want to run different resegmentation networks, update this block:
   DRC = DatasetReconverter(processed_set, set502, 'mets_task_502')
   DRC.execute('502')
 ```
+To enable more tasks expand the switch case inside the executor function.
 
-## Config
+## Source
 The [main](full_pipeline.py) script contains and calls all processor objects in the [src](src) directory.
-- [parallel_bidscoiner](src/parallel_bidscoiner.py): Runs the bidscoiner for batches of source data in multiprocessing.
+- [parallel_bidscoiner](src/parallel_bidscoiner.py): Runs the [BIDSCoiner](https://github.com/Donders-Institute/bidscoin) for batches of source data in parallel processing.
 - [coin_nonchuv](src/coin_nonchuv.py): Converts non-CHUV images to Bids
 - [rts2bids](src/rts2bids.py): Converts RTStruct, RTDose and corresponding CTs to Bids
 - [filter_register](src/filter_register.py): Filters longitudinal data, assigns structs to mri, registers struct to mri and all mri to t0
