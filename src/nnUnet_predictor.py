@@ -7,14 +7,6 @@ class Resegmentor():
     """
     Resegmentation processor
     """
-    def __init__(self, set524=None, set504=None, set502 = None):
-        """
-        pl.Path objcs for the dataset directories for the tasks by id
-        """
-        self.set524 = set524
-        self.set504 = set504
-        self.set502 = set502
-
     def execute(self, task=['524', '504'], nnUNet_dir = "/home/lorenz/BMPipeline/resegmentation"):
         """
         Execute the processor

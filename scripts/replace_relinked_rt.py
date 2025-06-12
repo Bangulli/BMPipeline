@@ -3,7 +3,7 @@ import pathlib as pl
 import shutil
 
 dataset = pl.Path('/mnt/nas6/data/Target/mrct1000_nobatch')
-relinked = pl.Path('/mnt/nas6/data/Target/supplementary_RTCT/dicoms-depersonalized1/velocity_sorted')
+relinked = pl.Path('/mnt/nas6/data/Target/velocity2/velocity_sorted4')
 
 dpat = [f for f in os.listdir(dataset) if (dataset/f).is_dir()]
 rpat = [f for f in os.listdir(relinked) if (relinked/f).is_dir()]

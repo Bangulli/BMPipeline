@@ -55,11 +55,79 @@ If you want to run different resegmentation networks, update this block:
 To enable more tasks expand the switch case inside the executor function.
 
 ## Source
-The [main](full_pipeline.py) script contains and calls all processor objects in the [src](src) directory.
+The [main](full_pipeline.py) script contains and calls all processor objects in the [src](src) directory. It is ready to run and configured with some basic settings. Just update the paths and you should be good to go
 - [parallel_bidscoiner](src/parallel_bidscoiner.py): Runs the [BIDSCoiner](https://github.com/Donders-Institute/bidscoin) for batches of source data in parallel processing.
+  - run_bidscoiner_multiprocess (function)
+    - Arguments
+      - source = pl.Path, the source dataset
+      - target = pl.Path, the target dataset folder
+      - bidsmap = pl.Path, the template bidsmap
+      - n_jobs = int, default 5, how many batches can run in parallel
+      - patients_per_batch = int, default 5, how many patients are processed in one Bidscoiner batch. If none will be infered as N_patients/n_jobs
+  - BidscoinerJob (object)
+    - Parallel processing job for one batch. dont touch, will be infered by run_bidscoiner_multiprocess function
 - [coin_nonchuv](src/coin_nonchuv.py): Converts non-CHUV images to Bids
+  - NonCHUVCoiner
+    - converts manually selected non-CHUV images into a bids-like structure
+    - Arguments
+      - dicom_set, pl.Path, the path to the source dataset
+      - bids_set, pl.Path, the path to the target directory, the bids output
+      - ref_csv, pl.Path the csv or xlsx file with the custom selected non-CHUV data
+      - map_csv, pl.Path the csv that maps UID to filepath in the dicom_set
+    - Functions
+      - execute. runs the process
 - [rts2bids](src/rts2bids.py): Converts RTStruct, RTDose and corresponding CTs to Bids
+  - RTS2BIDS (object)
+    - converts RTStruct and to a limited degree RTDose files to a bids like format. RTDose is currently only matched and converted by filename. needs implementation for UID matching if possible
+    - Arguments
+      - raw_source, pl.Path, the source directory
+      - bids_target, pl.Path, the target bids directory
+    - Functions
+      - execute: runs the process
 - [filter_register](src/filter_register.py): Filters longitudinal data, assigns structs to mri, registers struct to mri and all mri to t0
+  - FilterRegisterMain (object)
+    - Selects patients from the bids directory according to an inclusion criterion and then matches RTs to MRIs by date, filteres the time series and registers everything in parallel processing. First runs all filters and sets up registration jobs for each patient that fullfills inclusion criteria, then runs the registrations in parallel
+    - Arguments
+      - bids_set, pl.Path, the BIDS dataset
+      - clean_set, pl.Path, the output directory for the processed data
+      - inclusion_criterion, dict, the filter criterions to include a patient in the clean set, default configuration uses any patient that has at least one RTStruct#
+      - n_jobs, int how many patient registration jobs can run in parallel
+    - Functions
+      - execute: runs the process
+  - PatientRegistrationJob (object)
+  - executable object that gets setup by FilterRegisterMain and then runs in parallel using multiprocessing. 
+  - Arguments
+    - bids_set, pl.Path, the bids dataset
+    - clean_set, pl.Path, the clean set output
+    - pat, str, the patient file name
+    - study_dict, a dictionary of strings with anatomical (MRI) study days as keys and RTS studies or None as values, if value for a key is None, only performs MR2MR reg, if not, performs CT2MR using mask registration and then MR2MR for all files.
+    - keys, list of keys of the study dict
+  - Functions
+    - execute: runs the job 
 - [nnUnet_data_preparation](src/nnUnet_data_preparation.py): Converts the output of filter register to an nnUNet compatible datastructure for resegmentation. does the reverse for the output of reseg
+  - DatasetConverter (object)
+    - converts the clean set to a nnUNet dataset to be predicted in reseg
+    - Arguments
+      - source_set, pl.Path, the clean directory
+    - Functions
+      - execute: run the process
+        - takes task id and outptu dir for task as args
+  - DatasetReconverter (object)
+    - converts the nnUNet reseg output back into the clean set
+    - Arguments
+      - target_set, pl.Path, the clean set
+      - source_set, pl.Path, the nnUNet output directory
+      - met_dir_name, str, the directory name in which to put the reseg masks
+    - Functions
+      - execute: runs the process
+        - takes a task id as variable
 - [nnUnet_predictor](src/nnUnet_predictor.py): Runs nnUNet prediction
+  - Resegmentor (object)
+    - Runs the nnunet resegmentation process on an nnUNet directory.
+    - No arguments
+    - Functions
+      - execute: executes the process
+        - takes the dataset source directory and the task as input
+        - the task can be list to do multiple or a string to do a single task
 - [utils](src/utils.py): Image object type conversions for antsreg
+  - used internally in filter_register not really important for anything else

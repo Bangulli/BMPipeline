@@ -19,9 +19,7 @@ class RTS2BIDS():
     def __init__(
             self,
             raw_source: pl.Path,
-            bids_target: pl.Path,
-            raw_patient_pattern: str = r"^sub-PAT-(\d{4})$",
-            raw_study_pattern: str = r"ses-\d{14}$"
+            bids_target: pl.Path
             ):
         """
         raw_source = pl.Path, the source directory
@@ -32,8 +30,8 @@ class RTS2BIDS():
         self.raw_source = raw_source
         self.bids_target = bids_target
         # set source pattern attributes
-        self.raw_patient_pattern = raw_patient_pattern
-        self.raw_study_pattern = raw_study_pattern
+        self.raw_patient_pattern = r"^sub-PAT-(\d{4})$"
+        self.raw_study_pattern = r"ses-\d{14}$"
         # set up logger
         self.log = Printer(log_type='txt', log_prefix='rts2bids')
         self.info_format = PPFormat([ColourText('blue'), Effect('bold'), Effect('underlined')]) 
