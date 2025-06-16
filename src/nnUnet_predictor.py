@@ -21,11 +21,11 @@ class Resegmentor():
         env["RESULTS_FOLDER"] = nnUNet_dir ## important: this is the directory that needs to contain 
         time.sleep(1)
         if '524' in task:
-            if os.listdir(self.set524):
+            if os.listdir(nnUNet_dir):
                 command_multi = [
                 "nnUNet_predict",
-                "-i", self.set524,
-                "-o", self.set524.parent/(self.set524.name+'_predictions'),
+                "-i", nnUNet_dir,
+                "-o", nnUNet_dir.parent/(self.set524.name+'_predictions'),
                 '-tr', 'nnUNetTrainerV2_Loss_DiceCE_noSmooth',
                 '-ctr', 'nnUNetTrainerV2CascadeFullRes',
                 '-m', '3d_fullres',
@@ -33,19 +33,19 @@ class Resegmentor():
                 '-t', 'Task524_BrainMetsResegMultimod1to3'
                 ]
                 # Run the command
-                print(f'== running multimodal prediction on source data {self.set524}')
+                print(f'== running multimodal prediction on source data {nnUNet_dir}')
                 subprocess.run(command_multi, env=env)
-                print(f'''== saved multimodal prediction on source data {self.set524.parent/(self.set524.name+'_predictions')}''')
+                print(f'''== saved multimodal prediction on source data {nnUNet_dir.parent/(nnUNet_dir.name+'_predictions')}''')
             else:
                 print('== skipping multimodal prediction, found no files in directory')
 
 
         if '504' in task:
-            if os.listdir(self.set504):
+            if os.listdir(nnUNet_dir):
                 command_single = [
                 "nnUNet_predict",
-                "-i", self.set504,
-                "-o", self.set504.parent/(self.set504.name+'_predictions'),
+                "-i", nnUNet_dir,
+                "-o", nnUNet_dir.parent/(nnUNet_dir.name+'_predictions'),
                 '-tr', 'nnUNetTrainerV2_Loss_DiceCE_noSmooth',
                 '-ctr', 'nnUNetTrainerV2CascadeFullRes',
                 '-m', '3d_fullres',
@@ -53,18 +53,18 @@ class Resegmentor():
                 '-t', 'Task504_BrainMetsReseg1to3'
                 ]
                 # Run the command
-                print(f'== running singlemodal prediction on source data {self.set504}')
+                print(f'== running singlemodal prediction on source data {nnUNet_dir}')
                 subprocess.run(command_single, env=env)
-                print(f'''== saved singlemodal prediction on source data {self.set504.parent/(self.set504.name+'_predictions')}''')
+                print(f'''== saved singlemodal prediction on source data {nnUNet_dir.parent/(nnUNet_dir.name+'_predictions')}''')
             else:
                 print(F'''== skipping singlemodal prediction, found no files in directory''')
 
         if '502' in task:
-            if os.listdir(self.set502):
+            if os.listdir(nnUNet_dir):
                 command_single = [
                 "nnUNet_predict",
-                "-i", self.set502,
-                "-o", self.set502.parent/(self.set502.name+'_predictions'),
+                "-i", nnUNet_dir,
+                "-o", nnUNet_dir.parent/(nnUNet_dir.name+'_predictions'),
                 '-tr', 'nnUNetTrainerV2',
                 '-ctr', 'nnUNetTrainerV2CascadeFullRes',
                 '-m', '3d_fullres',
@@ -72,9 +72,9 @@ class Resegmentor():
                 '-t', 'Task502_BrainMetsReseg1to1nodnec'
                 ]
                 # Run the command
-                print(f'== running singlemodal prediction on source data {self.set502}')
+                print(f'== running singlemodal prediction on source data {nnUNet_dir}')
                 subprocess.run(command_single, env=env)
-                print(f'''== saved singlemodal prediction on source data {self.set502.parent/(self.set502.name+'_predictions')}''')
+                print(f'''== saved singlemodal prediction on source data {nnUNet_dir.parent/(nnUNet_dir.name+'_predictions')}''')
             else:
                 print(F'''== skipping prediction, found no files in directory''')
 

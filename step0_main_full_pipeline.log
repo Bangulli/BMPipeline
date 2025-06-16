@@ -4515,3 +4515,36 @@ to {'ses-20200609170606': 'ses-20200606110902', 'ses-20200819082806': 'ses-20200
 2025-05-27 09:58:06,008 - INFO - [0mThis run handeled 2 patients in multiprocessing[0m
 2025-05-27 09:58:06,008 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
 2025-05-27 10:24:05,282 - INFO - Milestone: Running FilterRegister took 0.0days 0.0h 22.0min 36s== parsing patient sub-PAT0031== parsing patient sub-PAT0074== running singlemodal prediction on source data /mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/nnUNet_dataset== saved singlemodal prediction on source data /mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/nnUNet_dataset_predictionsMilestone: Running Resegmentation took 0.0days 0.0h 25.0min 59sRunning the full pipeline took 0.0days 1.0h 23.0min 45s
+2025-06-16 14:29:51,667 - INFO - Setting up 0 jobs with 5 patients per jobThe source set with 5 took 0.0h 0.0min 0.01667189598083496sChecking results for errors...Milestone: Running bidscoiner took 0.0days 0.0h 0.0min 0sMilestone: Running NonCHUVCoiner took 0.0days 0.0h 0.0min 3s[0m[31m[4m[1mFAIL[0m:[0m Cant find patient directory sub-PAT0039 in bids target[0m[0m
+2025-06-16 14:29:51,678 - INFO - [0m[31m[4m[1mFAIL[0m:[0m Cant find patient directory sub-PAT0617 in bids target[0m[0m
+2025-06-16 14:29:51,681 - INFO - Milestone: Running RTS2BIDS took 0.0days 0.0h 0.0min 0s[0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-06-16 14:29:51,681 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up jobs took 0.0h 0.0min 2.384185791015625e-07s[0m[0m
+2025-06-16 14:29:51,682 - INFO - [0m0 Patients are in the output directory[0m
+2025-06-16 14:29:51,682 - INFO - [0mThis run handeled 0 patients in multiprocessing[0m
+2025-06-16 14:29:51,682 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-06-16 14:29:51,686 - INFO - Milestone: Running FilterRegister took 0.0days 0.0h 0.0min 0s
+2025-06-16 14:29:51,686 - ERROR - Traceback (most recent call last):
+2025-06-16 14:29:51,686 - ERROR -   File "/home/lorenz/bmda_test/BMPipeline/full_pipeline.py", line 108, in <module>
+2025-06-16 14:29:51,686 - ERROR -     RS = Resegmentor(set524, set504, set502)TypeError: Resegmentor() takes no arguments
+2025-06-16 14:30:36,826 - INFO - Setting up 2 jobs with 1 patients per job
+2025-06-16 14:33:49,466 - INFO - The source set with 5 took 0.0h 3.0min 9.905389070510864sChecking results for errors...No problems in Bidscoiner_0No problems in Bidscoiner_1Milestone: Running bidscoiner took 0.0days 0.0h 3.0min 10sMilestone: Running NonCHUVCoiner took 0.0days 0.0h 0.0min 3sMilestone: Running RTS2BIDS took 0.0days 0.0h 0.0min 0s[0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-06-16 14:33:49,478 - INFO - [0m[33m[4m[1mWARNING[0m:[0m Discarding patient sub-PAT0039[0m[0m
+2025-06-16 14:33:49,478 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up jobs took 0.0h 0.0min 0.011517763137817383s[0m[0m
+2025-06-16 14:33:49,479 - INFO - [0m0 Patients are in the output directory[0m
+2025-06-16 14:33:49,479 - INFO - [0mThis run handeled 0 patients in multiprocessing[0m
+2025-06-16 14:33:49,479 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-06-16 14:33:49,483 - INFO - Milestone: Running FilterRegister took 0.0days 0.0h 0.0min 0s
+2025-06-16 14:33:49,483 - ERROR - Traceback (most recent call last):
+2025-06-16 14:33:49,483 - ERROR -   File "/home/lorenz/bmda_test/BMPipeline/full_pipeline.py", line 108, in <module>
+2025-06-16 14:33:49,483 - ERROR -     RS = Resegmentor(set524, set504, set502)TypeError: Resegmentor() takes no arguments
+2025-06-16 14:37:18,748 - INFO - Setting up 2 jobs with 1 patients per job
+2025-06-16 14:39:38,112 - INFO - The source set with 5 took 0.0h 2.0min 16.818041563034058sChecking results for errors...No problems in Bidscoiner_0No problems in Bidscoiner_1Milestone: Running bidscoiner took 0.0days 0.0h 2.0min 17sMilestone: Running NonCHUVCoiner took 0.0days 0.0h 0.0min 3sMilestone: Running RTS2BIDS took 0.0days 0.0h 0.0min 0s[0m[34m[1m[4mINFO[0m:[0m Setting up registration jobs...[0m[0m
+2025-06-16 14:39:38,112 - INFO - [0m[34m[1m[4mINFO[0m:[0m Setting up jobs took 0.0h 0.0min 2.384185791015625e-07s[0m[0m
+2025-06-16 14:39:38,113 - INFO - [0m0 Patients are in the output directory[0m
+2025-06-16 14:39:38,113 - INFO - [0mThis run handeled 0 patients in multiprocessing[0m
+2025-06-16 14:39:38,113 - INFO - [0mCaught exceptions in patients [], fix and rerun they have not been logged in the progress file.[0m
+2025-06-16 14:39:39,117 - INFO - Milestone: Running FilterRegister took 0.0days 0.0h 0.0min 0s
+2025-06-16 14:39:39,117 - ERROR - Traceback (most recent call last):
+2025-06-16 14:39:39,117 - ERROR -   File "/home/lorenz/bmda_test/BMPipeline/full_pipeline.py", line 109, in <module>
+2025-06-16 14:39:39,117 - ERROR -     RS.execute(task=['502'], nnUNet_dir=set502)  File "/home/lorenz/bmda_test/BMPipeline/src/nnUnet_predictor.py", line 63, in execute
+2025-06-16 14:39:39,118 - ERROR -     if os.listdir(self.set502):AttributeError: 'Resegmentor' object has no attribute 'set502'

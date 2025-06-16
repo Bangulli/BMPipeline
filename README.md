@@ -6,7 +6,19 @@ Processes the raw dataset to a filtered and registered set of logitudinal data, 
 Filtration is based on [BIDSCoin](https://github.com/Donders-Institute/bidscoin) with a custom bidsmap in a fully automated workflow, no GUI interaction.
 Check their [repository](https://github.com/Donders-Institute/bidscoin) and [documentation](https://bidscoin.readthedocs.io/en/latest/) for details on how to create a bidsmap for your usecase.
 ## Usage intsructions
+Clone this repository and set the location as the working directory.
+This repository is run on a Python 3.10.12 venv environment.
+Create a new environment using:
+``` bash
+  python3 -m venv YOUR_ENVIRONMENT_NAME
+```
 Dependencies are found in the [Requirements](requirements.txt)
+Install the dependencies using:
+``` bash
+  source YOUR_ENVIRONMENT_NAME/bin/activate
+  pip install -r requirements.txt
+```
+
 
 To enable resegmentation pass the path to the nnUNet training directory as a string to the argument "nnUNet_dir" in the processors execute function.
 To add more tasks modify the switch case blocks in [Resegmentor](src/nnUnet_predictor.py).
