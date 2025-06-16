@@ -94,7 +94,7 @@ def run_bidscoiner_multiprocess(source, target, bidsmap, n_jobs=5, patients_per_
     
     if patients_per_batch is None:
         print('Did not get a specification for patient count, infering patient count per job internally')
-        patients_per_batch = round(len(patients)/n_jobs)
+        patients_per_batch = round(len(patients)/n_jobs) if round(len(patients)/n_jobs) != 0 else 1
         for j in range(n_jobs):
             upper = (j+1)*patients_per_batch if (j+1)*patients_per_batch<len(patients) else -1
             sub_list = patients[j*patients_per_batch:upper]
