@@ -14,15 +14,15 @@ from src.parallel_bidscoiner import run_bidscoiner_multiprocess
 import logging
 import sys
 
-raw_set = pl.Path("/mnt/nas6/data/Target/symlinked_batches_mrct_1000/known_no_issues") # must be path to parent folder with patient subfolders/.
-bids_set = pl.Path("/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/bids") # must be path that doesnt exist, the script creates the target dir itself
-processed_set = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/processed') #  the location of the bids structure output
-metadata_map = pl.Path('/home/lorenz/BMPipeline/sliceID_seriesPath_mapping.csv')# path to the secondary result of running sequence classifier: ID to path mapping
+raw_set = pl.Path("/mnt/nas6/data/Target/mrct1000_nobatch") # must be path to parent folder with patient subfolders/.
+bids_set = pl.Path("") # must be path that doesnt exist, the script creates the target dir itself
+processed_set = pl.Path('') #  the location of the bids structure output
+metadata_map = pl.Path('')# path to the secondary result of running sequence classifier: ID to path mapping
 set504 = None
 set524 = None
-set502 = pl.Path('/mnt/nas6/data/Target/BMPipeline_full_rerun/targeted_rerun/nnUNet_dataset')
-nonchuv_data = pl.Path('/home/lorenz/BMPipeline/sequence_selected_nonchuv.xlsx')
-bidsmap_path = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
+set502 = pl.Path('')
+nonchuv_data = pl.Path('sequence_selected_nonchuv.xlsx')
+bidsmap_path = pl.Path("bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
 
 class StreamToLogger:
     """

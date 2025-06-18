@@ -136,8 +136,8 @@ If you want to run different resegmentation networks, update this block:
   DC.execute(set502, '502') # destination path and task identifier
   # Assumes dataset is the result of src.nnUnet_data_preparation.DatasetConverter
   # Runs the prediction 
-  RS = Resegmentor(set524, set504, set502)
-  RS.execute(task=['502']) # task identifier. can be list of tasks to run multiple, e.g. when task 524 is used but not all studies have t2 images
+  RS = Resegmentor()
+  RS.execute(task=['502'], nnUNet_dir=set502) # task identifier. can be list of tasks to run multiple, e.g. when task 524 is used but not all studies have t2 images
   # Assumes the Resegmentor has been executed before
   # Pipes the result back into the clean set as a new subfolder 'mets'
   DRC = DatasetReconverter(processed_set, set502, 'mets_task_502')
