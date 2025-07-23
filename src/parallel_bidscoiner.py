@@ -69,6 +69,7 @@ class BidscoinerJob():
             except Exception as e:
                 print("Error occured in", self.id, "preventing tempdir deletion")
                 print(e)
+                print(traceback.format_exc())
                 raise e
 
             print('Bidscoincer process id', self.id, 'completed successfully. Exiting process')
@@ -76,7 +77,7 @@ class BidscoinerJob():
         except Exception as e:
             return f"FAIL--{self.id}--{e}\n{traceback.format_exc()}"
         
-def run_bidscoiner_multiprocess(source, target, bidsmap, n_jobs=5, patients_per_batch=5):
+def run_bidscoiner_multiprocess(source, target, bidsmap, n_jobs=5, patients_per_batch=None):
     """
     Bidscoiner execute function. Batches patients and organizes batches into jobs that are executed in parallel.
     source = pl.Path object, the source directory

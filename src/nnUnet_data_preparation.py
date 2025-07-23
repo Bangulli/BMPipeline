@@ -77,8 +77,6 @@ class TimePoint():
         
         return image
 
-
-
 class PatientTimeSeries():
     """
     Data Object representing a time series
@@ -133,7 +131,6 @@ class PatientTimeSeries():
     
     def __getitem__(self, idx): # access by indexing
         return self._time_series[self._keys[idx]]
-
     
 class DatasetConverter():
     """

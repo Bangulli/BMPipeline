@@ -15,14 +15,14 @@ import logging
 import sys
 
 raw_set = pl.Path("/mnt/nas6/data/Target/mrct1000_nobatch") # must be path to parent folder with patient subfolders/.
-bids_set = pl.Path("") # must be path that doesnt exist, the script creates the target dir itself
-processed_set = pl.Path('') #  the location of the bids structure output
-metadata_map = pl.Path('')# path to the secondary result of running sequence classifier: ID to path mapping
+bids_set = pl.Path("/mnt/nas6/data/Target/Lorenz_testrun/BIDS") # must be path that doesnt exist, the script creates the target dir itself
+processed_set = pl.Path('/mnt/nas6/data/Target/Lorenz_testrun/PROCESSED') #  the location of the bids structure output
+metadata_map = pl.Path('/home/lorenz/BMPipeline/sliceID_seriesPath_mapping.csv')# path to the secondary result of running sequence classifier: ID to path mapping
 set504 = None
 set524 = None
-set502 = pl.Path('')
-nonchuv_data = pl.Path('sequence_selected_nonchuv.xlsx')
-bidsmap_path = pl.Path("bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
+set502 = pl.Path('/mnt/nas6/data/Target/Lorenz_testrun/UNet')
+nonchuv_data = pl.Path('/home/lorenz/BMPipeline/sequence_selected_nonchuv.xlsx')
+bidsmap_path = pl.Path("/home/lorenz/BMPipeline/bidsmap_brainmets_modified_no_derived_no_se2d_excl_angio.yaml")
 
 class StreamToLogger:
     """
@@ -62,7 +62,17 @@ if __name__ == '__main__':
     sys.stdout = StreamToLogger(stdout_logger, logging.INFO)
     sys.stderr = StreamToLogger(stderr_logger, logging.ERROR)
     ## convert data from raw to bids structure using bidscoiner in multiprocessing
-    run_bidscoiner_multiprocess(raw_set, bids_set, bidsmap_path, 5, 5)
+    #run_bidscoiner_multiprocess(raw_set, bids_set, bidsmap_path, 5, 1) some weird interaction between the multiprocessing and the bidscoiner leads to errors in some cases. to be fixed
+    ## run single thread bidscoiner. Very slow but stable.
+    command = [
+                "tml_dicom2bids_convert",
+                "-i", raw_set,
+                "-o", bids_set,
+                "-t", bidsmap_path
+                ]
+    # Run the command
+    subprocess.run(command)
+    #raise RuntimeError('stop')
     milestone=time.time()
     ## report milestone runtime
     min, sec = divmod(milestone-start, 60)

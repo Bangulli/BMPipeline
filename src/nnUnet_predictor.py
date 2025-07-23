@@ -7,18 +7,18 @@ class Resegmentor():
     """
     Resegmentation processor
     """
-    def execute(self, task=['524', '504'], nnUNet_dir = "/home/lorenz/BMPipeline/resegmentation"):
+    def execute(self, task=['524', '504'], nnUNet_dir = None):
         """
         Execute the processor
         task = string or list of strings, the conversion mode. if string only does one mode, if list doess all the modes in the string
-        nnUNet_dir = string, the path to the direcotry that stores the nnUNet outputs
+        nnUNet_dir = string, the path to the direcotry that stores the nnUNet dataset
 
         502 = singleclass output no t2
         504 = multiclass output no t2
         524 = multiclass outptu with t2
         """
         env = os.environ.copy()
-        env["RESULTS_FOLDER"] = nnUNet_dir ## important: this is the directory that needs to contain 
+        env["RESULTS_FOLDER"] = "/home/lorenz/BMPipeline/resegmentation" ## important: this is the directory that needs to contain the nnUNet outputs
         time.sleep(1)
         if '524' in task:
             if os.listdir(nnUNet_dir):
