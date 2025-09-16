@@ -22,11 +22,13 @@ Install the dependencies using:
 The exact implementation for BIDSCoiner used is a containerized Docker image from [this repository](https://github.com/TranslationalML/tml_dicom2bids) download and build the container image according to the instructions in the repository after setting up the environment.
 
 ## Citation
-If you use this repository in your projects, please cit:
+If you use this repository in your projects, please cite:
 
 ```
 Kuhn, L., Abler, D., Richiardi, J., Hottinger, A. F., Schiappacasse, L., Dunet, V., Depeursinge, A., Andrearczyk, V. "AI-based response assessment and prediction  in longitudinal imaging for brain metastases treated with stereotactic radiosurgery", in Learning with Longitudinal Medical Images and Data (LMID at MICCAI), 2025 (in press)
 ```
+
+The paper is available on [arXiv](https://arxiv.org/abs/2509.06396)
 
 ## Source
 The [main](full_pipeline.py) script contains and calls all processor objects in the [src](src) directory. It is ready to run and configured with some basic settings. Just update the paths and you should be good to go
